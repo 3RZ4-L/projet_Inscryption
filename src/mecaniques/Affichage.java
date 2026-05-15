@@ -3,59 +3,128 @@ package mecaniques;
 import java.util.ArrayList;
 
 public class Affichage {
+    private int m_width = 17;
 
-
-    public String afficherEmptyPlace(){
-        return("*************\n" +
-                "*           *\n" +
-                "*           *\n" +
-                "*           *\n" +
-                "*           *\n" +
-                "*           *\n" +
-                "*************");
-    }
-
-    public String afficherCarteAnimal(/*nom, hp, dmg, extra*/){
-        return("*-----------*\n" +
-                "|   name    |\n" +
-                "|-----------|\n" +
-                "| HP :      |\n" +
-                "| DMG :     |\n" +
-                "| EXT :     |\n" +
-                "*-----------*");
-    }
-
-    public String afficherCarteCoordonee(){
-        return("*************\n" +
-                "*           *\n" +
-                "*           *\n" +
-                "*     O2    *\n" +
-                "*           *\n" +
-                "*           *\n" +
-                "*************");
-    }
-
-    public String afficherArrow(){
-        return("||\n" +
-                "\\" + "/");
-    }
-
-    public String afficherGrid(){
-        String[][] grid = new String[4][3];
-        for(int i = 0; i < grid.length; i++){
-            for(int j = 0; j < grid[i].length; j++){
-                if(i == 1 || i == 3){
-                    grid[i][j] = afficherArrow();
-                }
-            }
+    public String emptyTopBottom(){
+        String res = "";
+        for(int i = 0; i <= m_width; i++){
+            res+="*";
         }
+        return res;
     }
 
-    public String afficherDeplacement(/* someone */){
-        /*
-        * if(someone is COMP){
-        *
-        * }
-        * */
+    public String emptyMiddle(){
+        String res = "*";
+        for(int i = 0; i < m_width-1; i++){
+            res+=" ";
+        }
+        res+="*";
+        return res;
+    }
+
+    public String coordinate(String coord){
+        if(coord.length() == 2){
+            String res = "*";
+            for(int i = 0; i < m_width-3; i++){
+                switch(i){
+                    case 7:
+                        res += coord.charAt(0);
+                        break;
+                    case 8:
+                        res += coord.charAt(1);
+                        break;
+                }
+                res+=" ";
+            }
+            res+="*";
+            return res;
+        }
+        return"";
+    }
+
+    public String animTopBottom(){
+        String res = "*";
+        for(int i = 0; i < m_width-1; i++){
+            res+="-";
+        }
+        res+="*";
+        return res;
+    }
+
+    public String separate(){
+        String res = "|";
+        for(int i = 0; i < m_width-1; i++){
+            res+="-";
+        }
+        res+="|";
+        return res;
+    }
+
+    public String animMiddle(){
+        String res = "|";
+        for(int i = 0; i < m_width-1; i++){
+            res+=" ";
+        }
+        res+="|";
+        return res;
+    }
+
+    public String info(String txt){
+        String res = "|";
+        if(txt.length() < m_width-1){
+            res += txt;
+        }
+        for(int i = 0; i < m_width-1-txt.length(); i++){
+            res+=" ";
+        }
+        res+="|";
+        return res;
+    }
+
+    public String[] emptyCard(){
+        return new String[]{
+                emptyTopBottom(),
+                emptyMiddle(),
+                emptyMiddle(),
+                emptyMiddle(),
+                emptyMiddle(),
+                emptyMiddle(),
+                emptyTopBottom()
+        };
+    }
+
+    public String[] coordCard(String coord){
+        return new String[]{
+                emptyTopBottom(),
+                emptyMiddle(),
+                emptyMiddle(),
+                coordinate(coord),
+                emptyMiddle(),
+                emptyMiddle(),
+                emptyTopBottom()
+        };
+    }
+
+    public String[] animCard(String nom, String hp, String dmg, boolean volant){
+
+        return new String[]{
+                animTopBottom(),
+                info(nom),
+                separate(),
+                "HP : " + info(hp),
+                "AT : " + info(dmg),
+                volant ? info("Volant") : animMiddle(),
+                animTopBottom()
+        };
+    }
+
+    public void afficherLigne(String[][] cartes){
+        for(int ligne = 0; ligne < 7; ligne ++){
+            for (int i = 0; i < cartes.length; i++){
+                System.out.print(cartes[i][ligne] + "    ");
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
 }
