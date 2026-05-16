@@ -27,10 +27,10 @@ public class Affichage {
             String res = "*";
             for(int i = 0; i < m_width-3; i++){
                 switch(i){
-                    case 7:
+                    case 6:
                         res += coord.charAt(0);
                         break;
-                    case 8:
+                    case 7:
                         res += coord.charAt(1);
                         break;
                 }
@@ -69,12 +69,33 @@ public class Affichage {
         return res;
     }
 
-    public String info(String txt){
-        String res = "|";
-        if(txt.length() < m_width-1){
-            res += txt;
+    public String animName(String nom){
+        String res = "| ";
+        //if(nom.length() < m_width - 6){
+            res+=nom;
+            for(int i = 0; i < m_width-2-nom.length(); i++){
+                res+=" ";
+            }
+            res+="|";
+            return res;
+        /*}
+        return"bruh";*/
+    }
+
+    public String animHP(String hp){
+        String res = "";
+        res+=hp;
+        for(int i = 0; i < m_width-7-hp.length(); i++){
+            res+=" ";
         }
-        for(int i = 0; i < m_width-1-txt.length(); i++){
+        res+="|";
+        return res;
+    }
+
+    public String animDMG(String dmg){
+        String res = "";
+        res+=dmg;
+        for(int i = 0; i < m_width-8-dmg.length(); i++){
             res+=" ";
         }
         res+="|";
@@ -106,14 +127,14 @@ public class Affichage {
     }
 
     public String[] animCard(String nom, String hp, String dmg, boolean volant){
-
+        String spaces = "         |";
         return new String[]{
                 animTopBottom(),
-                info(nom),
+                animName(nom),
                 separate(),
-                "HP : " + info(hp),
-                "AT : " + info(dmg),
-                volant ? info("Volant") : animMiddle(),
+                "| HP : " + animHP(hp),
+                "| DMG : " + animDMG(dmg),
+                volant ? "| Volant" + spaces : animMiddle(),
                 animTopBottom()
         };
     }
