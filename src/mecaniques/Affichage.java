@@ -148,4 +148,53 @@ public class Affichage {
         }
         System.out.println();
     }
+
+    public String arrowUp(){
+        String spaces = "";
+        for (int i = 0; i < m_width/2 - 2; i++){
+            spaces += " ";
+        }
+        return spaces + "/\\" + spaces;
+    }
+
+    public String arrowDown(){
+        String spaces = "";
+        for (int i = 0; i < m_width/2; i++){
+            spaces += " ";
+        }
+        return spaces + "\\/" + spaces;
+    }
+
+    public String arrowBody(){
+        String spaces = "";
+        for (int i = 0; i < m_width/2; i++){
+            spaces += " ";
+        }
+        return spaces + "||" + spaces;
+    }
+
+    public String[] affArrowUp(){
+        return new String[]{
+                "",
+                "",
+                arrowUp(),
+                arrowBody(),
+                arrowBody(),
+                "",
+                ""
+        };
+    }
+
+    public String[] affArrowDown(){
+        return new String[]{
+
+                "",
+                "",
+                arrowBody(),
+                arrowBody(),
+                arrowDown(),
+                "",
+                ""
+        };
+    }
 }
