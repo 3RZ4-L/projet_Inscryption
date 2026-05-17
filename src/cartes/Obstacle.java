@@ -1,0 +1,9 @@
+package cartes;
+
+public class Obstacle extends Carte{
+    Obstacle(String nom, Integer pdv){
+        super(nom, pdv);
+    }
+
+}
+

@@ -1,0 +1,58 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+skinparam classFontStyle Bold
+skinparam style strictuml
+hide empty members
+
+package cartes{
+    class Carte {
+        #String m_nom
+        #Integer m_points_de_vie
+        +Carte(String nom, Integer pdv)
+        +Integer getPv()
+        +String toString()
+    }
+
+    class Animal {
+        #Integer m_attaque
+        #Integer m_gouttes_sang
+        #Integer m_os
+        +Animal(String nom, Integer pdv, Integer att, Integer gds, Integer os)
+        +Boolean attaque(Animal adversaire)
+        +Boolean attaque(Obstacle obstacle)
+    }
+
+    class Volant {
+        +Volant(String nom, Integer pdv, Integer att, Integer gds, Integer os)
+    }
+
+    class Obstacle {
+        +Obstacle(String nom, Integer pdv)
+    }
+
+    class Pioche {
+        +Animal create_chat()
+        +Animal create_grizzly()
+        +Animal create_coyote()
+        +Volant create_moineau()
+        +Animal create_hermine()
+        +Animal create_louveteau()
+        +Animal create_loup()
+        +Animal create_punaise()
+        +Volant create_corbeau()
+        +Animal create_ecureil()
+        +Obstacle create_richer()
+        +Obstacle create_sapin()
+    }
+}
+class Main {
+            +static void main(String[] args)
+        }
+
+Carte <|-- Animal
+Carte <|-- Obstacle
+Animal <|-- Volant
+Main ..> Pioche : initiate
+
+@enduml
