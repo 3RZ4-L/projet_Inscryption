@@ -5,7 +5,7 @@ skinparam classFontStyle Bold
 skinparam style strictuml
 hide empty members
 
-package cartes{
+package cartes {
     class Carte {
         #String m_nom
         #Integer m_points_de_vie
@@ -46,13 +46,39 @@ package cartes{
         +Obstacle create_sapin()
     }
 }
+
+package mecaniques {
+    class Affichage {
+        -int m_width = 17
+        +String emptyTopBottom()
+        +String emptyMiddle()
+        +String coordinate(String coord)
+        +String animTopBottom()
+        +String separate()
+        +String animMiddle()
+        +String animName(String nom)
+        +String animHP(String hp)
+        +String animDMG(String dmg)
+        +String[] emptyCard()
+        +String[] coordCard(String coord)
+        +String[] animCard(String nom, String hp, String dmg, boolean volant)
+        +void afficherLigne(String[][] cartes)
+        +String arrowUp()
+        +String arrowDown()
+        +String arrowBody()
+        +String[] affArrowUp()
+        +String[] affArrowDown()
+    }
+}
+
 class Main {
-            +static void main(String[] args)
-        }
+    +static void main(String[] args)
+}
 
 Carte <|-- Animal
 Carte <|-- Obstacle
 Animal <|-- Volant
-Main ..> Pioche : initiate
+Main ..> Pioche : <<initiate>>
+Main ..> Affichage : <<uses>>
 
 @enduml
