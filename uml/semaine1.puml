@@ -14,7 +14,7 @@ package cartes {
         +String toString()
     }
 
-    class Animal {
+    class Animal extends Carte{
         #Integer m_attaque
         #Integer m_gouttes_sang
         #Integer m_os
@@ -23,11 +23,11 @@ package cartes {
         +Boolean attaque(Obstacle obstacle)
     }
 
-    class Volant {
+    class Volant extends Animal{
         +Volant(String nom, Integer pdv, Integer att, Integer gds, Integer os)
     }
 
-    class Obstacle {
+    class Obstacle extends Carte{
         +Obstacle(String nom, Integer pdv)
     }
 
@@ -75,10 +75,10 @@ class Main {
     +static void main(String[] args)
 }
 
-Carte <|-- Animal
-Carte <|-- Obstacle
-Animal <|-- Volant
 Main ..> Pioche : <<initiate>>
 Main ..> Affichage : <<uses>>
+Pioche ..> Animal : <<initiate>>
+Pioche ..> Obstacle : <<initiate>>
+Pioche ..> Volant : <<initiate>>
 
 @enduml
