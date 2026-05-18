@@ -1,15 +1,17 @@
 package cartes;
 
 public class Animal extends Carte{
-    Integer m_attaque;
-    Integer m_gouttes_sang;
-    Integer m_os;
+    private int m_attaque;
+    private int m_gouttes_sang;
+    private int m_os;
+    private boolean m_volant;
 
-    Animal(String nom, Integer pdv, Integer att, Integer gds, Integer os) {
+    public Animal(String nom, int pdv, int att, int gds, int os, boolean volant) {
         super(nom, pdv);
         m_attaque = att;
         m_gouttes_sang = gds;
         m_os = os;
+        m_volant = volant;
     }
 
     /**

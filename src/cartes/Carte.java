@@ -2,14 +2,14 @@ package cartes;
 
 public class Carte {
     String m_nom;
-    Integer m_points_de_vie;
+    int m_points_de_vie;
 
-    Carte (String nom, Integer pdv){
+    Carte (String nom, int pdv){
         m_nom = nom;
         m_points_de_vie = pdv;
     }
 
-    public Integer getPv(){
+    public int getPv(){
         return m_points_de_vie;
     }
 
