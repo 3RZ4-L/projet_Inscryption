@@ -1,4 +1,4 @@
-import mecaniques.Affichage;
+import mecaniques.affichage.Affichage;
 
 public class Main
 {
