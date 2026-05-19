@@ -8,8 +8,8 @@ public class Battle {
     private int m_score;
 
     public Battle(){
-        m_cartesJoueur = new Carte[3];
-        m_cartesAdversaire = new Carte[3];
+        m_cartesJoueur = new Carte[4];
+        m_cartesAdversaire = new Carte[4];
         m_score = 0;
     }
 
@@ -51,6 +51,10 @@ public class Battle {
 
     public boolean adversaireGagne(){
         return getScore() <= -5;
+    }
+
+    public String attaquerLigne(Carte attack, Carte defense){
+        return "";
     }
 }
 

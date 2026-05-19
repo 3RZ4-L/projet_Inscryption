@@ -39,4 +39,16 @@ public class Animal extends Carte{
         }
         return true;
     }
+
+    public int getGouttesSang(){
+        return m_gouttes_sang;
+    }
+
+    public int getOs(){
+        return m_os;
+    }
+
+    public boolean estVolant(){
+        return m_volant;
+    }
 }

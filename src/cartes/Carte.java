@@ -13,8 +13,15 @@ public class Carte {
         return m_points_de_vie;
     }
 
-    @Override
-    public String toString() {
+    public String getNom() {
         return m_nom;
+    }
+
+    public boolean estMort(){
+        return(getPv() <= 0);
+    }
+
+    public void takeDamage(int dmg){
+        m_points_de_vie -= dmg;
     }
 }
