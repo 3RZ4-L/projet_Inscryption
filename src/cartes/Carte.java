@@ -24,4 +24,18 @@ public class Carte {
     public void takeDamage(int dmg){
         m_points_de_vie -= dmg;
     }
+
+
+
+    public void doDamage(Carte other){
+        // Vide car par défaut une carte n'attaque pas.
+    }
+
+    public int getAttack(){
+        return 0;
+    }
+
+    public boolean estVolant(){
+        return false;
+    }
 }

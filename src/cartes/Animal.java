@@ -18,6 +18,7 @@ public class Animal extends Carte{
      * @param adversaire : animal attaqué
      * @return si l'adversaire est mort (pv = 0)
      */
+    /*
     public Boolean attaque(Animal adversaire){
         if (adversaire.m_points_de_vie > this.m_attaque) {
             adversaire.m_points_de_vie -= this.m_attaque;
@@ -39,6 +40,10 @@ public class Animal extends Carte{
         }
         return true;
     }
+    */
+    public int getAttack(){
+        return m_attaque;
+    }
 
     public int getGouttesSang(){
         return m_gouttes_sang;
@@ -50,5 +55,9 @@ public class Animal extends Carte{
 
     public boolean estVolant(){
         return m_volant;
+    }
+
+    public void doDamage(Carte other){
+        other.takeDamage(m_attaque);
     }
 }
