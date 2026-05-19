@@ -6,7 +6,9 @@ import java.util.ArrayList;
 
 public class Joueur{
     private Pioche m_pioche;
-    private ArrayList<Animal> m_main;
+    private ArrayList<Animal> m_main = new ArrayList<Animal>();
+    private int m_os;
+    private int m_goutteSang;
 
     Joueur(){
         m_pioche = new Pioche(19);
@@ -15,14 +17,21 @@ public class Joueur{
             piocher();
             i--;
         }
+        m_os = 0;
+        m_goutteSang = 0;
     }
 
     public void piocher(){
         m_main.add(m_pioche.piocher());
     }
 
-    public void jouerCarte(int numCarte){
+    public void placer(int numCarte){
         Animal carte = m_main.remove(numCarte);
+    }
+
+    public void sacrifier(){
+        m_os++;
+        m_goutteSang++;
     }
 
 }
