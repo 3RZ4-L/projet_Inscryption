@@ -109,10 +109,6 @@ public class Battle {
     public boolean adversaireGagne(){
         return getScore() <= -SCORE_MAX;
     }
-
-    public String attaquerLigne(Carte attack, Carte defense){
-        return "";
-    }
 }
 
 
