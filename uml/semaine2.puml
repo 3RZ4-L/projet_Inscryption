@@ -1,0 +1,108 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+skinparam classFontStyle Bold
+skinparam style strictuml
+hide empty members
+
+package cartes {
+    class Carte {
+        - m_nom String
+        - m_points_de_vie int
+        + <<create>> arte(String nom, Integer pdv)
+        + getPv() int
+        + toString() String
+    }
+
+    class Animal extends Carte{
+        - m_attaque int
+        - m_gouttes_sang int
+        - m_os int
+        - m_volant Boolean
+        + <<create>> Animal(String nom, Integer pdv, Integer att, Integer gds, Integer os)
+        + attaque(Animal adversaire) Boolean
+        + attaque(Obstacle obstacle) Boolean
+    }
+
+    class Obstacle extends Carte{
+        + Obstacle(String nom, Integer pdv)
+    }
+}
+
+package mecaniques.affichage {
+    class Affichage {
+        + afficherLigne(String[][] cartes)
+        + emptyCard() String[]
+        + coordCard() String[]
+        + animCard() String[]
+        + affArrowUp() String[]
+        + affArrowDown() String[]
+    }
+    class CreateArrow{
+        - m_width int
+        + arrowUp() String
+        + arrowDown() String
+        + arrowBody() String
+    }
+    class CreateCard{
+        - m_width int
+        + emptyTopBottom() String
+        + emptyMiddle() String
+        + corrdinate(coord String) String
+        + animTopBottom() String
+        + separate() String
+        + animMiddle() String
+        + animName(String nom) String
+        + animHp(String hp) String
+        + animDMG(String dmg) String
+    }
+}
+package mecaniques.joueurs{
+    class Pioche {
+        - m_pioch Stack(Animal)
+        + <<create>> Pioche()
+        + piocher() Animal
+        + melanger(int n)
+    }
+
+    Pioche *-> "-n_pioche \n 1" Joueur
+
+    class Joueur{
+        - m_main Animal[*]
+        - m_os int
+        - m_goutteSang int
+        + <<create>> Joueur()
+        + piocher()
+        + poser()
+        + sacrifier()
+    }
+    class Adversaire extends Joueur{
+
+    }
+}
+package mecaniques.battle{
+    class Battle{
+        - m_cartesJoueur Carte[*]
+        - m_cartesAdversaire Carte[*]
+        - m_score int
+        + <<create>> Battle()
+        + getCartesJoueur() Carte[]
+        + getCartesAdversaire() Carte[]
+        + getScore() int
+        + joueurGagne() Boolean
+        + adversaireGagne() Boolean
+        + validPlacementAdversaire() Boolean
+        + validPlacementJoueur() Boolean
+    }
+}
+
+class Main {
+    +static void main(String[] args)
+}
+
+Main ..> Pioche : <<initiate>>
+Main ..> Affichage : <<uses>>
+Pioche ..> Animal : <<initiate>>
+Pioche ..> Obstacle : <<initiate>>
+
+@enduml

@@ -1,4 +1,4 @@
-package jeu;
+package mecaniques.joueurs;
 
 import cartes.Animal;
 
@@ -28,10 +28,8 @@ public class Joueur{
     public void placer(int numCarte){
         Animal carte = m_main.remove(numCarte);
     }
-
     public void sacrifier(){
         m_os++;
         m_goutteSang++;
     }
-
 }
