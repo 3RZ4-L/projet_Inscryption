@@ -1,4 +1,4 @@
-package jeu;
+package mecaniques.jeu;
 
 import cartes.Animal;
 import mecaniques.joueurs.Joueur;
@@ -40,7 +40,7 @@ public class Ligne {
         return false;
     }
 
-    public boolean sacrifier(int numCarte){
+    public boolean sacrifierCarte(int numCarte){
         if(estCaseVide(numCarte)){
             m_joueur.sacrifier();
             m_cartes[numCarte] = null;
