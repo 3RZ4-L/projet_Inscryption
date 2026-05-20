@@ -8,24 +8,24 @@ hide empty members
 package cartes {
     class Carte {
         - m_nom String
-        - m_points_de_vie int
-        + <<create>> arte(String nom, Integer pdv)
-        + getPv() int
+        - m_pv Interger
+        + <<create>> arte(String nom, Interger pdv)
+        + getPv() Interger
         + toString() String
     }
 
     class Animal extends Carte{
-        - m_attaque int
-        - m_gouttes_sang int
-        - m_os int
+        - m_attaque Interger
+        - m_gouttes_sang Interger
+        - m_os Interger
         - m_volant Boolean
-        + <<create>> Animal(String nom, Integer pdv, Integer att, Integer gds, Integer os)
+        + <<create>> Animal(String nom, Interger pdv, Interger att, Interger gds, Interger os)
         + attaque(Animal adversaire) Boolean
         + attaque(Obstacle obstacle) Boolean
     }
 
     class Obstacle extends Carte{
-        + Obstacle(String nom, Integer pdv)
+        + Obstacle(String nom, Interger pdv)
     }
 }
 
@@ -39,13 +39,13 @@ package mecaniques.affichage {
         + affArrowDown() String[]
     }
     class CreateArrow{
-        - m_width int
+        - m_width Interger
         + arrowUp() String
         + arrowDown() String
         + arrowBody() String
     }
     class CreateCard{
-        - m_width int
+        - m_width Interger
         + emptyTopBottom() String
         + emptyMiddle() String
         + corrdinate(coord String) String
@@ -59,18 +59,15 @@ package mecaniques.affichage {
 }
 package mecaniques.joueurs{
     class Pioche {
-        - m_pioch Stack(Animal)
         + <<create>> Pioche()
         + piocher() Animal
-        + melanger(int n)
+        + melanger(Interger n)
     }
-
-    Pioche *-> "-n_pioche \n 1" Joueur
 
     class Joueur{
         - m_main Animal[*]
-        - m_os int
-        - m_goutteSang int
+        - m_os Interger
+        - m_goutteSang Interger
         + <<create>> Joueur()
         + piocher()
         + poser()
@@ -84,15 +81,34 @@ package mecaniques.battle{
     class Battle{
         - m_cartesJoueur Carte[*]
         - m_cartesAdversaire Carte[*]
-        - m_score int
+        - m_score Interger
         + <<create>> Battle()
         + getCartesJoueur() Carte[]
         + getCartesAdversaire() Carte[]
-        + getScore() int
+        + getScore() Interger
         + joueurGagne() Boolean
         + adversaireGagne() Boolean
         + validPlacementAdversaire() Boolean
         + validPlacementJoueur() Boolean
+    }
+}
+package mecaniques.jeu{
+    class Ligne{
+        + estCaseVide(Interger numCarte) : Boolean
+        + retirerCarte(Interger numCarte) : Boolean
+        + ajouterCarte(Interger numCarte, Animal carte) : Boolean
+        + supprimerCarte(Interger numCarte) : Boolean
+        + sacrifierCare(Interger numCarte) : Boolean
+    }
+    class Partie{
+        + m_score Interger
+        + m_numeroPartie Interger
+        - <<create>> Partie()
+        - demarrer()
+        - tourJoueur()
+        - tourAdversaire()
+        - verfierFinPartie() : Boolean
+        - getScore() : Interger
     }
 }
 
@@ -100,9 +116,12 @@ class Main {
     +static void main(String[] args)
 }
 
-Main ..> Pioche : <<initiate>>
-Main ..> Affichage : <<uses>>
-Pioche ..> Animal : <<initiate>>
-Pioche ..> Obstacle : <<initiate>>
+Affichage ..> CreateArrow : <<uses>>
+Affichage ..> CreateCard : <<uses>>
+Pioche <-* "-m_piche\n 0..*" Animal
+Pioche *-> "-m_pioche \n 1" Joueur
+Joueur *-> "-m_cartes\n ..4" Ligne
+Joueur *-> "-m_joueur\n 1" Partie
+Adversaire *-> "-m_adversaire\n 1" Partie
 
 @enduml
