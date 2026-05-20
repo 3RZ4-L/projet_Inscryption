@@ -45,7 +45,7 @@ public class Battle {
         if(!personnage[place].isEmpty()){
             return false;
         }
-        personnage[place] = cart;
+        personnage[place] = Optional.of(cart);
         return true;
     }
 
@@ -57,62 +57,48 @@ public class Battle {
         return(placerCart(m_cartesAdversaire, carte, place));
     }
 
-    public String attackDirect(Carte cart, boolean joueurAttacks){
+    private void doAttack(Optional<Carte>[] attaquers, Optional<Carte>[] defenseurs, boolean joueursAttack/*,AffichageBattle aff*/){
+        for(int i = 0; i < NB_CARTS; i++){
+            if(!attaquers[i].isEmpty() && attaquers[i].get().getAttack() > 0){
+                typeAttack(attaquers[i].get(), defenseurs, i, joueursAttack/*,aff*/);
+            }
+        }
+    }
+
+    private void typeAttack(Carte cart, Optional<Carte>[] defenseurs, int position, boolean joueursAttack/*, BattleAffichage aff*/){
+        Optional<Carte> other = defenseurs[position];
+
+        if(other.isEmpty() || cart.estVolant()){
+            attackDirect(cart, joueursAttack/*,aff*/);
+        }
+        else{
+            attackCart(cart, defenseurs, position/*, aff*/);
+        }
+
+    }
+
+    private void attackCart(Carte attaquer, Optional<Carte>[] defenseurs, int position/*, BattleAffichage aff*/){
+        Carte other = defenseurs[position].get();
+
+        attaquer.doDamage(other);
+        //aff.attack()
+
+        if(other.estMort()){
+            defenseurs[position] = Optional.empty();
+            //aff.died()
+        }
+    }
+    private void attackDirect(Carte cart, boolean joueursAttack/*, BattleAffichage aff*/){
         int dmg = cart.getAttack();
 
-        if(joueurAttacks){
+        if(joueursAttack){
             m_score += dmg;
         }
         else{
             m_score -= dmg;
         }
-
-        return cart.getNom() + " a attacké directement et inflige " + dmg + " dégats.\n";
+        //aff.attackDirect()
     }
-
-    public String attackCart(Carte cart, Optional<Carte>[] defenseur, int place){
-        String res = "";
-        Carte other = defenseur[place];
-
-        cart.doDamage(other);
-        res += cart.getNom() + " a attacké " + other.getNom() + " et inflige dégats " + cart.getAttack() + "."
-        + "\n" + other.getPv() + " - " + cart.getAttack() + " = " + other.getPv();
-
-        if(other.estMort()){
-            res += "\n" + other.getNom() + " a été tue par " + cart.getNom() + ".\n";
-            defenseur[place] = Optional.empty();
-        }
-        return res;
-    }
-
-    public String typeAttack(Carte cart, Optional<Carte[]> defenseur, int place, boolean joueurAttacks){
-        Carte other = defenseur[place];
-        if(other.isEmpty() || cart.estVolant()){
-           return(attackDirect(cart, joueurAttacks));
-        }
-        return(attackCart(cart, defenseur, place));
-
-    }
-
-    /*private String doAttack(Carte[] attaquers, Optional<Carte[]> defenseurs, boolean joueurAttacks){
-        String res = "";
-
-        for(int i = 0; i < NB_CARTS; i++){
-            Carte attacker = attaquers[i];
-
-            if(!attacker.isEmpty() && attacker.getAttack() > 0){
-                res += typeAttack(attacker, defenseurs, i, joueurAttacks);
-            }
-
-        }
-        return res;
-    }*/
-
-    private void doAttack();
-
-    private void typeAttack();
-
-    private void attack
 
     public boolean joueurGagne(){
         return getScore() >= SCORE_MAX;
