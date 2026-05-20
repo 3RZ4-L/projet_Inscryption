@@ -1,6 +1,7 @@
 package mecaniques.affichage;
+import cartes.Carte;
 
-public class Affichage {
+public class AffichageGrid {
     private CreateArrow m_createArrow = new CreateArrow();
     private CreateCard m_createCard = new CreateCard();
 
@@ -38,14 +39,16 @@ public class Affichage {
         };
     }
 
-    public String[] animCard(String nom, String hp, String dmg, boolean volant){
+    public String[] animCard(Carte cart/*String nom, String hp, String dmg, boolean volant*/){
+        boolean volant = cart.estVolant();
+        int dmg = cart.getAttack();
         String spaces = "         |";
         return new String[]{
                 m_createCard.animTopBottom(),
-                m_createCard.animName(nom),
+                m_createCard.animName(cart),
                 m_createCard.separate(),
-                "| HP : " + m_createCard.animHP(hp),
-                "| DMG : " + m_createCard.animDMG(dmg),
+                "| HP : " + m_createCard.animHP(cart),
+                dmg > 0 ? "| DMG : " + m_createCard.animDMG(cart) : m_createCard.animMiddle(),
                 volant ? "| Volant" + spaces : m_createCard.animMiddle(),
                 m_createCard.animTopBottom()
         };

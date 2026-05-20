@@ -1,4 +1,5 @@
 package mecaniques.affichage;
+import cartes.Carte;
 
 public class CreateCard {
     private int m_width = 17;
@@ -67,18 +68,19 @@ public class CreateCard {
         return res;
     }
 
-    public String animName(String nom){
+    public String animName(Carte cart){
         String res = "| ";
-        res+=nom;
-        for(int i = 0; i < m_width-2-nom.length(); i++){
+        res+= carte.getNom();
+        for(int i = 0; i < m_width-2-carte.getNom().length(); i++){
             res+=" ";
         }
         res+="|";
         return res;
     }
 
-    public String animHP(String hp){
+    public String animHP(Carte cart){
         String res = "";
+        String hp = cart.getPv() + "";
         res+=hp;
         for(int i = 0; i < m_width-7-hp.length(); i++){
             res+=" ";
@@ -87,8 +89,9 @@ public class CreateCard {
         return res;
     }
 
-    public String animDMG(String dmg){
+    public String animDMG(Carte cart){
         String res = "";
+        String dmg = cart.getAttack()+"";
         res+=dmg;
         for(int i = 0; i < m_width-8-dmg.length(); i++){
             res+=" ";

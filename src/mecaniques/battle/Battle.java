@@ -1,6 +1,7 @@
 package mecaniques.battle;
 
 import cartes.Carte;
+import mecaniques.affichage.AffichageBattle;
 
 import java.util.Optional;
 
@@ -57,38 +58,38 @@ public class Battle {
         return(placerCart(m_cartesAdversaire, carte, place));
     }
 
-    private void doAttack(Optional<Carte>[] attaquers, Optional<Carte>[] defenseurs, boolean joueursAttack/*,AffichageBattle aff*/){
+    private void doAttack(Optional<Carte>[] attaquers, Optional<Carte>[] defenseurs, boolean joueursAttack, AffichageBattle aff){
         for(int i = 0; i < NB_CARTS; i++){
             if(!attaquers[i].isEmpty() && attaquers[i].get().getAttack() > 0){
-                typeAttack(attaquers[i].get(), defenseurs, i, joueursAttack/*,aff*/);
+                typeAttack(attaquers[i].get(), defenseurs, i, joueursAttack, aff);
             }
         }
     }
 
-    private void typeAttack(Carte cart, Optional<Carte>[] defenseurs, int position, boolean joueursAttack/*, BattleAffichage aff*/){
+    private void typeAttack(Carte cart, Optional<Carte>[] defenseurs, int position, boolean joueursAttack, AffichageBattle aff){
         Optional<Carte> other = defenseurs[position];
 
         if(other.isEmpty() || cart.estVolant()){
-            attackDirect(cart, joueursAttack/*,aff*/);
+            attackDirect(cart, joueursAttack,aff);
         }
         else{
-            attackCart(cart, defenseurs, position/*, aff*/);
+            attackCart(cart, defenseurs, position, aff);
         }
 
     }
 
-    private void attackCart(Carte attaquer, Optional<Carte>[] defenseurs, int position/*, BattleAffichage aff*/){
+    private void attackCart(Carte attaquer, Optional<Carte>[] defenseurs, int position, AffichageBattle aff){
         Carte other = defenseurs[position].get();
 
         attaquer.doDamage(other);
-        //aff.attack()
+        aff.attackCart(attaquer, other);
 
         if(other.estMort()){
+            aff.died(other);
             defenseurs[position] = Optional.empty();
-            //aff.died()
         }
     }
-    private void attackDirect(Carte cart, boolean joueursAttack/*, BattleAffichage aff*/){
+    private void attackDirect(Carte cart, boolean joueursAttack, AffichageBattle aff){
         int dmg = cart.getAttack();
 
         if(joueursAttack){
@@ -97,7 +98,7 @@ public class Battle {
         else{
             m_score -= dmg;
         }
-        //aff.attackDirect()
+        aff.attackDirect(cart, dmg);
     }
 
     public boolean joueurGagne(){
