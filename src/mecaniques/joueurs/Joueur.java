@@ -3,6 +3,7 @@ package mecaniques.joueurs;
 import cartes.Animal;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Joueur{
     private Pioche m_pioche;
@@ -10,7 +11,7 @@ public class Joueur{
     private int m_os;
     private int m_goutteSang;
 
-    Joueur(){
+    public Joueur(){
         m_pioche = new Pioche(19);
         int i = 0;
         while (i < 4){
@@ -25,11 +26,35 @@ public class Joueur{
         m_main.add(m_pioche.piocher());
     }
 
-    public void placer(int numCarte){
-        Animal carte = m_main.remove(numCarte);
+    public Animal placer(int numCarte){
+        return m_main.remove(numCarte);
     }
+
+    public void reprendre(Animal carte){
+        m_main.add(carte);
+    }
+
     public void sacrifier(){
         m_os++;
         m_goutteSang++;
+    }
+
+    public int getNbCartes(){
+        return m_main.size();
+    }
+
+    public int getOs(){
+        return m_os;
+    }
+
+    public int getGoutteSang(){
+        return m_goutteSang;
+    }
+
+    public Optional<ArrayList<Animal>> getMain(){
+        if (getNbCartes() == 0){
+            return Optional.empty();
+        }
+        return Optional.of(m_main);
     }
 }

@@ -1,4 +1,4 @@
-package jeu;
+package mecaniques.joueurs;
 
-public class Adversaire {
+public class Adversaire extends Joueur{
 }
