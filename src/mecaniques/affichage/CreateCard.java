@@ -70,8 +70,8 @@ public class CreateCard {
 
     public String animName(Carte cart){
         String res = "| ";
-        res+= carte.getNom();
-        for(int i = 0; i < m_width-2-carte.getNom().length(); i++){
+        res+= cart.getNom();
+        for(int i = 0; i < m_width-2-cart.getNom().length(); i++){
             res+=" ";
         }
         res+="|";

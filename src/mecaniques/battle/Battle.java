@@ -36,7 +36,7 @@ public class Battle {
     }
 
     public boolean validPlacement(int place){
-        return (place > 0 && place <= NB_CARTS);
+        return (place >= 0 && place < NB_CARTS);
     }
 
     public boolean placerCart(Optional<Carte>[] personnage, Carte cart, int place){

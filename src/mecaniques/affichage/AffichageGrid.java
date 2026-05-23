@@ -39,7 +39,7 @@ public class AffichageGrid {
         };
     }
 
-    public String[] animCard(Carte cart/*String nom, String hp, String dmg, boolean volant*/){
+    public String[] animCard(Carte cart){
         boolean volant = cart.estVolant();
         int dmg = cart.getAttack();
         String spaces = "         |";
