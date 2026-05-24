@@ -2,6 +2,7 @@ package mecaniques.affichage;
 
 import cartes.Carte;
 import mecaniques.joueurs.Joueur;
+import mecaniques.joueurs.Pioche;
 
 import java.util.List;
 
@@ -32,5 +33,25 @@ public class AffichagePioche {
         res += carte.estVolant() ? "\t\tVolant" + "\n" : "";
 
         System.out.println(res);
+    }
+
+    public void afficherPioche(Pioche p){
+        /*String toRight="\t\t\t\t";
+        String spaces = "      "; //6 spaces
+        System.out.println(toRight+"Pioche");
+        System.out.println(toRight+"*---------------*");
+        System.out.println(toRight+"|  " + spaces + spaces + " |");
+        System.out.println(toRight+"|  " + spaces + spaces + " |");
+        System.out.println(toRight+"|" + spaces + p.getNbCarts.length < 2 ? " " + p.getNbCarts + " |" + spaces : //for 1 num
+                                    + p.getNbCarts + " |" + spaces); //for 2 nums
+        System.out.println(toRight+"|  " + spaces + spaces + " |");
+        System.out.println(toRight+"|  " + spaces + spaces + " |");
+        System.out.println(toRight+"*---------------*");*/
+    }
+
+    public void afficherInterfacePioche(Pioche p, Joueur j){
+        afficherPioche(p);
+        System.out.println("---------------------");
+        affihcerMain(j);
     }
 }
