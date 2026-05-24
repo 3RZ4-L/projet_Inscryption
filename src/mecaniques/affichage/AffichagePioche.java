@@ -7,7 +7,7 @@ import mecaniques.joueurs.Pioche;
 import java.util.List;
 
 public class AffichagePioche {
-    public void affihcerMain(Joueur j){
+    public void afficherMain(Joueur j){
         System.out.println("Votre main : ");
 
         //j.getMain() doit renvoyer List<Carte>
@@ -52,6 +52,6 @@ public class AffichagePioche {
     public void afficherInterfacePioche(Pioche p, Joueur j){
         afficherPioche(p);
         System.out.println("---------------------");
-        affihcerMain(j);
+        afficherMain(j);
     }
 }
