@@ -41,15 +41,7 @@ public class Carte {
         return false;
     }
 
-    public boolean havePouvoirs(Pouvoirs pouv){
-        return false;
-    }
-
-    public ArrayList<Pouvoirs> getPouvoirs(){
-        return new ArrayList<Pouvoirs>();
-    }
-
-    public String getNomsPouvoirs(){
+    public String getPouvoir(){
         return "";
     }
 }

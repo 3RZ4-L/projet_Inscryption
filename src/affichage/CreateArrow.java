@@ -5,7 +5,7 @@ public class CreateArrow {
 
     public String arrowUp(){
         String spaces = "";
-        for (int i = 0; i < m_width/2 - 2; i++){
+        for (int i = 0; i < m_width/2; i++){
             spaces += " ";
         }
         return spaces + "/\\" + spaces;
