@@ -22,8 +22,7 @@ public class Choix {
         m_choix = pioche.piocher();
     }
     public boolean estValide(String entree){
-        if ( entree.equals("1") ||  entree.equals("2")) return true;
-        return false;
+        return (entree.equals("1") ||  entree.equals("2"));
     }
     public Animal getChoix(){
         return m_choix;

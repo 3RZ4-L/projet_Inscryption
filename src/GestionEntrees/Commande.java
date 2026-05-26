@@ -32,14 +32,12 @@ public class Commande {
         }catch (Exception err){
             return false;
         }
-        if (m_commande.equals("fin"))return true;
         if (m_commande.equals("piocher") && nbpioche < 1) return true;
         if (m_commande.equals("pioche")){
             System.out.println("Vous ne pouvez piocher qu'une seule fois");
             return false;
         }
-        System.out.println("Veuillez reéssayer\n");
-        return false;
+        return(m_commande.equals("fin"));
     }
 
     public String getCommande(){
