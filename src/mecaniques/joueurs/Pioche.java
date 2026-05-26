@@ -56,6 +56,10 @@ public class Pioche {
         return (Animal)m_pioche.pop();
     }
 
+    public void ajouter(Animal carte){
+        m_pioche.add(carte);
+    }
+
     public int getNbCartes(){
         return m_pioche.size();
     }

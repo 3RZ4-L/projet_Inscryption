@@ -1,46 +1,50 @@
 package mecaniques.jeu;
 
+import GestionEntrees.Choix;
+import GestionEntrees.Commande;
 import mecaniques.joueurs.*;
 
-import java.util.Scanner;
-
 public class Partie {
-    private Battle m_battle;
+    private Bataille m_bataille;
     private Joueur m_joueur ;
     private Adversaire m_adversaire;
     private int m_score;
 
     Partie(){
-        m_battle = new Battle();
         m_joueur = new Joueur();
         m_adversaire = new Adversaire();
-        m_score = 0;
+        m_bataille = new Bataille(m_joueur.getLigne(), m_adversaire.getLigne());
     }
 
-    public void demarrer(){
-
+    public int demarrer(){
+        for (int i = 0; i < 3; i++){
+            if (i == 2){
+                Choix choix = new Choix(new Pioche(2));
+                m_joueur.ajouterDansPioche(choix.getChoix());
+            }
+            tourAdversaire();
+            tourJoueur();
+        }
+        return m_score;
     }
 
     public void tourJoueur(){
         boolean jouer = true;
+        Commande commande = new Commande();
+        int nbPioche = 0;
         while (jouer){
-            Scanner scanner = new Scanner(System.in);
-            String action = scanner.nextLine();
-            if (action == "fin"){
+            while(!commande.estValide(m_joueur.getNbCartes(), nbPioche)) {
+                commande = new Commande();
+            }
+            if (commande.getCommande().equals("fin")){
                 jouer = false;
             }
-            else if(action == "piocher"){
+            else if (commande.getCommande().equals("piocher")) {
                 m_joueur.piocher();
+                nbPioche++;
             }
-            else {
-                if (action.length() == 11) {
-                    String a = action.substring(0, 6);
-                    int carte = Integer.parseInt(action.substring(6, 7));
-                    int placement = Integer.parseInt(action.substring(7));
-                    if (a == "placer"){
-                        m_joueur.placer(carte);
-                    }
-                }
+            else{
+                m_joueur.placer(commande.getNumeroCarte(), commande.getPosition());
             }
         }
     }
