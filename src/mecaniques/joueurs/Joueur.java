@@ -1,13 +1,13 @@
 package mecaniques.joueurs;
 
-import mecaniques.cartes.Carte;
+import mecaniques.cartes.Animal;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
 public class Joueur{
     private Pioche m_pioche;
-    private ArrayList<Carte> m_main = new ArrayList<Carte>();
+    private ArrayList<Animal> m_main = new ArrayList<Animal>();
     private int m_os;
     private int m_goutteSang;
 
@@ -26,11 +26,11 @@ public class Joueur{
         m_main.add(m_pioche.piocher());
     }
 
-    public Carte placer(int numCarte){
+    public Animal placer(int numCarte){
         return m_main.remove(numCarte);
     }
 
-    public void reprendre(Carte carte){
+    public void reprendre(Animal carte){
         m_main.add(carte);
     }
 
@@ -51,10 +51,7 @@ public class Joueur{
         return m_goutteSang;
     }
 
-    public Optional<ArrayList<Carte>> getMain(){
-        if (getNbCartes() == 0){
-            return Optional.empty();
-        }
-        return Optional.of(m_main);
+    public ArrayList<Animal> getMain(){
+        return m_main;
     }
 }
