@@ -53,4 +53,8 @@ public class Pioche {
     public Animal piocher(){
         return (Animal)m_pioche.pop();
     }
+
+    public int getNbCartes(){
+        return m_pioche.size();
+    }
 }
