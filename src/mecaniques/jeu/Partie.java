@@ -1,8 +1,7 @@
 package mecaniques.jeu;
 
+import commande.Commande;
 import mecaniques.joueurs.*;
-
-import java.util.Scanner;
 
 public class Partie {
     private Battle m_battle;
@@ -23,24 +22,26 @@ public class Partie {
 
     public void tourJoueur(){
         boolean jouer = true;
+        Commande commande = new Commande();
+        int nbPioche = 0;
         while (jouer){
-            Scanner scanner = new Scanner(System.in);
-            String action = scanner.nextLine();
-            if (action == "fin"){
+            while(!commande.estValide(m_joueur.getNbCartes())) {
+                commande = new Commande();
+            }
+            if (commande.getCommande() == "fin"){
                 jouer = false;
             }
-            else if(action == "piocher"){
-                m_joueur.piocher();
-            }
-            else {
-                if (action.length() == 11) {
-                    String a = action.substring(0, 6);
-                    int carte = Integer.parseInt(action.substring(6, 7));
-                    int placement = Integer.parseInt(action.substring(7));
-                    if (a == "placer"){
-                        m_joueur.placer(carte);
-                    }
+            else if (commande.getCommande() == "piocher") {
+                if (nbPioche == 1){
+                    System.out.println("Vous ne pouvez plus piocher");
                 }
+                else {
+                    m_joueur.piocher();
+                    nbPioche++;
+                }
+            }
+            else{
+                m_joueur.placer(commande.getNumeroCarte(), commande.getPosition());
             }
         }
     }

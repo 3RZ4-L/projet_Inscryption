@@ -1,52 +1,29 @@
 package mecaniques.jeu;
 
-import mecaniques.cartes.Carte;
-import mecaniques.joueurs.Joueur;
+import mecaniques.cartes.Animal;
 
 public class Ligne {
-    private Joueur m_joueur;
-    private Carte[] m_cartes;
+    private Animal[] m_cartes;
 
-    Ligne(Joueur joueur){
-        m_joueur = joueur;
-        m_cartes = new Carte[4];
+    public Ligne(){
+        m_cartes = new Animal[4];
     }
 
     public boolean estCaseVide(int numCarte){
         return (m_cartes[numCarte] == null);
     }
 
-    public boolean placerCarte(int numCarte, Carte carte){
-        if(estCaseVide(numCarte)){
-            m_cartes[numCarte] = carte;
-            return true;
+    /**
+     * @param carte la carte placer sur le board
+     * @param position
+     * @return true si il y a un sacrifice de carte
+     */
+    public boolean placerCarte(Animal carte, int position){
+        if(estCaseVide(position)){
+            m_cartes[position] = carte;
+            return false;
         }
-        return false;
-    }
-    public boolean retirerCarte(int numCarte){
-        if(estCaseVide(numCarte)) {
-            m_joueur.reprendre(m_cartes[numCarte]);
-            m_cartes[numCarte] = null;
-            return true;
-        }
-        return false;
-    }
-
-    public boolean supprimerCarte(int numCarte){
-        if(estCaseVide(numCarte)){
-            m_cartes[numCarte] = null;
-            return true;
-        }
-        return false;
-    }
-
-    public boolean sacrifierCarte(int numCarte){
-        if(estCaseVide(numCarte)){
-            m_joueur.sacrifier();
-            m_cartes[numCarte] = null;
-            return true;
-        }
-
-        return false;
+        m_cartes[position] = carte;
+        return true;
     }
 }
