@@ -12,7 +12,7 @@ public class Joueur{
     private int m_goutteSang;
 
     public Joueur(){
-        m_pioche = new Pioche(19);
+        m_pioche = new Pioche(15);
         int i = 0;
         while (i < 4){
             piocher();
@@ -51,10 +51,7 @@ public class Joueur{
         return m_goutteSang;
     }
 
-    public Optional<ArrayList<Carte>> getMain(){
-        if (getNbCartes() == 0){
-            return Optional.empty();
-        }
-        return Optional.of(m_main);
+    public ArrayList<Carte> getMain(){
+        return m_main;
     }
 }

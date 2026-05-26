@@ -1,7 +1,8 @@
 package mecaniques.jeu;
 
-import mecaniques.battle.Battle;
 import mecaniques.joueurs.*;
+
+import java.util.Scanner;
 
 public class Partie {
     private Battle m_battle;
@@ -23,7 +24,24 @@ public class Partie {
     public void tourJoueur(){
         boolean jouer = true;
         while (jouer){
-
+            Scanner scanner = new Scanner(System.in);
+            String action = scanner.nextLine();
+            if (action == "fin"){
+                jouer = false;
+            }
+            else if(action == "piocher"){
+                m_joueur.piocher();
+            }
+            else {
+                if (action.length() == 11) {
+                    String a = action.substring(0, 6);
+                    int carte = Integer.parseInt(action.substring(6, 7));
+                    int placement = Integer.parseInt(action.substring(7));
+                    if (a == "placer"){
+                        m_joueur.placer(carte);
+                    }
+                }
+            }
         }
     }
 
