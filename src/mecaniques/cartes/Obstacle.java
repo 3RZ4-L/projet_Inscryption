@@ -1,4 +1,4 @@
-package cartes;
+package mecaniques.cartes;
 
 public class Obstacle extends Carte{
     public Obstacle(String nom, Integer pdv){

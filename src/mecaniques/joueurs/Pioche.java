@@ -1,11 +1,11 @@
 package mecaniques.joueurs;
 
-import cartes.Animal;
+import mecaniques.cartes.Animal;
 import java.util.Random;
 import java.util.Stack;
 
 public class Pioche {
-    private Stack m_pioche;
+    private Stack m_pioche = new Stack();
 
     public Pioche(int n){
         melanger(n);

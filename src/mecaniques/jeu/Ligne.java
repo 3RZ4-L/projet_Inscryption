@@ -1,6 +1,6 @@
 package mecaniques.jeu;
 
-import cartes.Animal;
+import mecaniques.cartes.Animal;
 import mecaniques.joueurs.Joueur;
 
 public class Ligne {

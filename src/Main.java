@@ -1,4 +1,4 @@
-import mecaniques.affichage.AffichageGrid;
+import affichage.AffichageGrid;
 
 public class Main
 {

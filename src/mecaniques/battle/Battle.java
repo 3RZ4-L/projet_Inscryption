@@ -1,7 +1,7 @@
 package mecaniques.battle;
 
-import cartes.Carte;
-import mecaniques.affichage.AffichageBattle;
+import mecaniques.cartes.Carte;
+import affichage.AffichageBattle;
 
 import java.util.Optional;
 

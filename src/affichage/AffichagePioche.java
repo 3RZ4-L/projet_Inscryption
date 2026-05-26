@@ -1,10 +1,8 @@
-package mecaniques.affichage;
+package affichage;
 
-import cartes.Carte;
+import mecaniques.cartes.Carte;
 import mecaniques.joueurs.Joueur;
 import mecaniques.joueurs.Pioche;
-
-import java.util.List;
 
 public class AffichagePioche {
     public void afficherMain(Joueur j){

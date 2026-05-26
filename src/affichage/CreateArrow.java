@@ -1,4 +1,4 @@
-package mecaniques.affichage;
+package affichage;
 
 public class CreateArrow {
     private int m_width = 17;

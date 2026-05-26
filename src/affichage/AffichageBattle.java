@@ -1,6 +1,6 @@
-package mecaniques.affichage;
+package affichage;
 
-import cartes.Carte;
+import mecaniques.cartes.Carte;
 
 public class AffichageBattle {
     public void attackDirect(Carte cart, int dmg){

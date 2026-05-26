@@ -1,6 +1,6 @@
 package mecaniques.joueurs;
 
-import cartes.Animal;
+import mecaniques.cartes.Animal;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -16,7 +16,7 @@ public class Joueur{
         int i = 0;
         while (i < 4){
             piocher();
-            i--;
+            i++;
         }
         m_os = 0;
         m_goutteSang = 0;

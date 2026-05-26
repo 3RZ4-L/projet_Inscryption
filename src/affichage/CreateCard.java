@@ -1,5 +1,5 @@
-package mecaniques.affichage;
-import cartes.Carte;
+package affichage;
+import mecaniques.cartes.Carte;
 
 public class CreateCard {
     private int m_width = 17;

@@ -1,4 +1,4 @@
-package cartes;
+package mecaniques.cartes;
 
 public class Animal extends Carte{
     private int m_attaque;

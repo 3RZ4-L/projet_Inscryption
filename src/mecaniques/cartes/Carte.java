@@ -1,4 +1,4 @@
-package cartes;
+package mecaniques.cartes;
 
 public class Carte {
     String m_nom;
