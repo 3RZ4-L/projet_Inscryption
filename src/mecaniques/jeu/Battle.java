@@ -1,4 +1,4 @@
-package mecaniques.battle;
+package mecaniques.jeu;
 
 import mecaniques.cartes.Carte;
 import affichage.AffichageBattle;
