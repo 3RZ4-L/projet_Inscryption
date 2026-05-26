@@ -86,7 +86,7 @@ package mecaniques.joueurs{
         + sacrifier()
     }
     class Adversaire extends Joueur{
-
+        + <<create>> Adversaire
     }
 }
 package mecaniques.battle{
@@ -134,10 +134,9 @@ AffichageBattle .> Carte : <<use>>
 AffichagePioche .> Joueur : <<use>>
 AffichagePioche .> Carte : <<use>>
 AffichagePioche .> Pioche : <<use>>
-Pioche <-* "-m_pioche\n 0..*" Animal
-Pioche *-> "-m_pioche \n 1" Joueur
+Pioche *-> "-m_pioche\n 0..*" Animal
+Pioche <-* "-m_pioche \n 1" Joueur
 Joueur *-> "-m_cartes\n ..4" Ligne
-Joueur *-> "-m_joueur\n 1" Partie
-Adversaire *-> "-m_adversaire\n 1" Partie
+Joueur <-* "-m_joueur\n 1" Partie
 
 @enduml
