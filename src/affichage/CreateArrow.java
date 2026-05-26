@@ -1,11 +1,11 @@
 package affichage;
 
 public class CreateArrow {
-    private int m_width = 17;
+    private int m_width = 26;
 
     public String arrowUp(){
         String spaces = "";
-        for (int i = 0; i < m_width/2 - 2; i++){
+        for (int i = 0; i < m_width/2; i++){
             spaces += " ";
         }
         return spaces + "/\\" + spaces;

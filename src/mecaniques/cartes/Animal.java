@@ -1,46 +1,33 @@
 package mecaniques.cartes;
 
+import java.util.ArrayList;
+
+import static mecaniques.cartes.Pouvoirs.NULL;
+
 public class Animal extends Carte{
     private int m_attaque;
     private int m_gouttes_sang;
     private int m_os;
     private boolean m_volant;
+    private Pouvoirs m_pouvoir;
 
+    public Animal(String nom, int pdv, int att, int gds, int os, boolean volant, Pouvoirs power) {
+        super(nom, pdv);
+        m_attaque = att;
+        m_gouttes_sang = gds;
+        m_os = os;
+        m_volant = volant;
+        m_pouvoir = power;
+    }
     public Animal(String nom, int pdv, int att, int gds, int os, boolean volant) {
         super(nom, pdv);
         m_attaque = att;
         m_gouttes_sang = gds;
         m_os = os;
         m_volant = volant;
+        m_pouvoir = NULL;
     }
 
-    /**
-     * @param adversaire : animal attaqué
-     * @return si l'adversaire est mort (pv = 0)
-     */
-    /*
-    public Boolean attaque(Animal adversaire){
-        if (adversaire.m_points_de_vie > this.m_attaque) {
-            adversaire.m_points_de_vie -= this.m_attaque;
-            return false;
-        }
-        else{
-            adversaire.m_points_de_vie = 0;
-        }
-        return true;
-    }
-
-    public Boolean attaque(Obstacle obstacle){
-        if (obstacle.m_points_de_vie > this.m_attaque) {
-            obstacle.m_points_de_vie -= this.m_attaque;
-            return false;
-        }
-        else{
-            obstacle.m_points_de_vie = 0;
-        }
-        return true;
-    }
-    */
     public int getAttack(){
         return m_attaque;
     }
@@ -59,5 +46,9 @@ public class Animal extends Carte{
 
     public void doDamage(Carte other){
         other.takeDamage(m_attaque);
+    }
+
+    public String getPouvoir(){
+        return m_pouvoir.getNom();
     }
 }

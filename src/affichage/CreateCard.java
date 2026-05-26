@@ -1,8 +1,9 @@
 package affichage;
 import mecaniques.cartes.Carte;
+import mecaniques.cartes.Pouvoirs;
 
 public class CreateCard {
-    private int m_width = 17;
+    private int m_width = 26;
 
     public String emptyTopBottom(){
         String res = "";
@@ -26,10 +27,10 @@ public class CreateCard {
             String res = "*";
             for(int i = 0; i < m_width-3; i++){
                 switch(i){
-                    case 6:
+                    case 11:
                         res += coord.charAt(0);
                         break;
-                    case 7:
+                    case 12:
                         res += coord.charAt(1);
                         break;
                 }
@@ -97,6 +98,17 @@ public class CreateCard {
             res+=" ";
         }
         res+="|";
+        return res;
+    }
+
+    public String pouvoir(Carte cart){
+        String res = "";
+        if(!cart.getPouvoir().isEmpty()){
+            for(int i = 0; i < m_width - 10 - cart.getPouvoir().length(); i++){
+                res += " ";
+            }
+            res+="|";
+        }
         return res;
     }
 }

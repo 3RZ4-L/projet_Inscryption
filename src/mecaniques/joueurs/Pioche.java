@@ -4,6 +4,8 @@ import mecaniques.cartes.Animal;
 import java.util.Random;
 import java.util.Stack;
 
+import static mecaniques.cartes.Pouvoirs.*;
+
 public class Pioche {
     private Stack m_pioche = new Stack();
 
@@ -17,7 +19,7 @@ public class Pioche {
             int indice = rand.nextInt();
             switch(indice) {
                 case 0:
-                    m_pioche.push(new Animal("Chat", 0, 1, 1, 0, false));
+                    m_pioche.push(new Animal("Chat", 0, 1, 1, 0, false, NOMBREUSES_VIES));
                     break;
                 case 1:
                     m_pioche.push(new Animal("Grizzly", 4, 6, 3, 0, false));
@@ -32,13 +34,13 @@ public class Pioche {
                     m_pioche.push(new Animal("Hermine", 1, 3, 1, 0, false));
                     break;
                 case 5:
-                    m_pioche.push(new Animal("Louveteau", 1, 1, 1, 0, false));
+                    m_pioche.push(new Animal("Louveteau", 1, 1, 1, 0, false, CROISSANCE));
                     break;
                 case 6:
                     m_pioche.push(new Animal("Loup", 3, 2, 2, 0, false));
                     break;
                 case 7:
-                    m_pioche.push(new Animal("Punaise", 1, 2, 0, 2, false));
+                    m_pioche.push(new Animal("Punaise", 1, 2, 0, 2, false, PUANT));
                     break;
                 case 8:
                     m_pioche.push(new Animal("Corbeau", 2, 3, 2, 0, true));

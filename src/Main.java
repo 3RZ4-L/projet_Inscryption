@@ -32,9 +32,9 @@ public class Main
                     aff.affArrowDown(),
                     aff.affArrowDown()
             };
-            aff.afficherLigne(arrowsDown);
+            aff.afficherLigneArrow(arrowsDown);
         }
-        aff.afficherLigne(cartesCoord);
+        aff.afficherLigneCart(cartesCoord);
 
         /*
         String[][] cartesPlayer = {
