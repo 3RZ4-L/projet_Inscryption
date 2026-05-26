@@ -26,4 +26,8 @@ public class Ligne {
         m_cartes[position] = carte;
         return true;
     }
+
+    public Animal[] getCartes(){
+        return m_cartes;
+    }
 }

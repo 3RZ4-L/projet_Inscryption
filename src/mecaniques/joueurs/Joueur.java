@@ -27,6 +27,10 @@ public class Joueur{
         m_main.add(m_pioche.piocher());
     }
 
+    public void ajouterDansPioche(Animal carte){
+        m_pioche.ajouter(carte);
+    }
+
     public void placer(int position,int numCarte){
         boolean estSacrifier = m_ligne.placerCarte(m_main.remove(position), numCarte);
         if (estSacrifier){
@@ -49,5 +53,9 @@ public class Joueur{
 
     public ArrayList<Animal> getMain(){
         return m_main;
+    }
+
+    public Ligne getLigne(){
+        return m_ligne;
     }
  }

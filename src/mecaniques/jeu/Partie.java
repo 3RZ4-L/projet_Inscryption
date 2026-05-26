@@ -1,23 +1,31 @@
 package mecaniques.jeu;
 
-import commande.Commande;
+import GestionEntrees.Choix;
+import GestionEntrees.Commande;
 import mecaniques.joueurs.*;
 
 public class Partie {
-    private Battle m_battle;
+    private Bataille m_bataille;
     private Joueur m_joueur ;
     private Adversaire m_adversaire;
     private int m_score;
 
     Partie(){
-        m_battle = new Battle();
         m_joueur = new Joueur();
         m_adversaire = new Adversaire();
-        m_score = 0;
+        m_bataille = new Bataille(m_joueur.getLigne(), m_adversaire.getLigne());
     }
 
-    public void demarrer(){
-
+    public int demarrer(){
+        for (int i = 0; i < 3; i++){
+            if (i == 2){
+                Choix choix = new Choix(new Pioche(2));
+                m_joueur.ajouterDansPioche(choix.getChoix());
+            }
+            tourAdversaire();
+            tourJoueur();
+        }
+        return m_score;
     }
 
     public void tourJoueur(){
@@ -25,20 +33,15 @@ public class Partie {
         Commande commande = new Commande();
         int nbPioche = 0;
         while (jouer){
-            while(!commande.estValide(m_joueur.getNbCartes())) {
+            while(!commande.estValide(m_joueur.getNbCartes(), nbPioche)) {
                 commande = new Commande();
             }
-            if (commande.getCommande() == "fin"){
+            if (commande.getCommande().equals("fin")){
                 jouer = false;
             }
-            else if (commande.getCommande() == "piocher") {
-                if (nbPioche == 1){
-                    System.out.println("Vous ne pouvez plus piocher");
-                }
-                else {
-                    m_joueur.piocher();
-                    nbPioche++;
-                }
+            else if (commande.getCommande().equals("piocher")) {
+                m_joueur.piocher();
+                nbPioche++;
             }
             else{
                 m_joueur.placer(commande.getNumeroCarte(), commande.getPosition());
