@@ -1,7 +1,7 @@
 package affichage;
 
 public class CreateArrow {
-    private int m_width = 17;
+    private int m_width = 26;
 
     public String arrowUp(){
         String spaces = "";

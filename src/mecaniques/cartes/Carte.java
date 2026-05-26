@@ -1,5 +1,7 @@
 package mecaniques.cartes;
 
+import java.util.ArrayList;
+
 public class Carte {
     String m_nom;
     int m_points_de_vie;
@@ -37,5 +39,17 @@ public class Carte {
 
     public boolean estVolant(){
         return false;
+    }
+
+    public boolean havePouvoirs(Pouvoirs pouv){
+        return false;
+    }
+
+    public ArrayList<Pouvoirs> getPouvoirs(){
+        return new ArrayList<Pouvoirs>();
+    }
+
+    public String getNomsPouvoirs(){
+        return "";
     }
 }

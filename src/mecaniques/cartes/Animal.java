@@ -1,10 +1,13 @@
 package mecaniques.cartes;
 
+import java.util.ArrayList;
+
 public class Animal extends Carte{
     private int m_attaque;
     private int m_gouttes_sang;
     private int m_os;
     private boolean m_volant;
+    private ArrayList<Pouvoirs> m_pouvoirs;
 
     public Animal(String nom, int pdv, int att, int gds, int os, boolean volant) {
         super(nom, pdv);
@@ -12,35 +15,9 @@ public class Animal extends Carte{
         m_gouttes_sang = gds;
         m_os = os;
         m_volant = volant;
+        m_pouvoirs = new ArrayList<>();
     }
 
-    /**
-     * @param adversaire : animal attaqué
-     * @return si l'adversaire est mort (pv = 0)
-     */
-    /*
-    public Boolean attaque(Animal adversaire){
-        if (adversaire.m_points_de_vie > this.m_attaque) {
-            adversaire.m_points_de_vie -= this.m_attaque;
-            return false;
-        }
-        else{
-            adversaire.m_points_de_vie = 0;
-        }
-        return true;
-    }
-
-    public Boolean attaque(Obstacle obstacle){
-        if (obstacle.m_points_de_vie > this.m_attaque) {
-            obstacle.m_points_de_vie -= this.m_attaque;
-            return false;
-        }
-        else{
-            obstacle.m_points_de_vie = 0;
-        }
-        return true;
-    }
-    */
     public int getAttack(){
         return m_attaque;
     }
@@ -59,5 +36,32 @@ public class Animal extends Carte{
 
     public void doDamage(Carte other){
         other.takeDamage(m_attaque);
+    }
+
+    public ArrayList<Pouvoirs> getPouvoirs(){
+        return m_pouvoirs;
+    }
+
+    public boolean havePouvoir(Pouvoirs pouv){
+        return m_pouvoirs.contains(pouv);
+    }
+
+    public boolean addPouvoir(Pouvoirs pouv){
+        if(!havePouvoir(pouv)){
+            m_pouvoirs.add(pouv);
+            return true;
+        }
+        return false;
+    }
+
+    public String getNomsPouvoirs(){
+        String res = "";
+        for(int i = 0; i < m_pouvoirs.size(); i++){
+            res += m_pouvoirs.get(i).getNom();
+            if(i < m_pouvoirs.size() - 1){
+                res += ", ";
+            }
+        }
+        return res;
     }
 }
