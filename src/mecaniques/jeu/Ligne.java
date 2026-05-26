@@ -1,32 +1,32 @@
 package mecaniques.jeu;
 
-import mecaniques.cartes.Carte;
+import mecaniques.cartes.Animal;
 import mecaniques.joueurs.Joueur;
 
 public class Ligne {
     private Joueur m_joueur;
-    private Carte[] m_cartes;
+    private Animal[] m_animals;
 
     Ligne(Joueur joueur){
         m_joueur = joueur;
-        m_cartes = new Carte[4];
+        m_animals = new Animal[4];
     }
 
     public boolean estCaseVide(int numCarte){
-        return (m_cartes[numCarte] == null);
+        return (m_animals[numCarte] == null);
     }
 
-    public boolean placerCarte(int numCarte, Carte carte){
+    public boolean placerCarte(int numCarte, Animal carte){
         if(estCaseVide(numCarte)){
-            m_cartes[numCarte] = carte;
+            m_animals[numCarte] = carte;
             return true;
         }
         return false;
     }
     public boolean retirerCarte(int numCarte){
         if(estCaseVide(numCarte)) {
-            m_joueur.reprendre(m_cartes[numCarte]);
-            m_cartes[numCarte] = null;
+            m_joueur.reprendre(m_animals[numCarte]);
+            m_animals[numCarte] = null;
             return true;
         }
         return false;
@@ -34,7 +34,7 @@ public class Ligne {
 
     public boolean supprimerCarte(int numCarte){
         if(estCaseVide(numCarte)){
-            m_cartes[numCarte] = null;
+            m_animals[numCarte] = null;
             return true;
         }
         return false;
@@ -43,7 +43,7 @@ public class Ligne {
     public boolean sacrifierCarte(int numCarte){
         if(estCaseVide(numCarte)){
             m_joueur.sacrifier();
-            m_cartes[numCarte] = null;
+            m_animals[numCarte] = null;
             return true;
         }
 
