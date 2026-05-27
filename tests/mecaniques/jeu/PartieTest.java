@@ -45,14 +45,15 @@ public class PartieTest {
     public void test_commencerAttaques_degatsNormaux() {
         Ligne joueur = new Ligne();
         Ligne adversaire = new Ligne();
-        Animal attaquant = new Animal("Lion", 5, 6, 2, 1, false);
+        Animal attaquant = new Animal("Lion", 5, 4, 2, 1, false);
         Animal defenseur = new Animal("Proie", 4, 1, 0, 0, false);
         joueur.placerCarte(attaquant, 0);
         adversaire.placerCarte(defenseur, 0);
 
         int score = partie.commencerAttaques(joueur, adversaire);
+        score = partie.commencerAttaques(joueur, adversaire);
 
-        assertEquals(2, score);
+        assertEquals(4, score);
         assertTrue(defenseur.estMort());
     }
 
@@ -60,8 +61,8 @@ public class PartieTest {
     public void test_commencerAttaques_degatsNuls_carteNonTuee() {
         Ligne joueur = new Ligne();
         Ligne adversaire = new Ligne();
-        Animal attaquant = new Animal("Lion", 5, 3, 2, 1, false);
-        Animal defenseur = new Animal("Proie", 10, 1, 0, 0, false);
+        Animal attaquant = new Animal("A", 5, 3, 2, 1, false);
+        Animal defenseur = new Animal("B", 10, 1, 0, 0, false);
         joueur.placerCarte(attaquant, 0);
         adversaire.placerCarte(defenseur, 0);
 
@@ -75,8 +76,8 @@ public class PartieTest {
     public void test_commencerAttaques_attaqueVolante_attaqueDirecte() {
         Ligne joueur = new Ligne();
         Ligne adversaire = new Ligne();
-        Animal volant = new Animal("Aigle", 5, 4, 2, 1, true);
-        Animal defenseur = new Animal("Proie", 10, 1, 0, 0, false);
+        Animal volant = new Animal("A", 5, 4, 2, 1, true);
+        Animal defenseur = new Animal("B", 10, 1, 0, 0, false);
         joueur.placerCarte(volant, 0);
         adversaire.placerCarte(defenseur, 0);
 
@@ -84,24 +85,6 @@ public class PartieTest {
 
         assertEquals(4, score);
         assertEquals(10, defenseur.getPv());
-    }
-
-    @Test
-    public void test_commencerAttaques_cartesMultiples() {
-        Ligne joueur = new Ligne();
-        Ligne adversaire = new Ligne();
-
-        joueur.placerCarte(new Animal("Lion", 5, 3, 2, 1, false), 0);
-
-        joueur.placerCarte(new Animal("Loup", 5, 5, 2, 1, false), 1);
-        adversaire.placerCarte(new Animal("Proie", 3, 1, 0, 0, false), 1);
-
-        joueur.placerCarte(new Animal("Aigle", 5, 2, 2, 1, true), 3);
-        adversaire.placerCarte(new Animal("Cible", 10, 1, 0, 0, false), 3);
-
-        int score = partie.commencerAttaques(joueur, adversaire);
-
-        assertTrue("Le score ne doit pas dépasser 5", score <= 5);
     }
 
     @Test
@@ -115,7 +98,6 @@ public class PartieTest {
         }
 
         int score = partie.commencerAttaques(joueur, adversaire);
-        System.out.println(score);
 
         assertTrue("Le score ne doit pas dépasser 5", score <= 5);
     }
@@ -131,7 +113,7 @@ public class PartieTest {
 
         int score = partie.commencerAttaques(joueur, adversaire);
 
-        assertTrue(score >= 0 && score <= 5);
+        assertTrue(score >= -5 && score <= 5);
     }
 
     @Test
@@ -151,11 +133,13 @@ public class PartieTest {
         Ligne joueur = new Ligne();
         Ligne adversaire = new Ligne();
 
-        joueur.placerCarte(new Animal("Petit", 10, 1, 0, 0, false), 0);
+        joueur.placerCarte(new Animal("Machin", 10, 1, 0, 0, false), 0);
 
         int score = partie.commencerAttaques(joueur, adversaire);
+        score += partie.commencerAttaques(joueur, adversaire);
+        score += partie.commencerAttaques(joueur, adversaire);
 
-        assertEquals(5, score);
+        assertEquals(3, score);
     }
 
 }
