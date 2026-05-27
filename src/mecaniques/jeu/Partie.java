@@ -61,7 +61,7 @@ public class Partie {
 
     public int commencerAttaques(Ligne joueur, Ligne adversaire){
         int score = 0;
-        while (score < 5) {
+        while (score < 4 && score > -4) {
             for (int i = 0; i < 4; i++) {
                 if (!joueur.estCaseVide(i) && !adversaire.estCaseVide(i)) {
                     if (joueur.getCartes()[i].getAttack() > 0) {
@@ -75,6 +75,7 @@ public class Partie {
                     joueur.getCartes()[i].attaqueDirect();
                 }
             }
+            return score;
         }
         return score;
     }
