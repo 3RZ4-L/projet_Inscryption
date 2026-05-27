@@ -1,4 +1,4 @@
-package GestionEntrees;
+package gestionEntrees;
 
 import mecaniques.cartes.Animal;
 import mecaniques.joueurs.Pioche;

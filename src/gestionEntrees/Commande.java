@@ -1,4 +1,4 @@
-package GestionEntrees;
+package gestionEntrees;
 
 import java.util.Scanner;
 

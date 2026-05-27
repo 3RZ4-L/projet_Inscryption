@@ -1,12 +1,10 @@
 package mecaniques.jeu;
 
-import GestionEntrees.Choix;
-import GestionEntrees.Commande;
-import mecaniques.cartes.Carte;
+import gestionEntrees.Choix;
+import gestionEntrees.Commande;
 import mecaniques.joueurs.*;
 
 public class Partie {
-    private Bataille m_bataille;
     private Joueur m_joueur ;
     private Adversaire m_adversaire;
     private int m_score;
@@ -14,7 +12,6 @@ public class Partie {
     Partie(){
         m_joueur = new Joueur();
         m_adversaire = new Adversaire();
-        m_bataille = new Bataille();
     }
 
     public int demarrer(){
@@ -25,9 +22,9 @@ public class Partie {
                     m_joueur.ajouterDansPioche(choix.getChoix());
                 }
                 tourAdversaire();
-                m_score += m_bataille.commencerAttaque(m_joueur.getLigne(), m_adversaire.getLigne());
+                m_score += commencerAttaques(m_joueur.getLigne(), m_adversaire.getLigne());
                 tourJoueur();
-                m_score -= m_bataille.commencerAttaque(m_adversaire.getLigne(), m_joueur.getLigne());
+                m_score -= commencerAttaques(m_adversaire.getLigne(), m_joueur.getLigne());
             }
         }
         return m_score;
@@ -60,5 +57,25 @@ public class Partie {
 
     public int getScore() {
         return m_score;
+    }
+
+    public int commencerAttaques(Ligne joueur, Ligne adversaire){
+        int score = 0;
+        while (score < 5) {
+            for (int i = 0; i < 4; i++) {
+                if (!joueur.estCaseVide(i) && !adversaire.estCaseVide(i)) {
+                    if (joueur.getCartes()[i].getAttack() > 0) {
+                        score += joueur.getCartes()[i].doDamage(adversaire.getCartes()[i]);
+                        if (adversaire.getCartes()[i].estMort()){
+                            adversaire.getCartes()[i] = null;
+                        }
+                    }
+                }
+                else if (!joueur.estCaseVide(i)) {
+                    joueur.getCartes()[i].attaqueDirect();
+                }
+            }
+        }
+        return score;
     }
 }
