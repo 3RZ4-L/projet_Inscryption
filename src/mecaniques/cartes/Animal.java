@@ -1,7 +1,5 @@
 package mecaniques.cartes;
 
-import java.util.ArrayList;
-
 import static mecaniques.cartes.Pouvoirs.NULL;
 
 public class Animal extends Carte{
@@ -48,7 +46,12 @@ public class Animal extends Carte{
         other.takeDamage(m_attaque);
     }
 
-    public String getPouvoir(){
+    public String getNamePouvoir(){
         return m_pouvoir.getNom();
     }
+
+    public Pouvoirs getPouvoir(){
+        return m_pouvoir;
+    }
+
 }

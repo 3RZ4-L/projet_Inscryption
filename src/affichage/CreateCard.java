@@ -101,7 +101,7 @@ public class CreateCard {
     }
 
     public String pouvoir(Carte cart){
-        String res = cart.getPouvoir();
+        String res = cart.getNamePouvoir();
         if(!res.isEmpty()){
             for(int i = 0; i < m_width - 10 - res.length(); i++){
                 res += " ";

@@ -54,7 +54,7 @@ public class AffichageGrid {
     public String[] animCard(Carte cart){
         boolean volant = cart.estVolant();
         int dmg = cart.getAttack();
-        String nomPouv = cart.getPouvoir();
+        String nomPouv = cart.getNamePouvoir();
         boolean have = !nomPouv.isEmpty();
 
         String spaces = "         |";

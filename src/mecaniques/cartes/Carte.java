@@ -1,6 +1,6 @@
 package mecaniques.cartes;
 
-import java.util.ArrayList;
+import static mecaniques.cartes.Pouvoirs.NULL;
 
 public class Carte {
     String m_nom;
@@ -41,7 +41,11 @@ public class Carte {
         return false;
     }
 
-    public String getPouvoir(){
+    public String getNamePouvoir(){
         return "";
+    }
+
+    public Pouvoirs getPouvoir(){
+        return NULL;
     }
 }
