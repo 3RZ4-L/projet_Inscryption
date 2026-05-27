@@ -23,14 +23,12 @@ public class Carte {
         return(getPv() <= 0);
     }
 
-    public void takeDamage(int dmg){
-        m_points_de_vie -= dmg;
+    public int doDamage(Carte other){
+        return 0;
     }
 
-
-
-    public void doDamage(Carte other){
-        // Vide car par défaut une carte n'attaque pas.
+    public int attaqueDirect(){
+        return 0;
     }
 
     public int getAttack(){

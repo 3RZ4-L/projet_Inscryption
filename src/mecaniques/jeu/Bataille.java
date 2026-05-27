@@ -17,7 +17,7 @@ public class Bataille {
                     }
                 }
                 else if (!joueur.estCaseVide(i)) {
-                    joueur.getCartes()[i].attaqueDirect(joueur.getCartes()[i]);
+                    joueur.getCartes()[i].attaqueDirect();
                 }
             }
         }
