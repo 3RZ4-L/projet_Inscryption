@@ -66,4 +66,7 @@ public class Animal extends Carte{
         return m_pouvoir;
     }
 
+    public boolean estCreature(){
+        return true;
+    }
 }

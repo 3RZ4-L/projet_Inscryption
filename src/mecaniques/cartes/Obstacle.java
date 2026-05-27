@@ -5,5 +5,8 @@ public class Obstacle extends Carte{
         super(nom, pdv);
     }
 
+    public boolean estCreature(){
+        return false;
+    }
 }
 
