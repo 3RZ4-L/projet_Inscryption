@@ -13,30 +13,14 @@ public class Bataille {
             for (int i = 0; i < 4; i++) {
                 if (!joueur.estCaseVide(i) && !adversaire.estCaseVide(i)) {
                     if (joueur.getCartes()[i].getAttack() > 0) {
-                        score += attaquer(joueur.getCartes()[i], adversaire.getCartes()[i]);
+                        score += joueur.getCartes()[i].doDamage(adversaire.getCartes()[i]);
                     }
                 }
                 else if (!joueur.estCaseVide(i)) {
-                    attaqueDirect(joueur.getCartes()[i]);
+                    joueur.getCartes()[i].attaqueDirect(joueur.getCartes()[i]);
                 }
             }
         }
         return score;
-    }
-
-    public int attaquer(Carte attaquante, Carte cible){
-        if (attaquante.estVolant()){
-            return attaqueDirect(attaquante);
-        }
-        int score = attaquante.getAttack() - cible.getPv();
-        attaquante.doDamage(cible);
-        if (score > 0){
-            return score;
-        }
-        return 0;
-    }
-
-    public int attaqueDirect(Carte attaquante){
-        return attaquante.getAttack();
     }
 }
