@@ -1,0 +1,164 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+skinparam classFontStyle Bold
+skinparam style strictuml
+hide empty members
+
+package gestionEntrees {
+    class Choix{
+        - <<create>>Choix(pioche : Pioche)
+        - estValide(entree : String) : Boolean
+        - getChoix() : Animal
+    }
+    class Commande{
+        - m_commande : String
+        - m_position : String
+        - m_numeroCarte : String
+        + <<create>> Commande()
+        + estValide(nbCarteMax : Integer, nbpioche : Integer) : Boolean
+        + getCommande() : String
+        + getPosition() : Integer
+        + getNumeroCarte() : Integer
+    }
+}
+
+package mecaniques.cartes {
+    class Carte {
+        - m_nom : String
+        - m_pv : Integer
+        + <<create>> Carte(nom : String, pdv : Integer)
+        + getPv() : Integer
+        + toString() : String
+    }
+
+    class Animal extends Carte{
+        - m_attaque : Integer
+        - m_gouttes_sang : Integer
+        - m_os Integer
+        - m_volant : Boolean
+        + <<create>> Animal(nom : String, pdv : Integer, att : Integer, gds : Integer, os : Integer)
+        + attaque(adversaire : Animal) : Boolean
+        + attaque(obstacle : Obstacle) : Boolean
+    }
+
+    class Obstacle extends Carte{
+        + Obstacle(nom : String, pdv : Integer)
+    }
+
+    enum Pouvoirs <<enumerate>>{
+        - NULL
+        - NOMBREUSES_VIES
+        - CROISSANCE
+        - PUANT
+        - COUREUR
+        - CONTACT_MORTEL
+        - PIQUES_POINTUES
+        - m_nom : String
+        + <<create>>Pouvoirs(nm : String)
+        + getNom() : String
+    }
+}
+
+package affichage {
+    class AffichageGrid {
+        + afficherLigne(cartes : String[][])
+        + emptyCard() : String[]
+        + coordCard() : String[]
+        + animCard() : String[]
+        + affArrowUp() : String[]
+        + affArrowDown() : String[]
+    }
+    class CreateArrow{
+        - m_width Integer
+        + arrowUp() : String
+        + arrowDown() : String
+        + arrowBody() : String
+    }
+    class CreateCard{
+        - m_width Integer
+        + emptyTopBottom() : String
+        + emptyMiddle() : String
+        + corrdinate(coord : String) : String
+        + animTopBottom() : String
+        + separate() : String
+        + animMiddle() : String
+        + animName(nom : String) : String
+        + animHp(hp : String) : String
+        + animDMG(dmg : String) : String
+    }
+    class AffichageBattle{
+        + attackDirect(cart : Carte, dmg : Integer)
+        + attackCart(cart: Carte, other: Carte)
+        + died(cart: Carte)
+        + score(score: Integer)
+    }
+    class AffichagePioche{
+        + afficherMain(j : Joueur)
+        + afficherInfoCart(num : Integer, carte : Carte)
+        + afficherPioche(p : Pioche)
+        + afficherInterfacePioche(p : Pioche, j : Joueur)
+    }
+}
+package mecaniques.joueurs{
+    class Pioche {
+        + <<create>> Pioche()
+        + piocher() : Animal
+        + melanger(n : Integer)
+    }
+
+    class Joueur{
+        - m_os : Integer
+        - m_goutteSang : Integer
+        + <<create>> Joueur()
+        + piocher()
+        + placer(numCarte : Integer, position : Integer)
+        + sacrifier()
+        + ajouterDansPioche(carte : Animal)
+        + getNbCartes() : Integer
+        + getOs() : Integer
+        + getGoutteSang() : Integer
+        + getMain() : Animal[*]
+        + getLigne() : Ligne
+    }
+    class Adversaire{
+        + <<create>> Adversaire
+    }
+}
+package mecaniques.jeu{
+    class Ligne{
+        + <<create>>Ligne()
+        + estCaseVide(numCarte : Integer) : Boolean
+        + placerCarte(numCarte : Integer) : Boolean
+        + getCartes() : Carte[4]
+    }
+    class Partie{
+        - m_score Integer
+        + <<create>> Partie()
+        + demarer()
+        + tourJoueur()
+        + tourAdversaire()
+        + commencerAttaques(attacker : Ligne, defenser : Ligne) : Integer
+        + getScore() : Integer
+    }
+}
+
+class Main {
+    +static void main(String args)
+}
+
+AffichageGrid ..> CreateArrow : <<uses>>
+AffichageGrid ..> CreateCard : <<uses>>
+AffichageGrid ..> AffichagePioche : <<uses>>
+AffichageGrid ..> AffichageBattle : <<uses>>
+AffichageBattle .up.> Joueur : <<use>>
+AffichagePioche .up.> Joueur : <<use>>
+Pioche *-up> "-m_pioche\n 0..*" Animal
+Pioche <-* "-m_pioche \n 1" Joueur
+Joueur *-> "-m_cartes\n ..4" Ligne
+Joueur <-* "-m_joueur\n 1" Partie
+Choix *-> "-m_choix\n 1" Animal
+Partie .down.> Commande : <<uses>>
+Partie .down.> Choix : <<uses>>
+
+@enduml
