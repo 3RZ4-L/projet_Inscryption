@@ -2,6 +2,7 @@ package mecaniques.jeu;
 
 import gestionEntrees.Choix;
 import gestionEntrees.Commande;
+import mecaniques.cartes.Carte;
 import mecaniques.joueurs.*;
 
 public class Partie {
@@ -59,9 +60,28 @@ public class Partie {
         return m_score;
     }
 
-    public int commencerAttaques(Ligne joueur, Ligne adversaire){
+    public int commencerAttaques(Ligne attacker, Ligne defenser){
         int score = 0;
-        while (score < 5) {
+        for(int i = 0; i < 4; i++){
+            Carte carteAtt = attacker.getCartes()[i];
+            if(carteAtt == null){
+                continue;
+            }
+
+            Carte carteDef = defenser.getCartes()[i];
+            if(carteDef != null && !carteAtt.estVolant()){
+                score += carteAtt.doDamage(carteDef);
+                if(carteDef.estMort()){
+                    defenser.getCartes()[i] = null;
+                }
+            }
+            else{
+                score += carteAtt.attaqueDirect();
+            }
+        }
+
+        /*
+        while (score < 4 && score > -4 ) {
             for (int i = 0; i < 4; i++) {
                 if (!joueur.estCaseVide(i) && !adversaire.estCaseVide(i)) {
                     if (joueur.getCartes()[i].getAttack() > 0) {
@@ -75,7 +95,8 @@ public class Partie {
                     joueur.getCartes()[i].attaqueDirect();
                 }
             }
-        }
+            return score;
+        }*/
         return score;
     }
 }
