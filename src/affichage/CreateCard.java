@@ -1,6 +1,5 @@
 package affichage;
 import mecaniques.cartes.Carte;
-import mecaniques.cartes.Pouvoirs;
 
 public class CreateCard {
     private int m_width = 26;
@@ -102,9 +101,9 @@ public class CreateCard {
     }
 
     public String pouvoir(Carte cart){
-        String res = "";
-        if(!cart.getPouvoir().isEmpty()){
-            for(int i = 0; i < m_width - 10 - cart.getPouvoir().length(); i++){
+        String res = cart.getPouvoir();
+        if(!res.isEmpty()){
+            for(int i = 0; i < m_width - 10 - res.length(); i++){
                 res += " ";
             }
             res+="|";

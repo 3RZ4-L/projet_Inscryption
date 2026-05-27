@@ -1,7 +1,5 @@
 import affichage.AffichageGrid;
 
-import java.util.Scanner;
-
 public class Main
 {
     public static void main(String[] args)
@@ -11,40 +9,27 @@ public class Main
                 aff.coordCard("O1"),
                 aff.coordCard("O2"),
                 aff.coordCard("O3"),
-                aff.coordCard("04"),
+                aff.coordCard("O4"),
                 aff.coordCard("O5")
         };
-
-        int whosTurn = 0;
-        if(whosTurn == 0) {
-            /*String[][] cartesComp = {
-                    aff.emptyCard(),
-                    aff.animCard("Bob2", "223", "412", true),
-                    aff.emptyCard(),
-                    aff.animCard("Bobolo", "20", "10", false),
-                    aff.animCard("Bob", "2", "4", true),
-            };
-            aff.afficherLigne(cartesComp);*/
-            String[][] arrowsDown = {
-                    aff.affArrowDown(),
-                    aff.affArrowDown(),
-                    aff.affArrowDown(),
-                    aff.affArrowDown(),
-                    aff.affArrowDown()
-            };
-            aff.afficherLigneArrow(arrowsDown);
-        }
-        aff.afficherLigneCart(cartesCoord);
-
-        /*
-        String[][] cartesPlayer = {
-                aff.emptyCard(),
-                aff.animCard("Bob3", "223", "412", true),
-                aff.emptyCard(),
-                aff.animCard("Bobolo2", "20", "10", false),
-                aff.animCard("Bob4", "2", "4", true),
+        String[][] arrowsDown = {
+                aff.affArrowDown(),
+                aff.affArrowDown(),
+                aff.affArrowDown(),
+                aff.affArrowDown(),
+                aff.affArrowDown()
         };
-        aff.afficherLigne(cartesPlayer);
-         */
+
+        String[][] arrowsUp = {
+                aff.affArrowUp(),
+                aff.affArrowUp(),
+                aff.affArrowUp(),
+                aff.affArrowUp(),
+                aff.affArrowUp()
+        };
+        aff.afficherLigneArrow(arrowsDown);
+        aff.afficherLigneCart(cartesCoord);
+        aff.afficherLigneArrow(arrowsUp);
+
     }
 }

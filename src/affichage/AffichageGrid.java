@@ -1,6 +1,5 @@
 package affichage;
 import mecaniques.cartes.Carte;
-import mecaniques.cartes.Pouvoirs;
 
 public class AffichageGrid {
     private CreateArrow m_createArrow = new CreateArrow();
