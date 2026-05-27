@@ -42,8 +42,20 @@ public class Animal extends Carte{
         return m_volant;
     }
 
-    public void doDamage(Carte other){
-        other.takeDamage(m_attaque);
+    public int doDamage(Carte other){
+        if (this.estVolant()){
+            return attaqueDirect();
+        }
+        int score = this.getAttack() - other.getPv();
+        other.m_points_de_vie -= this.getAttack();
+        if (score > 0){
+            return score;
+        }
+        return 0;
+    }
+
+    public int attaqueDirect(){
+        return this.getAttack();
     }
 
     public String getNamePouvoir(){
