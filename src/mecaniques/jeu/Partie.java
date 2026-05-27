@@ -2,6 +2,7 @@ package mecaniques.jeu;
 
 import GestionEntrees.Choix;
 import GestionEntrees.Commande;
+import mecaniques.cartes.Carte;
 import mecaniques.joueurs.*;
 
 public class Partie {
@@ -13,17 +14,21 @@ public class Partie {
     Partie(){
         m_joueur = new Joueur();
         m_adversaire = new Adversaire();
-        m_bataille = new Bataille(m_joueur.getLigne(), m_adversaire.getLigne());
+        m_bataille = new Bataille();
     }
 
     public int demarrer(){
         for (int i = 0; i < 3; i++){
-            if (i == 2){
-                Choix choix = new Choix(new Pioche(2));
-                m_joueur.ajouterDansPioche(choix.getChoix());
+            while (m_score < 5 && m_score > -5) {
+                if (i == 2) {
+                    Choix choix = new Choix(new Pioche(2));
+                    m_joueur.ajouterDansPioche(choix.getChoix());
+                }
+                tourAdversaire();
+                m_score += m_bataille.commencerAttaque(m_joueur.getLigne(), m_adversaire.getLigne());
+                tourJoueur();
+                m_score -= m_bataille.commencerAttaque(m_adversaire.getLigne(), m_joueur.getLigne());
             }
-            tourAdversaire();
-            tourJoueur();
         }
         return m_score;
     }
@@ -51,10 +56,6 @@ public class Partie {
 
     public void tourAdversaire() {
 
-    }
-
-    public boolean verifierFinPartie() {
-        return true;
     }
 
     public int getScore() {

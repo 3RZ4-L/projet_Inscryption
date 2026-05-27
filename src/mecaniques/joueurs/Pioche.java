@@ -7,7 +7,7 @@ import java.util.Stack;
 import static mecaniques.cartes.Pouvoirs.*;
 
 public class Pioche {
-    private Stack m_pioche = new Stack();
+    private Stack<Animal> m_pioche = new Stack();
 
     public Pioche(int n){
         melanger(n);
@@ -16,7 +16,7 @@ public class Pioche {
     public void melanger(int n){
         for (int i = 0; i < n; i++){
             Random rand = new Random();
-            int indice = rand.nextInt();
+            int indice = rand.nextInt(10);
             switch(indice) {
                 case 0:
                     m_pioche.push(new Animal("Chat", 0, 1, 1, 0, false, NOMBREUSES_VIES));
@@ -53,7 +53,7 @@ public class Pioche {
     }
 
     public Animal piocher(){
-        return (Animal)m_pioche.pop();
+        return m_pioche.pop();
     }
 
     public void ajouter(Animal carte){

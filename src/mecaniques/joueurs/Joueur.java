@@ -31,8 +31,9 @@ public class Joueur{
         m_pioche.ajouter(carte);
     }
 
-    public void placer(int position,int numCarte){
-        boolean estSacrifier = m_ligne.placerCarte(m_main.remove(position), numCarte);
+    public void placer(int numCarte, int position){
+        Animal carte = m_main.remove(numCarte - 1);
+        boolean estSacrifier = m_ligne.placerCarte(carte, position);
         if (estSacrifier){
             m_os++;
             m_goutteSang++;
