@@ -1,7 +1,6 @@
 package mecaniques.joueurs;
 
-public class Adversaire extends Joueur{
+public class Adversaire{
     public Adversaire(){
-        super();
     }
 }

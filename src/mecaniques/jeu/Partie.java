@@ -7,12 +7,12 @@ import mecaniques.joueurs.*;
 
 public class Partie {
     private Joueur m_joueur ;
-    private Adversaire m_adversaire;
+    private Joueur m_adversaire;
     private int m_score;
 
     Partie(){
         m_joueur = new Joueur();
-        m_adversaire = new Adversaire();
+        m_adversaire = new Joueur();
     }
 
     public int demarrer(){
@@ -53,7 +53,7 @@ public class Partie {
     }
 
     public void tourAdversaire() {
-
+        tourJoueur();
     }
 
     public int getScore() {
@@ -63,40 +63,22 @@ public class Partie {
     public int commencerAttaques(Ligne attacker, Ligne defenser){
         int score = 0;
         for(int i = 0; i < 4; i++){
-            Carte carteAtt = attacker.getCartes()[i];
-            if(carteAtt == null){
+            Carte att = attacker.getCartes()[i];
+            if(att == null){
                 continue;
             }
-
-            Carte carteDef = defenser.getCartes()[i];
-            if(carteDef != null && !carteAtt.estVolant()){
-                score += carteAtt.doDamage(carteDef);
-                if(carteDef.estMort()){
+            Carte def = defenser.getCartes()[i];
+            if(def != null && !att.estVolant()){
+                score += att.doDamage(def);
+                if(def.estMort()){
                     defenser.getCartes()[i] = null;
                 }
             }
             else{
-                score += carteAtt.attaqueDirect();
+                score += att.attaqueDirect();
             }
         }
-
-        /*
-        while (score < 4 && score > -4 ) {
-            for (int i = 0; i < 4; i++) {
-                if (!joueur.estCaseVide(i) && !adversaire.estCaseVide(i)) {
-                    if (joueur.getCartes()[i].getAttack() > 0) {
-                        score += joueur.getCartes()[i].doDamage(adversaire.getCartes()[i]);
-                        if (adversaire.getCartes()[i].estMort()){
-                            adversaire.getCartes()[i] = null;
-                        }
-                    }
-                }
-                else if (!joueur.estCaseVide(i)) {
-                    joueur.getCartes()[i].attaqueDirect();
-                }
-            }
-            return score;
-        }*/
+        if (score > 5) score = 5;
         return score;
     }
 }

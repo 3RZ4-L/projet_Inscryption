@@ -46,11 +46,10 @@ public class Animal extends Carte{
         if (this.estVolant()){
             return attaqueDirect();
         }
-        int score = this.getAttack() - other.getPv();
-        other.m_points_de_vie -= this.getAttack();
-        if (score > 0){
-            return score;
+        if (other == null || other.estMort()){
+            return attaqueDirect();
         }
+        other.m_points_de_vie -= this.getAttack();
         return 0;
     }
 
