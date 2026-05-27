@@ -19,34 +19,34 @@ public class Pioche {
             int indice = rand.nextInt(10);
             switch(indice) {
                 case 0:
-                    m_pioche.push(new Animal("Chat", 0, 1, 1, 0, false, NOMBREUSES_VIES));
+                    m_pioche.push(new Animal("Chat", 1, 0, 1, 0, false, NOMBREUSES_VIES));
                     break;
                 case 1:
-                    m_pioche.push(new Animal("Grizzly", 4, 6, 3, 0, false));
+                    m_pioche.push(new Animal("Grizzly", 6, 4, 3, 0, false));
                     break;
                 case 2:
-                    m_pioche.push(new Animal("Coyote", 2, 1, 0, 4, false));
+                    m_pioche.push(new Animal("Coyote", 1, 2, 0, 4, false));
                     break;
                 case 3:
-                    m_pioche.push(new Animal("Moineau", 1, 2, 1, 0, true));
+                    m_pioche.push(new Animal("Moineau", 2, 1, 1, 0, true));
                     break;
                 case 4:
-                    m_pioche.push(new Animal("Hermine", 1, 3, 1, 0, false));
+                    m_pioche.push(new Animal("Hermine", 3, 1, 1, 0, false));
                     break;
                 case 5:
                     m_pioche.push(new Animal("Louveteau", 1, 1, 1, 0, false, CROISSANCE));
                     break;
                 case 6:
-                    m_pioche.push(new Animal("Loup", 3, 2, 2, 0, false));
+                    m_pioche.push(new Animal("Loup", 2, 3, 2, 0, false));
                     break;
                 case 7:
-                    m_pioche.push(new Animal("Punaise", 1, 2, 0, 2, false, PUANT));
+                    m_pioche.push(new Animal("Punaise", 2, 1, 0, 2, false, PUANT));
                     break;
                 case 8:
-                    m_pioche.push(new Animal("Corbeau", 2, 3, 2, 0, true));
+                    m_pioche.push(new Animal("Corbeau", 3, 2, 2, 0, true));
                     break;
                 default:
-                    m_pioche.push(new Animal("Ecureuil", 0, 1, 0, 0, false));
+                    m_pioche.push(new Animal("Ecureuil", 1, 0, 0, 0, false));
                     break;
             }
         }
