@@ -1,9 +1,10 @@
 package mecaniques.jeu;
 
 import mecaniques.cartes.Animal;
+import mecaniques.cartes.Carte;
 
 public class Ligne {
-    private Animal[] m_cartes;
+    private Carte[] m_cartes;
 
     public Ligne(){
         m_cartes = new Animal[4];
@@ -27,7 +28,7 @@ public class Ligne {
         return true;
     }
 
-    public Animal[] getCartes(){
+    public Carte[] getCartes(){
         return m_cartes;
     }
 }
