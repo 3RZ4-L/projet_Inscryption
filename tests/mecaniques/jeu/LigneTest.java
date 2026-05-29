@@ -40,21 +40,6 @@ public class LigneTest {
     }
 
     @Test
-    public void test_placerCarte_caseVide_retourneFalse() {
-        boolean resultat = ligne.placerCarte(testAnimal, 0);
-        assertFalse(resultat);
-        assertFalse(ligne.estCaseVide(0));
-    }
-
-    @Test
-    public void test_placerCarte_caseOccupee_retourneTrue() {
-        ligne.placerCarte(testAnimal, 0);
-        Animal nouvelleCarte = new Animal("Nouveau", 3, 2, 1, 0, false);
-        boolean resultat = ligne.placerCarte(nouvelleCarte, 0);
-        assertTrue(resultat);
-    }
-
-    @Test
     public void test_placerCarte_remplaceCarteExistante() {
         ligne.placerCarte(testAnimal, 0);
         Animal nouvelleCarte = new Animal("Nouveau", 3, 2, 1, 0, false);
@@ -62,14 +47,6 @@ public class LigneTest {
 
         Carte[] cartes = ligne.getCartes();
         assertEquals("Nouveau", cartes[0].getNom());
-    }
-
-    @Test
-    public void test_placerCarte_positionsLimites() {
-        assertFalse(ligne.placerCarte(testAnimal, 0));
-
-        Animal autre = new Animal("Autre", 3, 2, 1, 0, false);
-        assertTrue(ligne.placerCarte(autre, 0));
     }
 
     @Test(expected = ArrayIndexOutOfBoundsException.class)

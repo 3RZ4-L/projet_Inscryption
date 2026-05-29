@@ -14,18 +14,11 @@ public class Ligne {
         return (m_cartes[numCarte] == null);
     }
 
-    /**
-     * @param carte la carte placer sur le board
-     * @param position
-     * @return true si il y a un sacrifice de carte
-     */
-    public boolean placerCarte(Animal carte, int position){
+    public void placerCarte(Animal carte, int position){
         if(estCaseVide(position)){
-            m_cartes[position] = carte;
-            return false;
+            return;
         }
         m_cartes[position] = carte;
-        return true;
     }
 
     public Carte[] getCartes(){

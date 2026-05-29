@@ -33,11 +33,7 @@ public class Joueur{
 
     public void placer(int numCarte, int position){
         Animal carte = m_main.remove(numCarte - 1);
-        boolean estSacrifier = m_ligne.placerCarte(carte, position);
-        if (estSacrifier){
-            m_os++;
-            m_goutteSang++;
-        }
+        m_ligne.placerCarte(carte, position);
     }
 
     public int getNbCartes(){

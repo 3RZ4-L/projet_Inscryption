@@ -6,20 +6,21 @@ import mecaniques.cartes.Carte;
 import mecaniques.joueurs.*;
 
 public class Partie {
-    private Joueur m_joueur ;
+
+    private Joueur m_joueur;
     private Joueur m_adversaire;
     private int m_score;
 
-    Partie(){
+    public Partie() {
         m_joueur = new Joueur();
         m_adversaire = new Joueur();
+        m_score = 0;
     }
 
-    public int demarrer(){
-        for (int i = 0; i < 3; i++){
+    public int demarrer() {
+        for (int i = 0; i < 3; i++) {
             while (m_score < 5 && m_score > -5) {
-                if (i == 2) {
-                    Choix choix = new Choix(new Pioche(2));
+                if (i == 2) {Choix choix = new Choix(new Pioche(2));
                     m_joueur.ajouterDansPioche(choix.getChoix());
                 }
                 tourAdversaire();
@@ -31,23 +32,33 @@ public class Partie {
         return m_score;
     }
 
-    public void tourJoueur(){
+    public void tourJoueur() {
         boolean jouer = true;
-        Commande commande = new Commande();
         int nbPioche = 0;
-        while (jouer){
-            while(!commande.estValide(m_joueur.getNbCartes(), nbPioche)) {
+        while (jouer) {
+            Commande commande = new Commande();
+            while (!commande.estValide(m_joueur.getNbCartes(),nbPioche)) {
                 commande = new Commande();
             }
-            if (commande.getCommande().equals("fin")){
-                jouer = false;
-            }
-            else if (commande.getCommande().equals("piocher")) {
-                m_joueur.piocher();
-                nbPioche++;
-            }
-            else{
-                m_joueur.placer(commande.getNumeroCarte(), commande.getPosition());
+            switch (commande.getCommande()) {
+                case "fin":
+                    jouer = false;
+                    break;
+                case "piocher":
+                    m_joueur.piocher();
+                    nbPioche++;
+                    break;
+                case "placer":
+                    m_joueur.placer(commande.getNumeroCarte(), commande.getPosition());
+                    break;
+                case "sacrifier":
+                    for (String sacrifice : commande.getSacrifices()) {
+                        System.out.println( "Sacrifice : " + sacrifice);
+                    }
+                    break;
+                default:
+                    System.out.println("Commande inconnue");
+                    break;
             }
         }
     }
@@ -60,25 +71,26 @@ public class Partie {
         return m_score;
     }
 
-    public int commencerAttaques(Ligne attacker, Ligne defenser){
+    public int commencerAttaques(Ligne attaquant, Ligne defenseur) {
         int score = 0;
-        for(int i = 0; i < 4; i++){
-            Carte att = attacker.getCartes()[i];
-            if(att == null){
+        for (int i = 0; i < 4; i++) {
+            Carte att = attaquant.getCartes()[i];
+            if (att == null) {
                 continue;
             }
-            Carte def = defenser.getCartes()[i];
-            if(def != null && !att.estVolant()){
+            Carte def = defenseur.getCartes()[i];
+            if (def != null && !att.estVolant()) {
                 score += att.doDamage(def);
-                if(def.estMort()){
-                    defenser.getCartes()[i] = null;
+                if (def.estMort()) {
+                    defenseur.getCartes()[i] = null;
                 }
-            }
-            else{
+            } else {
                 score += att.attaqueDirect();
             }
         }
-        if (score > 5) score = 5;
+        if (score > 5) {
+            score = 5;
+        }
         return score;
     }
 }
