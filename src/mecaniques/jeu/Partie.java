@@ -1,7 +1,8 @@
 package mecaniques.jeu;
 
-import gestionEntrees.Choix;
-import gestionEntrees.Commande;
+import affichage.AffichageGrid;
+import affichage.gestionEntrees.Choix;
+import affichage.gestionEntrees.Commande;
 import mecaniques.cartes.Carte;
 import mecaniques.joueurs.*;
 
@@ -20,8 +21,10 @@ public class Partie {
     public int demarrer() {
         for (int i = 0; i < 3; i++) {
             while (m_score < 5 && m_score > -5) {
-                if (i == 2) {Choix choix = new Choix(new Pioche(2));
+                if (i == 1) {
+                    Choix choix = new Choix(new Pioche(2));
                     m_joueur.ajouterDansPioche(choix.getChoix());
+                    m_joueur.croissance();
                 }
                 tourAdversaire();
                 m_score += commencerAttaques(m_joueur.getLigne(), m_adversaire.getLigne());
@@ -87,6 +90,7 @@ public class Partie {
             } else {
                 score += att.attaqueDirect();
             }
+            attaquant.courrir(i);
         }
         if (score > 5) {
             score = 5;
