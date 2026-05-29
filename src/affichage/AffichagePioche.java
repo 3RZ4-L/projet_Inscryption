@@ -35,14 +35,14 @@ public class AffichagePioche {
     }
 
     public void afficherPioche(Pioche p){
-        String toRight="\t\t\t\t";
+        String toRight="\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
         int nb = p.getNbCartes();
         String spaces = "      "; //6 spaces
         System.out.println(toRight+"Pioche");
         System.out.println(toRight+"*---------------*");
         System.out.println(toRight+"|  " + spaces + spaces + " |");
         System.out.println(toRight+"|  " + spaces + spaces + " |");
-        System.out.println(toRight + "|" + spaces + (nb < 10 ? " " + nb : "" + nb) + " |" + spaces); //for 2 nums
+        System.out.println(toRight + "|" + spaces + (nb < 10 ? " " + nb : "" + nb) + spaces +" |");
         System.out.println(toRight+"|  " + spaces + spaces + " |");
         System.out.println(toRight+"|  " + spaces + spaces + " |");
         System.out.println(toRight+"*---------------*");

@@ -1,4 +1,8 @@
+import affichage.AffichageBattle;
+import affichage.AffichageCommandes;
 import affichage.AffichageGrid;
+import affichage.AffichagePioche;
+import mecaniques.joueurs.Pioche;
 
 public class Main
 {
@@ -41,5 +45,11 @@ public class Main
         aff.afficherLigneCart(cartesVideCentre);
         aff.afficherLigneArrow(arrowsUp);
         aff.afficherLigneCart(cartesVideJoueur);
+
+        AffichageCommandes affCom = new AffichageCommandes();
+        affCom.affActions();
+
+        AffichagePioche affPioche = new AffichagePioche();
+        affPioche.afficherPioche(new Pioche(14));
     }
 }
