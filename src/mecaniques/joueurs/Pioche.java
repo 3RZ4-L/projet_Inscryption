@@ -16,7 +16,7 @@ public class Pioche {
     public void melanger(int n){
         for (int i = 0; i < n; i++){
             Random rand = new Random();
-            int indice = rand.nextInt(10);
+            int indice = rand.nextInt(13);
             switch(indice) {
                 case 0:
                     m_pioche.push(new Animal("Chat", 1, 0, 1, 0, false, NOMBREUSES_VIES));
@@ -44,6 +44,15 @@ public class Pioche {
                     break;
                 case 8:
                     m_pioche.push(new Animal("Corbeau", 3, 2, 2, 0, true));
+                    break;
+                case 9:
+                    m_pioche.push(new Animal("Elan", 4, 2, 2, 0, false, COUREUR));
+                    break;
+                case 10:
+                    m_pioche.push(new Animal("Vipère", 1, 1, 2, 0, false, CONTACT_MORTEL));
+                    break;
+                case 11:
+                    m_pioche.push(new Animal("Porc-épic", 2, 1, 1, 0, false, PIQUES_POINTUES));
                     break;
                 default:
                     m_pioche.push(new Animal("Ecureuil", 1, 0, 0, 0, false));
