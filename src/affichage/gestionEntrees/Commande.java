@@ -1,4 +1,4 @@
-package gestionEntrees;
+package affichage.gestionEntrees;
 
 import java.util.ArrayList;
 import java.util.List;
