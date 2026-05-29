@@ -4,6 +4,7 @@ import mecaniques.cartes.Animal;
 import mecaniques.jeu.Ligne;
 import java.util.ArrayList;
 
+
 public class Joueur{
     private Pioche m_pioche;
     private ArrayList<Animal> m_main = new ArrayList<Animal>();
@@ -23,6 +24,10 @@ public class Joueur{
         m_goutteSang = 0;
     }
 
+    public void croissance(){
+        m_ligne.croissance();
+    }
+
     public void piocher(){
         m_main.add(m_pioche.piocher());
     }
@@ -34,6 +39,12 @@ public class Joueur{
     public void placer(int numCarte, int position){
         Animal carte = m_main.remove(numCarte - 1);
         m_ligne.placerCarte(carte, position);
+    }
+
+    public void sacrifier(int numCarte, int position){
+        Animal carte = m_main.remove(numCarte - 1);
+        m_ligne.sacrifier(position);
+        m_goutteSang ++;
     }
 
     public int getNbCartes(){
