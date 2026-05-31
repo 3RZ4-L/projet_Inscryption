@@ -14,11 +14,16 @@ public class Ligne {
         return (m_cartes[numCarte] == null);
     }
 
-    public void placerCarte(Animal carte, int position){
-        if(estCaseVide(position)){
-            return;
+    public boolean placerCarte(Animal carte, int position){
+        if(position < 0 || position >= m_cartes.length){
+            return false;
+        }
+
+        if(!estCaseVide(position)){
+            return false;
         }
         m_cartes[position] = carte;
+        return true;
     }
 
     public Carte[] getCartes(){
