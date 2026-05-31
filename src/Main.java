@@ -1,15 +1,20 @@
+import affichage.AffichageCommandes;
 import affichage.AffichageJeu;
-import mecaniques.cartes.Animal;
-import mecaniques.jeu.Ligne;
+import affichage.AffichagePioche;
 import mecaniques.joueurs.Adversaire;
 import mecaniques.joueurs.Joueur;
-
-import static mecaniques.cartes.Pouvoirs.NOMBREUSES_VIES;
+import mecaniques.joueurs.Pioche;
 
 public class Main
 {
     public static void main(String[] args)
     {
+        AffichageCommandes affCom = new AffichageCommandes();
+        affCom.affActions();
+
+        AffichagePioche affPioche = new AffichagePioche();
+        affPioche.afficherPioche(new Pioche(14));
+
         Joueur j = new Joueur();
         Adversaire a = new Adversaire();
         j.placer(2, 2);

@@ -2,8 +2,6 @@ package mecaniques.jeu;
 
 import mecaniques.cartes.Animal;
 import mecaniques.cartes.Carte;
-import mecaniques.cartes.Obstacle;
-
 import static mecaniques.cartes.Pouvoirs.CROISSANCE;
 import static mecaniques.cartes.Pouvoirs.NOMBREUSES_VIES;
 
