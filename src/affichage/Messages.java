@@ -2,7 +2,7 @@ package affichage;
 
 import mecaniques.cartes.Carte;
 
-public class AffichageBattle {
+public class Messages {
     public void attackDirect(Carte cart, int dmg){
         System.out.println(cart.getNom() + " a fait attaque direct et infligé " + dmg + " dégats.\n");
     }
