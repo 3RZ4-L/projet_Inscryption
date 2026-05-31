@@ -1,45 +1,21 @@
-import affichage.AffichageGrid;
+import affichage.AffichageJeu;
+import mecaniques.cartes.Animal;
+import mecaniques.jeu.Ligne;
+import mecaniques.joueurs.Adversaire;
+import mecaniques.joueurs.Joueur;
+
+import static mecaniques.cartes.Pouvoirs.NOMBREUSES_VIES;
 
 public class Main
 {
     public static void main(String[] args)
     {
-        AffichageGrid aff = new AffichageGrid();
-        String[][] cartesVideAdversaire = {
-                aff.coordCard("A1"),
-                aff.coordCard("A2"),
-                aff.coordCard("A3"),
-                aff.coordCard("A4")
-        };
-        String[][] cartesVideCentre = {
-                aff.coordCard("O1"),
-                aff.coordCard("O2"),
-                aff.coordCard("O3"),
-                aff.coordCard("O4")
-        };
-        String[][] cartesVideJoueur = {
-                aff.coordCard("B1"),
-                aff.coordCard("B2"),
-                aff.coordCard("B3"),
-                aff.coordCard("B4")
-        };
-        String[][] arrowsDown = {
-                aff.affArrowDown(),
-                aff.affArrowDown(),
-                aff.affArrowDown(),
-                aff.affArrowDown()
-        };
+        Joueur j = new Joueur();
+        Adversaire a = new Adversaire();
+        j.placer(2, 2);
+        a.placer(1,3);
 
-        String[][] arrowsUp = {
-                aff.affArrowUp(),
-                aff.affArrowUp(),
-                aff.affArrowUp(),
-                aff.affArrowUp()
-        };
-        aff.afficherLigneCart(cartesVideAdversaire);
-        aff.afficherLigneArrow(arrowsDown);
-        aff.afficherLigneCart(cartesVideCentre);
-        aff.afficherLigneArrow(arrowsUp);
-        aff.afficherLigneCart(cartesVideJoueur);
+        AffichageJeu aff = new AffichageJeu();
+        aff.afficherPlateau(j,a,2,-4);
     }
 }

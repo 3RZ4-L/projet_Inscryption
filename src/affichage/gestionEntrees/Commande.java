@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Commande {
-
     String m_commande;
     String m_position;
     String m_numeroCarte;
@@ -38,7 +37,7 @@ public class Commande {
         }
     }
 
-    public boolean estValide(int nbCarteMax, int nbpioche) {
+    public boolean estValide(int nbCarteMax, boolean piocher) {
         try {
             if (m_commande.equals("placer") &&
                     Integer.parseInt(m_position) < 5 &&
@@ -50,7 +49,7 @@ public class Commande {
         } catch (Exception err) {
             return false;
         }
-        if (m_commande.equals("piocher") && nbpioche < 1) {
+        if (m_commande.equals("piocher") && !piocher) {
             return true;
         }
         if (m_commande.equals("piocher")) {
@@ -61,7 +60,6 @@ public class Commande {
             if (m_sacrifices.size() > 0) {
                 return true;
             }
-            System.out.println("Il n'y a pas de carte à sacrifier");
             return false;
         }
         return m_commande.equals("fin");
