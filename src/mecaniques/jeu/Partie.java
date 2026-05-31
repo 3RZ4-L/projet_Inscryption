@@ -1,6 +1,5 @@
 package mecaniques.jeu;
 
-import affichage.AffichageGrid;
 import affichage.gestionEntrees.Choix;
 import affichage.gestionEntrees.Commande;
 import mecaniques.cartes.Carte;
@@ -37,10 +36,10 @@ public class Partie {
 
     public void tourJoueur() {
         boolean jouer = true;
-        int nbPioche = 0;
+        boolean piocher = false;
         while (jouer) {
             Commande commande = new Commande();
-            while (!commande.estValide(m_joueur.getNbCartes(),nbPioche)) {
+            while (!commande.estValide(m_joueur.getNbMain(), piocher)) {
                 commande = new Commande();
             }
             switch (commande.getCommande()) {
@@ -49,7 +48,7 @@ public class Partie {
                     break;
                 case "piocher":
                     m_joueur.piocher();
-                    nbPioche++;
+                    piocher = true;
                     break;
                 case "placer":
                     m_joueur.placer(commande.getNumeroCarte(), commande.getPosition());

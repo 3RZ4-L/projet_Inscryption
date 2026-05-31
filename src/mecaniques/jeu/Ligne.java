@@ -2,6 +2,7 @@ package mecaniques.jeu;
 
 import mecaniques.cartes.Animal;
 import mecaniques.cartes.Carte;
+import mecaniques.cartes.Obstacle;
 
 import static mecaniques.cartes.Pouvoirs.CROISSANCE;
 import static mecaniques.cartes.Pouvoirs.NOMBREUSES_VIES;
@@ -10,14 +11,14 @@ public class Ligne {
     private Carte[] m_cartes;
 
     public Ligne(){
-        m_cartes = new Animal[4];
+        m_cartes = new Carte[4];
     }
 
     public boolean estCaseVide(int numCarte){
         return (m_cartes[numCarte] == null) || numCarte < 0 || numCarte > 3;
     }
 
-    public boolean placerCarte(Animal carte, int position){
+    public boolean placerCarte(Carte carte, int position){
         if(estCaseVide(position)){
             m_cartes[position] = carte;
             return true;

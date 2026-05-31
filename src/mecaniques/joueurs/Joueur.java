@@ -4,7 +4,6 @@ import mecaniques.cartes.Animal;
 import mecaniques.jeu.Ligne;
 import java.util.ArrayList;
 
-
 public class Joueur{
     private Pioche m_pioche;
     private ArrayList<Animal> m_main = new ArrayList<Animal>();
@@ -47,9 +46,13 @@ public class Joueur{
         m_goutteSang ++;
     }
 
-    public int getNbCartes(){
+    public int getNbMain(){
         return m_main.size();
     }
+    public int getNbPioche(){
+        return m_pioche.getNbCartes();
+    }
+
 
     public int getOs(){
         return m_os;
