@@ -11,15 +11,16 @@ public class AffichageJeu {
     private CreateArrow m_createArrow = new CreateArrow();
     private CreateCard m_createCard = new CreateCard();
 
-    public void afficherPlateau(Joueur joueur, Adversaire adversaire, int numPartie, int score){
-        System.out.println("\n______________________________________ Partie " + numPartie + " _________________________________________\n");
+    public void afficherPlateau(Joueur joueur, Adversaire adversaire, int numPartie, int numTour, int score){
+        System.out.println("\n________________________________________________ Partie " + numPartie + " _________________________________________________\n");
+        System.out.println("\tTour : "+numTour);
         afficherLigneCart(adversaire.getLigne(), "");
         afficherLigneArrow(false);
         afficherLigneCart(adversaire.getLigne(), "A");
         afficherLigneArrow(true);
         afficherLigneCart(joueur.getLigne(), "B");
         afficherMainEtPioche(joueur);
-        System.out.println("\n______________________________________ Score : " + score + " ______________________________________\n");
+        System.out.println("\n_____________________________________________ Score : " + score + " __________________________________________________\n");
 
     }
 
@@ -70,7 +71,7 @@ public class AffichageJeu {
 
         int nbLignes = Math.min(main.length, pioche.length);
         for (int i = 0; i < nbLignes; i++) {
-            String ligne = String.format("%-65s %s", main[i], pioche[i]);
+            String ligne = String.format("%-84s %s", main[i], pioche[i]);
             System.out.println(ligne);
         }
 
@@ -80,7 +81,7 @@ public class AffichageJeu {
             }
         }
         if (nbLignes < pioche.length) {
-            String espaces = " ".repeat(69);
+            String espaces = " ".repeat(88);
             for (int i = nbLignes; i < pioche.length; i++) {
                 System.out.println(espaces + pioche[i]);
             }
@@ -106,8 +107,8 @@ public class AffichageJeu {
                 "*-----------------*",
                 "|                 |",
                 "|                 |",
-       String.format("|        %-9d|", nbCartes),
-                "|     cartes      |",
+       String.format("|       %-10d|", nbCartes),
+                "|      cartes     |",
                 "|                 |",
                 "|                 |",
                 "*-----------------*"

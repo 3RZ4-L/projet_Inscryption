@@ -6,17 +6,20 @@ import java.util.Scanner;
 
 public class Commande {
     String m_commande;
-    String m_position;
-    String m_numeroCarte;
-    List<String> m_sacrifices = new ArrayList<>();
+    int m_position;
+    int m_numeroCarte;
+    List<Integer> m_sacrifices = new ArrayList<>();
 
     public Commande() {
         System.out.println(
-                "Actions possibles:\n" +
-                        "\t[fin] Terminer votre tour\n" +
-                        "\t[piocher] Piocher une carte\n" +
-                        "\t[placer <numero carte> <position>] Placer une carte sur le plateau\n" +
-                        "\t[sacrifier <liste de sacrifices>]");
+                "*---------------------------------------------------------------------------*\n" +
+                "|\tActions possibles:                                                     \t|\n" +
+                "|\t[fin] - Terminer votre tour                                            \t|\n" +
+                "|\t[piocher] - Piocher une carte                                          \t|\n" +
+                "|\t[placer <numero carte> <position>] - Placer une carte sur le plateau   \t|\n" +
+                "|\t[sacrifier <liste de sacrifices>] - Sacrificer une carte sur le plateau\t|\n" +
+                "*---------------------------------------------------------------------------*"
+        );
         Scanner scanner = new Scanner(System.in);
         String entree = scanner.nextLine().trim().toLowerCase();
         String[] morceaux = entree.split("\\s+");
@@ -26,13 +29,13 @@ public class Commande {
         }
         if (m_commande.equals("placer")) {
             if (morceaux.length == 3) {
-                m_numeroCarte = morceaux[1];
-                m_position = morceaux[2];
+                m_numeroCarte = Integer.parseInt(morceaux[1]);
+                m_position = Integer.parseInt(morceaux[2].substring(1))-1;
             }
         }
         else if (m_commande.equals("sacrifier")) {
             for (int i = 1; i < morceaux.length; i++) {
-                m_sacrifices.add(morceaux[i].toUpperCase());
+                m_sacrifices.add(Integer.parseInt(morceaux[i])-1);
             }
         }
     }
@@ -40,10 +43,10 @@ public class Commande {
     public boolean estValide(int nbCarteMax, boolean piocher) {
         try {
             if (m_commande.equals("placer") &&
-                    Integer.parseInt(m_position) < 5 &&
-                    Integer.parseInt(m_position) >= 0 &&
-                    Integer.parseInt(m_numeroCarte) >= 0 &&
-                    Integer.parseInt(m_numeroCarte) <= nbCarteMax) {
+                    m_position < 5 &&
+                    m_position >= 0 &&
+                    m_numeroCarte >= 0 &&
+                    m_numeroCarte <= nbCarteMax) {
                 return true;
             }
         } catch (Exception err) {
@@ -57,8 +60,8 @@ public class Commande {
             return false;
         }
         if (m_commande.equals("sacrifier")) {
-            if (m_sacrifices.size() > 0) {
-                return true;
+            for (int i = 0; i < m_sacrifices.size(); i++){
+                if (m_sacrifices.size() > 0 && m_sacrifices.get(i) <= 0 && m_sacrifices.get(i) > 4);
             }
             return false;
         }
@@ -70,14 +73,14 @@ public class Commande {
     }
 
     public int getPosition() {
-        return Integer.parseInt(m_position);
+        return m_position;
     }
 
     public int getNumeroCarte() {
-        return Integer.parseInt(m_numeroCarte);
+        return m_numeroCarte;
     }
 
-    public List<String> getSacrifices() {
+    public List<Integer> getSacrifices() {
         return m_sacrifices;
     }
 }
