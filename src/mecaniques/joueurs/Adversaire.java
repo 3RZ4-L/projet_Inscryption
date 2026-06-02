@@ -7,6 +7,7 @@ import mecaniques.jeu.Ligne;
 import java.util.ArrayList;
 
 public class Adversaire extends Joueur{
+
     public Adversaire(){
         super();
     }

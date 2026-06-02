@@ -36,8 +36,8 @@ public class Ligne {
     }
 
     public void croissance(){
-        for (int i = 0; i < 4; i++){
-            if (m_cartes[i].getPouvoir() == CROISSANCE){
+        for (int i = 0; i < 4; i++) {
+            if (m_cartes[i].getPouvoir() == CROISSANCE) {
                 m_cartes[i] = new Animal("Loup", 2, 3, 2, 0, false);
             }
         }

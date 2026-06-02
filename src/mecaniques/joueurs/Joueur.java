@@ -23,10 +23,6 @@ public class Joueur{
         m_goutteSang = 0;
     }
 
-    public void croissance(){
-        m_ligne.croissance();
-    }
-
     public void piocher(){
         m_main.add(m_pioche.piocher());
     }
@@ -35,15 +31,39 @@ public class Joueur{
         m_pioche.ajouter(carte);
     }
 
-    public void placer(int numCarte, int position){
+    public boolean placer(int numCarte, int position){
+        boolean placee = false;
         Animal carte = m_main.remove(numCarte - 1);
-        m_ligne.placerCarte(carte, position);
+        if (carte.getGouttesSang() == 0 && carte.getOs() == 0){
+            m_ligne.placerCarte(carte, position);
+            placee = true;
+        }
+        else if (carte.getGouttesSang() <= m_goutteSang){
+            m_ligne.placerCarte(carte, position);
+            m_goutteSang -= carte.getGouttesSang();
+            placee = true;
+        }
+        else if (carte.getOs() <= m_os){
+            m_ligne.placerCarte(carte, position);
+            m_os -= carte.getOs();
+            placee = true;
+        }
+        return placee;
     }
 
     public void sacrifier(int numCarte, int position){
         Animal carte = m_main.remove(numCarte - 1);
         m_ligne.sacrifier(position);
         m_goutteSang ++;
+        m_os ++;
+    }
+
+    public void croissanceDuLouveteau(){
+        m_ligne.croissance();
+    }
+
+    public void tuerAdversaire(){
+        m_os ++;
     }
 
     public int getNbMain(){
@@ -52,20 +72,15 @@ public class Joueur{
     public int getNbPioche(){
         return m_pioche.getNbCartes();
     }
-
-
     public int getOs(){
         return m_os;
     }
-
     public int getGoutteSang(){
         return m_goutteSang;
     }
-
     public ArrayList<Animal> getMain(){
         return m_main;
     }
-
     public Ligne getLigne(){
         return m_ligne;
     }
