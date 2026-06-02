@@ -8,7 +8,7 @@ public class Commande {
     String m_commande;
     int m_position;
     int m_numeroCarte;
-    List<Integer> m_sacrifices = new ArrayList<>();
+    List<Integer> m_sacrifices = new ArrayList();
 
     public Commande() {
         System.out.println(
@@ -35,37 +35,38 @@ public class Commande {
         }
         else if (m_commande.equals("sacrifier")) {
             for (int i = 1; i < morceaux.length; i++) {
-                m_sacrifices.add(Integer.parseInt(morceaux[i])-1);
+                int num = Integer.parseInt(morceaux[i].substring(1))-1;
+                m_sacrifices.add(num);
             }
         }
     }
 
     public boolean estValide(int nbCarteMax, boolean piocher) {
-        try {
-            if (m_commande.equals("placer") &&
-                    m_position < 5 &&
-                    m_position >= 0 &&
-                    m_numeroCarte >= 0 &&
-                    m_numeroCarte <= nbCarteMax) {
+        if ("placer".equals(m_commande)) {
+            return m_position >= 0
+                    && m_position < 5
+                    && m_numeroCarte > 0
+                    && m_numeroCarte <= nbCarteMax;
+        }
+        if ("piocher".equals(m_commande)) {
+            if (!piocher) {
                 return true;
             }
-        } catch (Exception err) {
-            return false;
-        }
-        if (m_commande.equals("piocher") && !piocher) {
-            return true;
-        }
-        if (m_commande.equals("piocher")) {
             System.out.println("Vous ne pouvez piocher qu'une seule fois");
             return false;
         }
-        if (m_commande.equals("sacrifier")) {
-            for (int i = 0; i < m_sacrifices.size(); i++){
-                if (m_sacrifices.size() > 0 && m_sacrifices.get(i) <= 0 && m_sacrifices.get(i) > 4);
+        if ("sacrifier".equals(m_commande)) {
+            if (m_sacrifices.isEmpty()) {
+                return false;
             }
-            return false;
+            for (int num : m_sacrifices) {
+                if (num <= 0 || num > 4) {
+                    return false;
+                }
+            }
+            return true;
         }
-        return m_commande.equals("fin");
+        return "fin".equals(m_commande);
     }
 
     public String getCommande() {

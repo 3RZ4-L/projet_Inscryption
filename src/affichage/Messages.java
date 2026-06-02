@@ -20,4 +20,20 @@ public class Messages {
     public void score(int score){
         System.out.println("Score : " + score);
     }
+
+    public static void pause(){
+        try{
+            Thread.sleep(2000);
+        }
+        catch (InterruptedException e){
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    public void errPlacer(){
+        System.out.println("\n------------------------------------------------------------------------");
+        System.out.println("Vous ne pouvez pas placer cette carte, os ou goutte de sang inssufisante");
+        System.out.println("------------------------------------------------------------------------");
+        pause();
+    }
 }

@@ -24,6 +24,13 @@ public class AffichageJeu {
 
     }
 
+    public void message(String Titremessage){
+        if (Titremessage.equals("ErrPlacer")){
+            Messages m = new Messages();
+            m.errPlacer();
+        }
+    }
+
     public void afficherLigneCart(Ligne ligne, String lettre){
         String[] lignesAffichage = new String[8];
         for (int i = 0; i < 8; i++) {

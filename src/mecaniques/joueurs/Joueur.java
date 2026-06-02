@@ -31,28 +31,20 @@ public class Joueur{
         m_pioche.ajouter(carte);
     }
 
-    public boolean placer(int numCarte, int position){
-        boolean placee = false;
-        Animal carte = m_main.remove(numCarte - 1);
-        if (carte.getGouttesSang() == 0 && carte.getOs() == 0){
-            m_ligne.placerCarte(carte, position);
-            placee = true;
-        }
-        else if (carte.getGouttesSang() <= m_goutteSang){
+    public boolean placer(int numCarte, int position) {
+        Animal carte = m_main.get(numCarte - 1);
+        if (carte.getGouttesSang() <= m_goutteSang && carte.getOs() <= m_os) {
+            m_main.remove(numCarte - 1);
             m_ligne.placerCarte(carte, position);
             m_goutteSang -= carte.getGouttesSang();
-            placee = true;
-        }
-        else if (carte.getOs() <= m_os){
-            m_ligne.placerCarte(carte, position);
             m_os -= carte.getOs();
-            placee = true;
+            return true;
         }
-        return placee;
+
+        return false;
     }
 
-    public void sacrifier(int numCarte, int position){
-        Animal carte = m_main.remove(numCarte - 1);
+    public void sacrifier(int position){
         m_ligne.sacrifier(position);
         m_goutteSang ++;
         m_os ++;

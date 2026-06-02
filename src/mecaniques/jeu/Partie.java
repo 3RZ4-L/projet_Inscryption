@@ -63,10 +63,16 @@ public class Partie {
                     piocher = true;
                     break;
                 case "placer":
-                    m_joueur.placer(commande.getNumeroCarte(), commande.getPosition());
+                    boolean p = m_joueur.placer(commande.getNumeroCarte(), commande.getPosition());
+                    if (!p){
+                        aff.message("ErrPlacer");
+                    }
                     break;
                 case "sacrifier":
-                    List<Integer>
+                    List<Integer> lst = commande.getSacrifices();
+                    for (int i = 0; i < lst.size(); i++){
+                        m_joueur.sacrifier((int)lst.get(i));
+                    }
                     break;
                 default:
                     System.out.println("Commande inconnue");
