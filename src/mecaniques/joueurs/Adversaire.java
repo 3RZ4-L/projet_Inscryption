@@ -7,29 +7,28 @@ import mecaniques.jeu.Ligne;
 import java.util.ArrayList;
 
 public class Adversaire extends Joueur{
+    private Ligne m_ligneAnnonce;
+
     public Adversaire(){
         super();
+        m_ligneAnnonce = new Ligne();
     }
 
-    public void jouerTour(Ligne ligne){
+    public void showNextCarts(Ligne ligne) {
         peutPiocher();
+        int position = choisirPositionAnnonce(ligne);
 
-        int position = choisirPosition(ligne);
-        //while pour placer plusieur carts, if pour mieux prevoir l'action d'Adversaire
-        if(position != -1 && getMain().size() > 0){
+        if (position != -1 && getMain().size() > 0) {
             int cartChoix = cartChois(position, ligne);
-
-            if(cartChoix == -1){
-                return;
+            if (cartChoix != -1) {
+                placeCartAnnonce(cartChoix, position);
             }
-
-            boolean placeCart = placeCart(cartChoix, position);
-            if(!placeCart){
-                return;
-            }
-
-            //position = choisirPosition(ligne);
         }
+    }
+
+    public void jouerTour() {
+        annonceToBattle();
+        getLigne().croissance();
     }
 
     private void peutPiocher(){
@@ -37,16 +36,15 @@ public class Adversaire extends Joueur{
             piocher();
         }
         catch(Exception err){
-            System.out.println("Pas possible piocher");
         }
     }
 
-    public int choisirPosition(Ligne ligne){
+    public int choisirPositionAnnonce(Ligne ligne){
         int defPosition = searchEnemyCard(ligne);
-        if(defPosition != -1){
+        if (defPosition != -1 && m_ligneAnnonce.estCaseVide(defPosition)) {
             return defPosition;
         }
-        return emptyPlace();
+        return emptyPlaceAnnonce();
     }
 
     public int searchEnemyCard(Ligne ligne){
@@ -55,10 +53,11 @@ public class Adversaire extends Joueur{
 
         for(int i = 0; i < 4; i++){
             Carte playerCart = ligne.getCartes()[i];
-            Carte advCart = getLigne().getCartes()[i];
+            Carte advBattleCart = getLigne().getCartes()[i];
+            Carte advAnnonceCart = m_ligneAnnonce.getCartes()[i];
 
-            if(playerCart != null && advCart == null){
-                if(playerCart.getAttack() > cartAttMax){
+            if (playerCart != null && advBattleCart == null && advAnnonceCart == null) {
+                if (playerCart.getAttack() > cartAttMax) {
                     cartAttMax = playerCart.getAttack();
                     placeCart = i;
                 }
@@ -67,9 +66,9 @@ public class Adversaire extends Joueur{
         return placeCart;
     }
 
-    public int emptyPlace(){
+    public int emptyPlaceAnnonce(){
         for(int i = 0; i < 4; i++){
-            if(getLigne().getCartes()[i] == null){
+            if(getLigne().getCartes()[i] == null && m_ligneAnnonce.getCartes()[i] == null){
                 return i;
             }
         }
@@ -130,16 +129,26 @@ public class Adversaire extends Joueur{
         return placement;
     }
 
-    public boolean placeCart(int idCart, int position){
+    public boolean placeCartAnnonce(int idCart, int position){
         if(idCart < 0 || idCart >= getMain().size()){
             return false;
         }
 
         Animal cart = getMain().get(idCart);
-        if(getLigne().placerCarte(cart, position)){
+        if(m_ligneAnnonce.placerCarte(cart, position)){
             getMain().remove(idCart);
             return true;
         }
         return false;
+    }
+
+    public void annonceToBattle(){
+        for (int i = 0; i < 4; i++) {
+            Carte carteAnnoncee = m_ligneAnnonce.getCartes()[i];
+            if (carteAnnoncee != null && getLigne().estCaseVide(i)) {
+                getLigne().placerCarte(carteAnnoncee, i);
+                m_ligneAnnonce.removeCart(i);
+            }
+        }
     }
 }
