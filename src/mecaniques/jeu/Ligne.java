@@ -57,4 +57,11 @@ public class Ligne {
     public Carte[] getCartes(){
         return m_cartes;
     }
+
+    public void removeCart(int place){
+        if(place < 0 || place >= m_cartes.length){
+            return;
+        }
+        m_cartes[place] = null;
+    }
 }
