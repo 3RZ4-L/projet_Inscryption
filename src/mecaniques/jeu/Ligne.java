@@ -38,17 +38,17 @@ public class Ligne {
     public void croissance(){
         for (int i = 0; i < 4; i++) {
             if (m_cartes[i].getPouvoir() == CROISSANCE) {
-                m_cartes[i] = new Animal("Loup", 2, 3, 2, 0, false);
+// /!\                m_cartes[i] = new Animal("Loup", 2, 3, 2, 0, false);
             }
         }
     }
 
     public boolean courrir(int position){
         if (estCaseVide(position+1)){
-            placerCarte((Animal)m_cartes[position], position+1);
+            placerCarte(m_cartes[position], position+1);
             return true;
         } else if (estCaseVide(position-1)) {
-            placerCarte((Animal)m_cartes[position], position-1);
+            placerCarte(m_cartes[position], position-1);
             return true;
         }
         return false;

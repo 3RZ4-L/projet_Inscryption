@@ -153,9 +153,9 @@ AffichageGrid ..> AffichagePioche : <<uses>>
 AffichageGrid ..> AffichageBattle : <<uses>>
 AffichageBattle .up.> Joueur : <<use>>
 AffichagePioche .up.> Joueur : <<use>>
-Pioche <-up* "-m_pioche\n 0..*" Animal
+Pioche *-up> "-m_pioche\n 0..*" Animal
 Pioche *-> "-m_pioche \n 1" Joueur
-Joueur <-* "-m_cartes\n ..4" Ligne
+Joueur *-> "-m_cartes\n ..4" Ligne
 Joueur *-> "-m_joueur\n 1" Partie
 Choix <-* "-m_choix\n 2" Animal
 Pouvoirs *-> "-m_pouvoir\n1" Carte

@@ -1,9 +1,4 @@
-import affichage.AffichageJeu;
-import affichage.AffichagePioche;
 import mecaniques.jeu.Partie;
-import mecaniques.joueurs.Adversaire;
-import mecaniques.joueurs.Joueur;
-import mecaniques.joueurs.Pioche;
 
 public class Main
 {

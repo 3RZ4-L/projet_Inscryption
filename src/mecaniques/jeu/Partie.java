@@ -96,13 +96,13 @@ public class Partie {
             Carte att = attaquant.getCartes()[i];
             if (att == null){ continue;}
             Carte def = defenseur.getCartes()[i];
-            if (def != null && !att.estVolant()) {
-                score_tour += att.doDamage(def);
-                if (def.estMort()) {
-                    if(def.estCreature()){ joueur1.tuerAdversaire();}
-                    defenseur.getCartes()[i] = null;
-                }
-            } else score_tour += att.attaqueDirect();
+
+            score_tour += att.doDamage(def);
+            if (def.estMort()) {
+                if(def.estCreature()){ joueur1.tuerAdversaire();}
+                defenseur.getCartes()[i] = null;
+            }
+
             attaquant.courrir(i);
         }
         if (score_tour > 5){ score_tour = 5;}

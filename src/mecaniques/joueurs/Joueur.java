@@ -5,11 +5,11 @@ import mecaniques.jeu.Ligne;
 import java.util.ArrayList;
 
 public class Joueur{
-    private Pioche m_pioche;
-    private ArrayList<Animal> m_main = new ArrayList<Animal>();
-    private Ligne m_ligne;
-    private int m_os;
-    private int m_goutteSang;
+    protected Pioche m_pioche;
+    protected ArrayList<Animal> m_main = new ArrayList<Animal>();
+    protected Ligne m_ligne;
+    protected int m_os;
+    protected int m_goutteSang;
 
     public Joueur(){
         m_pioche = new Pioche(15);
