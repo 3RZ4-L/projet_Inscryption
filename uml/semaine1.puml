@@ -7,17 +7,17 @@ hide empty members
 
 package cartes {
     class Carte {
-        #String m_nom
-        #Integer m_points_de_vie
+        -String m_nom
+        -Integer m_points_de_vie
         +Carte(String nom, Integer pdv)
         +Integer getPv()
         +String toString()
     }
 
     class Animal extends Carte{
-        #Integer m_attaque
-        #Integer m_gouttes_sang
-        #Integer m_os
+        -Integer m_attaque
+        -Integer m_gouttes_sang
+        -Integer m_os
         +Animal(String nom, Integer pdv, Integer att, Integer gds, Integer os)
         +Boolean attaque(Animal adversaire)
         +Boolean attaque(Obstacle obstacle)
@@ -59,15 +59,15 @@ package mecaniques {
         +String animName(String nom)
         +String animHP(String hp)
         +String animDMG(String dmg)
-        +String[] emptyCard()
-        +String[] coordCard(String coord)
-        +String[] animCard(String nom, String hp, String dmg, boolean volant)
-        +void afficherLigne(String[][] cartes)
+        +String[*] emptyCard()
+        +String[*] coordCard(String coord)
+        +String[*] animCard(String nom, String hp, String dmg, boolean volant)
+        +void afficherLigne(String[*] cartes)
         +String arrowUp()
         +String arrowDown()
         +String arrowBody()
-        +String[] affArrowUp()
-        +String[] affArrowDown()
+        +String[*] affArrowUp()
+        +String[*] affArrowDown()
     }
 }
 
