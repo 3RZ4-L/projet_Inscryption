@@ -7,21 +7,21 @@ hide empty members
 
 package mecaniques.cartes {
     class Carte {
-        - m_nom String
-        - m_pv Integer
+        - m_nom : String
+        - m_pv : Integer
         + <<create>> Carte(nom : String, pdv : Integer)
-        + getPv() Integer
-        + toString() String
+        + getPv() : Integer
+        + toString() : String
     }
 
     class Animal extends Carte{
-        - m_attaque Integer
-        - m_gouttes_sang Integer
-        - m_os Integer
-        - m_volant Boolean
+        - m_attaque : Integer
+        - m_gouttes_sang : Integer
+        - m_os : Integer
+        - m_volant : Boolean
         + <<create>> Animal(nom : String, pdv : Integer, att : Integer, gds : Integer, os : Integer)
-        + attaque(adversaire : Animal) Boolean
-        + attaque(obstacle : Obstacle) Boolean
+        + attaque(adversaire : Animal) : Boolean
+        + attaque(obstacle : Obstacle) : Boolean
     }
 
     class Obstacle extends Carte{
@@ -31,30 +31,30 @@ package mecaniques.cartes {
 
 package affichage {
     class AffichageGrid {
-        + afficherLigne(cartes : String[][])
-        + emptyCard() String[]
-        + coordCard() String[]
-        + animCard() String[]
-        + affArrowUp() String[]
-        + affArrowDown() String[]
+        + afficherLigne(cartes : String[*])
+        + emptyCard() : String[*]
+        + coordCard() : String[*]
+        + animCard() : String[*]
+        + affArrowUp() : String[*]
+        + affArrowDown() : String[*]
     }
     class CreateArrow{
-        - m_width Integer
-        + arrowUp() String
-        + arrowDown() String
-        + arrowBody() String
+        - m_width : Integer
+        + arrowUp() : String
+        + arrowDown() : String
+        + arrowBody() : String
     }
     class CreateCard{
-        - m_width Integer
-        + emptyTopBottom() String
-        + emptyMiddle() String
-        + corrdinate(coord : String) String
-        + animTopBottom() String
-        + separate() String
-        + animMiddle() String
-        + animName(nom : String) String
-        + animHp(hp : String) String
-        + animDMG(dmg : String) String
+        - m_width : Integer
+        + emptyTopBottom() : String
+        + emptyMiddle() : String
+        + corrdinate(coord : String) : String
+        + animTopBottom() : String
+        + separate() : String
+        + animMiddle() : String
+        + animName(nom : String) : String
+        + animHp(hp : String) : String
+        + animDMG(dmg : String) : String
     }
     class AffichageBattle{
         + attackDirect(cart : Carte, dmg : Integer)
@@ -72,36 +72,33 @@ package affichage {
 package mecaniques.joueurs{
     class Pioche {
         + <<create>> Pioche()
-        + piocher() Animal
+        + piocher() : Animal
         + melanger(n : Integer)
     }
 
     class Joueur{
-        - m_main Animal[*]
-        - m_os Integer
-        - m_goutteSang Integer
+        - m_os : Integer
+        - m_goutteSang : Integer
         + <<create>> Joueur()
         + piocher()
         + poser()
         + sacrifier()
     }
     class Adversaire extends Joueur{
-
+        -<<create>> Adversaire()
     }
 }
 package mecaniques.battle{
     class Battle{
-        - m_cartesJoueur Carte[*]
-        - m_cartesAdversaire Carte[*]
-        - m_score Integer
-        + <<create>> Battle()
-        + getCartesJoueur() Carte[]
-        + getCartesAdversaire() Carte[]
-        + getScore() Integer
-        + joueurGagne() Boolean
-        + adversaireGagne() Boolean
-        + validPlacementAdversaire() Boolean
-        + validPlacementJoueur() Boolean
+        - m_score : Integer
+        + <<create>> : Battle()
+        + getCartesJoueur() : Carte[*]
+        + getCartesAdversaire() : Carte[*]
+        + getScore() : Integer
+        + joueurGagne() : Boolean
+        + adversaireGagne() : Boolean
+        + validPlacementAdversaire() : Boolean
+        + validPlacementJoueur() : Boolean
     }
 }
 package mecaniques.jeu{
@@ -113,8 +110,8 @@ package mecaniques.jeu{
         + sacrifierCare(numCarte : Integer) : Boolean
     }
     class Partie{
-        + m_score Integer
-        + m_numeroPartie Integer
+        + m_score : Integer
+        + m_numeroPartie : Integer
         - <<create>> Partie()
         - demarrer()
         - tourJoueur()
@@ -135,9 +132,11 @@ AffichagePioche .> Joueur : <<use>>
 AffichagePioche .> Carte : <<use>>
 AffichagePioche .> Pioche : <<use>>
 Pioche <-* "-m_pioche\n 0..*" Animal
-Pioche *-> "-m_pioche \n 1" Joueur
+Pioche <-* "-m_pioche \n 1" Joueur
 Joueur *-> "-m_cartes\n ..4" Ligne
 Joueur *-> "-m_joueur\n 1" Partie
 Adversaire *-> "-m_adversaire\n 1" Partie
+Battle *-> "- m_cartesJoueur\n*" Carte
+Battle *-> "- m_cartesAdversaire\n*" Carte
 
 @enduml
