@@ -8,66 +8,66 @@ hide empty members
 package cartes {
     class Carte {
         - m_nom String
-        - m_points_de_vie int
-        + <<create>> Carte(String nom, Integer pdv)
-        + getPv() int
-        + toString() String
+        - m_points_de_vie : Integer
+        + <<create>> Carte(String nom,Integer pdv)
+        + getPv() : Integer
+        + toString() : String
     }
 
     class Animal extends Carte{
-        - m_attaque int
-        - m_gouttes_sang int
-        - m_os int
-        + <<create>> Animal(String nom, Integer pdv, Integer att, Integer gds, Integer os)
-        + attaque(Animal adversaire) Boolean
-        + attaque(Obstacle obstacle) Boolean
+        - m_attaque : Integer
+        - m_gouttes_sang : Integer
+        - m_os : Integer
+        + <<create>> Animal(String nom,Integer pdv,Integer att,Integer gds,Integer os)
+        + attaque(Animal adversaire) : Boolean
+        + attaque(Obstacle obstacle) : Boolean
     }
 
     class Volant extends Animal{
-        + <<create>> Volant(String nom, Integer pdv, Integer att, Integer gds, Integer os)
+        + <<create>> Volant(String nom,Integer pdv,Integer att,Integer gds,Integer os)
     }
 
     class Obstacle extends Carte{
-        + <<create>> Obstacle(String nom, Integer pdv)
+        + <<create>> Obstacle(String nom,Integer pdv)
     }
 
     class Pioche {
-        + create_chat() Animal
-        + create_grizzly() Animal
-        + create_coyote() Animal
-        + create_moineau() Animal
-        + create_hermine() Animal
-        + create_louveteau() Animal
-        + create_loup() Animal
-        + create_punaise() Animal
-        + create_corbeau() Animal
-        + create_ecureil() Animal
-        + create_richer() Obstacle
-        + create_sapin() Obstacle
+        + create_chat() : Animal
+        + create_grizzly() : Animal
+        + create_coyote() : Animal
+        + create_moineau() : Animal
+        + create_hermine() : Animal
+        + create_louveteau() : Animal
+        + create_loup() : Animal
+        + create_punaise() : Animal
+        + create_corbeau() : Animal
+        + create_ecureil() : Animal
+        + create_richer() : Obstacle
+        + create_sapin() : Obstacle
     }
 }
 
 package mecaniques {
     class Affichage {
-        -m_width int
-        + emptyTopBottom() String
-        + emptyMiddle() String
-        + coordinate(String coord) String
-        + animTopBottom() String
-        + separate() String
-        + animMiddle() String
-        + animName(String nom) String
-        + animHP(String hp) String
-        + animDMG(String dmg) String
-        + emptyCard() String[]
-        + coordCard(String coord) String[]
-        + animCard(String nom, String hp, String dmg, boolean volant)  String[]
-        + afficherLigne(String[][] cartes)
-        + arrowUp() String
-        + arrowDown() String
-        + arrowBody() String
-        + affArrowUp() String[]
-        + affArrowDown() String[]
+        -m_widthInteger
+        + emptyTopBottom() : String
+        + emptyMiddle() : String
+        + coordinate(String coord) : String
+        + animTopBottom() : String
+        + separate() : String
+        + animMiddle() : String
+        + animName(String nom) : String
+        + animHP(String hp) : String
+        + animDMG(String dmg) : String
+        + emptyCard() : String[*]
+        + coordCard(String coord) : String[*]
+        + animCard(String nom, String hp, String dmg, boolean volant) : String[*]
+        + afficherLigne(String[*] cartes)
+        + arrowUp() : String
+        + arrowDown() : String
+        + arrowBody() : String
+        + affArrowUp() : String[*]
+        + affArrowDown() : String[*]
     }
 }
 
