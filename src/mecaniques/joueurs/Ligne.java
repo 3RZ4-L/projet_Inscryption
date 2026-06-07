@@ -1,6 +1,7 @@
 package mecaniques.joueurs;
 
 import mecaniques.cartes.Carte;
+import mecaniques.cartes.Pouvoirs;
 
 import java.util.Optional;
 import static mecaniques.cartes.Pouvoirs.NOMBREUSES_VIES;
@@ -17,7 +18,7 @@ public class Ligne {
     }
 
     public boolean estCaseVide(int numCarte){
-        return numCarte < 0 || numCarte > 3 || m_cartes[numCarte].isEmpty();
+        return numCarte >= 0 && numCarte < 4 && m_cartes[numCarte].isEmpty();
     }
 
     public boolean placerCarte(Carte carte, int position){
@@ -29,14 +30,29 @@ public class Ligne {
     }
 
     public boolean sacrifier(int position){
-        if(!estCaseVide(position) && m_cartes[position].get().estCreature()){
-            if (m_cartes[position].get().getPouvoir() == NOMBREUSES_VIES) {
+        if (!estCaseVide(position) && m_cartes[position].get().estCreature()){
+            if (m_cartes[position].get().aPouvoir(NOMBREUSES_VIES)) {
                 return true;
             }
             m_cartes[position] = Optional.empty();
             return true;
         }
         return false;
+    }
+
+    public boolean estSacrifiable(int position){
+        if(!estCaseVide(position) && m_cartes[position].get().estCreature())
+            return true;
+        return false;
+    }
+
+    public Optional<Pouvoirs> PierreDeSacrifice(int position){
+        Optional<Pouvoirs> pouvoirOpt = m_cartes[position].get().getPouvoir();
+        if (pouvoirOpt.isPresent()){
+            sacrifier(position);
+            return pouvoirOpt;
+        }
+        return Optional.empty();
     }
 
     public void croissance(){
@@ -94,6 +110,10 @@ public class Ligne {
             return;
         }
         m_cartes[place] = Optional.empty();
+    }
+
+    public boolean estVide(){
+        return estCaseVide(0) && estCaseVide(1) && estCaseVide(2) && estCaseVide(3);
     }
 
     public Optional<Carte> getCarte(int position) {

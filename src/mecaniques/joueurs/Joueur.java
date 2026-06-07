@@ -1,8 +1,10 @@
 package mecaniques.joueurs;
 
 import mecaniques.cartes.Animal;
+import mecaniques.cartes.Pouvoirs;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Joueur {
     protected Pioche m_pioche;
@@ -30,24 +32,25 @@ public class Joueur {
         }
     }
 
-    public void ajouterDansPioche(Animal carte) {
-        m_pioche.ajouter(carte);
+    public void ajouterDansMain(Animal carte) {
+        m_main.add(carte);
     }
 
     public boolean placer(int numCarte, int position) {
         if (numCarte - 1 < 0 || numCarte - 1 >= m_main.size()) {
             return false;
         }
-
         Animal carte = m_main.get(numCarte - 1);
         if (carte.getGouttesSang() <= m_goutteSang && carte.getOs() <= m_os) {
-            m_main.remove(numCarte - 1);
-            boolean placementReussi = m_ligne.placerCarte(carte, position);
-            if (placementReussi) {
-                m_goutteSang -= carte.getGouttesSang();
-                m_os -= carte.getOs();
+            if (m_ligne.getCarte(position).isEmpty()) {
+                m_main.remove(numCarte - 1);
+                boolean placementReussi = m_ligne.placerCarte(carte, position);
+                if (placementReussi) {
+                    m_goutteSang -= carte.getGouttesSang();
+                    m_os -= carte.getOs();
+                }
+                return placementReussi;
             }
-            return placementReussi;
         }
         return false;
     }
@@ -57,6 +60,19 @@ public class Joueur {
             m_goutteSang++;
             m_os++;
         }
+    }
+
+    public Optional<Pouvoirs> PierreDeSacrifice(int position){
+        if (peutSacrifier(position)) {
+            m_goutteSang++;
+            m_os++;
+            return m_ligne.PierreDeSacrifice(position);
+        }
+        return Optional.empty();
+    }
+
+    public boolean peutSacrifier(int position){
+        return m_ligne.estSacrifiable(position);
     }
 
     public void croissanceDuLouveteau() { m_ligne.croissance(); }

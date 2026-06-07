@@ -8,37 +8,34 @@ public class Obstacle extends Carte {
         super(nom, pdv);
     }
 
-    @Override
     public boolean estCreature() {
         return false;
     }
 
-    @Override
     public int attaqueDirect() {
         return 0;
     }
 
-    @Override
     public int getAttack() {
         return 0;
     }
 
-    @Override
     public boolean estVolant() {
         return false;
     }
 
-    @Override
     public String getNamePouvoir() {
         return "";
     }
 
-    @Override
-    public Pouvoirs getPouvoir() {
-        return Pouvoirs.NULL;
+    public Optional<Pouvoirs> getPouvoir() {
+        return Optional.empty();
     }
 
-    @Override
+    public boolean aPouvoir(Pouvoirs pouvoir){
+        return false;
+    }
+
     public Optional<Carte> croissance() {
         return Optional.empty();
     }

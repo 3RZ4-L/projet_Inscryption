@@ -9,34 +9,32 @@ import java.util.List;
 
 public class Partie {
 
-    private Joueur m_joueur;
+    private Humain m_joueur;
     private Adversaire m_adversaire;
     private int m_score;
     private int m_tour;
     private int m_partie;
 
     public Partie() {
-        m_joueur = new Joueur();
+        m_joueur = new Humain();
         m_adversaire = new Adversaire();
         m_score = 0;
         m_partie = 1;
     }
 
     public int demarrer() {
-        for (int i = 0; i < 3; i++) {
-            m_tour = 1;
-            while (m_score < 5 && m_score > -5) {
+        while (m_score < 5 && m_score > -5) {
+            for (int i = 0; i < 3; i++){
                 if (i == 1) {
                     Animal[] deuxAnimaux = CarteFactory.getDeuxAnimaux();
-                    Choix choix = new Choix(deuxAnimaux[0], deuxAnimaux[1]);
-                    m_joueur.ajouterDansPioche(choix.getChoix());
+                    Choix choix = new Choix(m_joueur, deuxAnimaux[0], deuxAnimaux[1]);
+                    m_joueur.ajouterDansMain(choix.getChoix());
                     m_joueur.croissanceDuLouveteau();
                 }
                 tourAdversaire();
-                m_score += commencerAttaques(m_joueur, m_adversaire);
                 tourJoueur();
+                m_score += commencerAttaques(m_joueur, m_adversaire);
                 m_score -= commencerAttaques(m_adversaire, m_joueur);
-                m_tour++;
                 if (m_score > 5) m_score = 5;
                 if (m_score < -5) m_score = -5;
             }
@@ -51,6 +49,7 @@ public class Partie {
         while (jouer) {
             AffichageJeu aff = new AffichageJeu();
             aff.afficherPlateau(m_joueur,m_adversaire,m_partie,m_tour,m_score);
+            aff.Consignes();
 
             Commande commande = new Commande();
             while (!commande.estValide(m_joueur.getNbMain(), piocher)) {
@@ -67,7 +66,7 @@ public class Partie {
                 case PLACER:
                     boolean p = m_joueur.placer(commande.getNumeroCarte(), commande.getPosition());
                     if (!p){
-                        aff.message("ErrPlacer");
+                        commande.errPlacer();
                     }
                     break;
                 case SACRIFIER:
@@ -77,14 +76,47 @@ public class Partie {
                     }
                     break;
                 default:
-                    System.out.println("Commande inconnue");
                     break;
             }
         }
     }
 
     public void tourAdversaire() {
-        tourJoueur();
+        boolean jouer = true;
+        boolean piocher = false;
+        while (jouer) {
+            AffichageJeu aff = new AffichageJeu();
+            aff.afficherPlateau(m_joueur,m_adversaire,m_partie,m_tour,m_score);
+            aff.Consignes();
+
+            Commande commande = new Commande();
+            while (!commande.estValide(m_adversaire.getNbMain(), piocher)) {
+                commande = new Commande();
+            }
+            switch (commande.getCommande()) {
+                case FIN:
+                    jouer = false;
+                    break;
+                case PIOCHER:
+                    m_adversaire.piocher();
+                    piocher = true;
+                    break;
+                case PLACER:
+                    boolean p = m_adversaire.placer(commande.getNumeroCarte(), commande.getPosition());
+                    if (!p){
+                        commande.errPlacer();
+                    }
+                    break;
+                case SACRIFIER:
+                    List<Integer> lst = commande.getSacrifices();
+                    for (int i = 0; i < lst.size(); i++){
+                        m_adversaire.sacrifier(lst.get(i));
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
     }
     public int getScore() {return m_score;}
     public int getNumParte(){return m_partie;}

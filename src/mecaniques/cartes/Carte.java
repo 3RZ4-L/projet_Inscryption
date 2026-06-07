@@ -28,7 +28,7 @@ public abstract class Carte {
     public int doDamage(Carte other) {
         int dmg = this.getAttack();
 
-        if (other.getPouvoir() == PUANT) {
+        if (other.aPouvoir(PUANT)) {
             dmg--;
         }
         if (dmg < 0) {
@@ -40,11 +40,11 @@ public abstract class Carte {
             other.m_points_de_vie = 0;
         }
 
-        if (this.getPouvoir() == CONTACT_MORTEL && dmg > 0 && other.estCreature()) {
+        if (this.aPouvoir(CONTACT_MORTEL) && dmg > 0 && other.estCreature()) {
             other.m_points_de_vie = 0;
         }
 
-        if (other.getPouvoir() == PIQUES_POINTUES && dmg > 0) {
+        if (other.aPouvoir(PIQUES_POINTUES) && dmg > 0) {
             m_points_de_vie -= 1;
             if (m_points_de_vie < 0) {
                 m_points_de_vie = 0;
@@ -61,7 +61,9 @@ public abstract class Carte {
 
     public abstract String getNamePouvoir();
 
-    public abstract Pouvoirs getPouvoir();
+    public abstract boolean aPouvoir(Pouvoirs pouvoir);
+
+    public abstract Optional<Pouvoirs> getPouvoir();
 
     public abstract boolean estCreature();
 
