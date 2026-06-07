@@ -1,17 +1,19 @@
 package mecaniques.cartes;
 
+import java.util.Optional;
+
 import static mecaniques.cartes.Pouvoirs.*;
 
-public class Carte {
-    String m_nom;
-    int m_points_de_vie;
+public abstract class Carte {
+    protected String m_nom;
+    protected int m_points_de_vie;
 
-    public Carte (String nom, int pdv){
+    public Carte(String nom, int pdv) {
         m_nom = nom;
         m_points_de_vie = pdv;
     }
 
-    public int getPv(){
+    public int getPv() {
         return m_points_de_vie;
     }
 
@@ -19,59 +21,49 @@ public class Carte {
         return m_nom;
     }
 
-    public boolean estMort(){
-        return(getPv() <= 0);
+    public boolean estMort() {
+        return (m_points_de_vie <= 0);
     }
 
-    public int doDamage(Carte other){
+    public int doDamage(Carte other) {
         int dmg = this.getAttack();
 
-        if(other.getPouvoir() == PUANT){
+        if (other.getPouvoir() == PUANT) {
             dmg--;
         }
-        if(dmg < 0){
+        if (dmg < 0) {
             dmg = 0;
         }
 
         other.m_points_de_vie -= dmg;
-        if(other.m_points_de_vie < 0){
+        if (other.m_points_de_vie < 0) {
             other.m_points_de_vie = 0;
         }
 
-        if(this.getPouvoir() == CONTACT_MORTEL && dmg > 0 && other.estCreature()){
+        if (this.getPouvoir() == CONTACT_MORTEL && dmg > 0 && other.estCreature()) {
             other.m_points_de_vie = 0;
         }
 
-        if(other.getPouvoir() == PIQUES_POINTUES && dmg > 0){
+        if (other.getPouvoir() == PIQUES_POINTUES && dmg > 0) {
             m_points_de_vie -= 1;
-            if(m_points_de_vie < 0){
+            if (m_points_de_vie < 0) {
                 m_points_de_vie = 0;
             }
         }
         return dmg;
     }
 
-    public int attaqueDirect(){
-        return 0;
-    }
+    public abstract int attaqueDirect();
 
-    public int getAttack(){
-        return 0;
-    }
+    public abstract int getAttack();
 
-    public boolean estVolant(){
-        return false;
-    }
+    public abstract boolean estVolant();
 
-    public String getNamePouvoir(){
-        return "";
-    }
+    public abstract String getNamePouvoir();
 
-    public Pouvoirs getPouvoir(){
-        return NULL;
-    }
+    public abstract Pouvoirs getPouvoir();
 
-    public boolean estCreature(){
-        return false;
-    }
+    public abstract boolean estCreature();
+
+    public abstract Optional<Carte> croissance();
 }

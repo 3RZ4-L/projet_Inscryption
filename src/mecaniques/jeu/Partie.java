@@ -1,9 +1,8 @@
 package mecaniques.jeu;
 
 import affichage.AffichageJeu;
-import affichage.gestionEntrees.Choix;
-import affichage.gestionEntrees.Commande;
-import mecaniques.cartes.Carte;
+import affichage.gestionEntrees.*;
+import mecaniques.cartes.*;
 import mecaniques.joueurs.*;
 
 import java.util.List;
@@ -28,7 +27,8 @@ public class Partie {
             m_tour = 1;
             while (m_score < 5 && m_score > -5) {
                 if (i == 1) {
-                    Choix choix = new Choix(new Pioche(2));
+                    Animal[] deuxAnimaux = CarteFactory.getDeuxAnimaux();
+                    Choix choix = new Choix(deuxAnimaux[0], deuxAnimaux[1]);
                     m_joueur.ajouterDansPioche(choix.getChoix());
                     m_joueur.croissanceDuLouveteau();
                 }
@@ -37,6 +37,8 @@ public class Partie {
                 tourJoueur();
                 m_score -= commencerAttaques(m_adversaire, m_joueur);
                 m_tour++;
+                if (m_score > 5) m_score = 5;
+                if (m_score < -5) m_score = -5;
             }
             m_partie ++;
         }
@@ -55,23 +57,23 @@ public class Partie {
                 commande = new Commande();
             }
             switch (commande.getCommande()) {
-                case "fin":
+                case FIN:
                     jouer = false;
                     break;
-                case "piocher":
+                case PIOCHER:
                     m_joueur.piocher();
                     piocher = true;
                     break;
-                case "placer":
+                case PLACER:
                     boolean p = m_joueur.placer(commande.getNumeroCarte(), commande.getPosition());
                     if (!p){
                         aff.message("ErrPlacer");
                     }
                     break;
-                case "sacrifier":
+                case SACRIFIER:
                     List<Integer> lst = commande.getSacrifices();
                     for (int i = 0; i < lst.size(); i++){
-                        m_joueur.sacrifier((int)lst.get(i));
+                        m_joueur.sacrifier(lst.get(i));
                     }
                     break;
                 default:
@@ -89,23 +91,11 @@ public class Partie {
     public int getNumTour(){return m_tour;}
 
     public int commencerAttaques(Joueur joueur1, Joueur joueur2) {
-        int score_tour = 0;
-        Ligne attaquant = joueur1.getLigne();
-        Ligne defenseur = joueur2.getLigne();
-        for (int i = 0; i < 4; i++) {
-            Carte att = attaquant.getCartes()[i];
-            if (att == null){ continue;}
-            Carte def = defenseur.getCartes()[i];
-
-            score_tour += att.doDamage(def);
-            if (def.estMort()) {
-                if(def.estCreature()){ joueur1.tuerAdversaire();}
-                defenseur.getCartes()[i] = null;
-            }
-
-            attaquant.courrir(i);
-        }
-        if (score_tour > 5){ score_tour = 5;}
+        int score_tour = joueur1.getLigne().attaquer(joueur1, joueur2.getLigne());
+        if (score_tour > 5)
+            score_tour = 5;
+        if (score_tour < 0)
+            score_tour = 0;
         return score_tour;
     }
 }

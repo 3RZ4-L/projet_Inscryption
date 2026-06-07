@@ -1,11 +1,12 @@
 package affichage;
 import mecaniques.cartes.Animal;
 import mecaniques.cartes.Carte;
-import mecaniques.jeu.Ligne;
+import mecaniques.joueurs.Ligne;
 import mecaniques.joueurs.Adversaire;
 import mecaniques.joueurs.Joueur;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class AffichageJeu {
     private CreateArrow m_createArrow = new CreateArrow();
@@ -38,9 +39,10 @@ public class AffichageJeu {
         }
         for (int i = 0; i < 4; i++) {
             String[] carte;
-            if (ligne.getCartes()[i] == null) {
+            Optional<Carte> carteOpt = ligne.getCarte(i);
+            if (carteOpt.isEmpty()) {
                 int num = i+1;
-                if (lettre != ""){
+                if (!lettre.equals("")){
                     String coord = lettre + num;
                     carte = coordCard(coord);
                 }
@@ -49,7 +51,7 @@ public class AffichageJeu {
                 }
 
             } else {
-                carte = animCard(ligne.getCartes()[i]);
+                carte = animCard(carteOpt.get());
             }
             for (int y = 0; y < carte.length; y++) {
                 lignesAffichage[y] += carte[y] + "    ";
@@ -64,6 +66,7 @@ public class AffichageJeu {
         String[][] arrows;
         if (up) arrows = arrowsUp();
         else arrows = arrowsDown();
+
         for (int ligne = 0; ligne < 2; ligne++) {
             for (int i = 0; i < arrows.length; i++) {
                 System.out.print(arrows[i][ligne] + "   ");
@@ -88,7 +91,7 @@ public class AffichageJeu {
             }
         }
         if (nbLignes < pioche.length) {
-            String espaces = " ".repeat(88);
+            String espaces = " ".repeat(85);
             for (int i = nbLignes; i < pioche.length; i++) {
                 System.out.println(espaces + pioche[i]);
             }
@@ -99,10 +102,10 @@ public class AffichageJeu {
         ArrayList<Animal> main = joueur.getMain();
         String[] tab = new String[main.size() + 1];
 
-        tab[0] = "\tVotre main :";
+        tab[0] = "Votre main :";
         for (int i = 0; i < main.size(); i++) {
             int num = i+1;
-            tab[num] = "\t" + num + ". " + main.get(i).getNom() + " PV: " + main.get(i).getPv() +
+            tab[num] = num + ". " + main.get(i).getNom() + " PV: " + main.get(i).getPv() +
                     " Att: " + main.get(i).getAttack() + " Gouttes de sang: " +
                     main.get(i).getGouttesSang() + " Os: " + main.get(i).getOs();
         }
