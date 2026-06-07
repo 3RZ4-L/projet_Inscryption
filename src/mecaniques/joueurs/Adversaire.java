@@ -31,12 +31,21 @@ public class Adversaire extends Joueur{
         getLigne().croissance();
     }
 
-    private void peutPiocher(){
+    public void peutPiocher(){
         try{
             piocher();
         }
         catch(Exception err){
         }
+    }
+
+    public boolean enoughRessources(Animal anim){
+        return anim.getGouttesSang() <= m_goutteSang && anim.getOs() <= m_os;
+    }
+
+    public void spendRessources(Animal anim){
+        m_goutteSang -= anim.getGouttesSang();
+        m_os -= anim.getOs();
     }
 
     public int choisirPositionAnnonce(Ligne ligne){
@@ -93,6 +102,10 @@ public class Adversaire extends Joueur{
         for(int i = 0; i < main.size(); i++){
             Animal cart = main.get(i);
 
+            if(!enoughRessources(cart)){
+                continue;
+            }
+
             if(cart.getPv() > maxHp){
                 maxHp = cart.getPv();
                 maxDmg = cart.getAttack();
@@ -116,6 +129,10 @@ public class Adversaire extends Joueur{
         for(int i = 0; i < main.size(); i++){
             Animal cart = main.get(i);
 
+            if(!enoughRessources(cart)){
+                continue;
+            }
+
             if(cart.getAttack() > maxDmg){
                 maxDmg = cart.getAttack();
                 maxHp = cart.getPv();
@@ -135,7 +152,13 @@ public class Adversaire extends Joueur{
         }
 
         Animal cart = getMain().get(idCart);
+
+        if(!enoughRessources(cart)){
+            return false;
+        }
+
         if(m_ligneAnnonce.placerCarte(cart, position)){
+            spendRessources(cart);
             getMain().remove(idCart);
             return true;
         }
