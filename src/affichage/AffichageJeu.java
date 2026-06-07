@@ -1,9 +1,9 @@
 package affichage;
 import mecaniques.cartes.Animal;
 import mecaniques.cartes.Carte;
+import mecaniques.joueurs.Joueur;
 import mecaniques.joueurs.Ligne;
 import mecaniques.joueurs.Adversaire;
-import mecaniques.joueurs.Joueur;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -20,16 +20,10 @@ public class AffichageJeu {
         afficherLigneCart(adversaire.getLigne(), "A");
         afficherLigneArrow(true);
         afficherLigneCart(joueur.getLigne(), "B");
+        System.out.println("Gouttes de Sang : "+joueur.getGoutteSang()+" OS : "+ joueur.getOs()+ "\n");
         afficherMainEtPioche(joueur);
         System.out.println("\n_____________________________________________ Score : " + score + " __________________________________________________\n");
 
-    }
-
-    public void message(String Titremessage){
-        if (Titremessage.equals("ErrPlacer")){
-            Messages m = new Messages();
-            m.errPlacer();
-        }
     }
 
     public void afficherLigneCart(Ligne ligne, String lettre){
@@ -96,6 +90,18 @@ public class AffichageJeu {
                 System.out.println(espaces + pioche[i]);
             }
         }
+    }
+
+    public void Consignes(){
+        System.out.println(
+                "*---------------------------------------------------------------------------*\n" +
+                        "|\tActions possibles:                                                     \t|\n" +
+                        "|\t[fin] - Terminer votre tour                                            \t|\n" +
+                        "|\t[piocher] - Piocher une carte                                          \t|\n" +
+                        "|\t[placer <numero carte> <position>] - Placer une carte sur le plateau   \t|\n" +
+                        "|\t[sacrifier <liste de sacrifices>] - Sacrificer une carte sur le plateau\t|\n" +
+                        "*---------------------------------------------------------------------------*"
+        );
     }
 
     private String[] LaMain(Joueur joueur) {

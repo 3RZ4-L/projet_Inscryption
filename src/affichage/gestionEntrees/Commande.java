@@ -5,120 +5,200 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Commande {
+
     private NomCommande m_commande;
-    private int m_position;
-    private int m_numeroCarte;
-    private List<Integer> m_sacrifices = new ArrayList();
+    private int m_position = -1;
+    private int m_numeroCarte = -1;
+    private final List<Integer> m_sacrifices = new ArrayList<>();
 
     public Commande() {
-        System.out.println(
-                "*---------------------------------------------------------------------------*\n" +
-                "|\tActions possibles:                                                     \t|\n" +
-                "|\t[fin] - Terminer votre tour                                            \t|\n" +
-                "|\t[piocher] - Piocher une carte                                          \t|\n" +
-                "|\t[placer <numero carte> <position>] - Placer une carte sur le plateau   \t|\n" +
-                "|\t[sacrifier <liste de sacrifices>] - Sacrificer une carte sur le plateau\t|\n" +
-                "*---------------------------------------------------------------------------*"
-        );
         Scanner scanner = new Scanner(System.in);
         String entree = scanner.nextLine().trim().toLowerCase();
+
+        analyserCommande(entree);
+    }
+
+    private void analyserCommande(String entree) {
         String[] morceaux = entree.split("\\s+");
 
-        m_commande = null;
-        m_position = -1;
-        m_numeroCarte = -1;
-
-        if (morceaux.length > 0) {
-            m_commande = NomCommande.fromString(morceaux[0]);
+        if (morceaux.length == 0) {
+            System.out.println("Commande vide");
+            return;
         }
-        if (m_commande != null) {
-            switch (m_commande) {
-                case PLACER:
-                    if (morceaux.length == 3) {
-                        m_numeroCarte = Integer.parseInt(morceaux[1]);
-                        String positionStr = morceaux[2];
-                        if (positionStr.startsWith("a") || positionStr.startsWith("b")) {
-                            positionStr = positionStr.substring(1);
-                        }
-                        m_position = Integer.parseInt(positionStr) - 1;
-                    }
-                    else {
-                        System.out.println("Format de la commande [placer] invalide.\nplacer <numéro> <position>");
-                        m_commande = null;
-                    }
-                    break;
 
-                case SACRIFIER:
-                    if (morceaux.length > 1)
-                        for (int i = 1; i < morceaux.length; i++) {
-                            String numStr = morceaux[i];
-                            if (numStr.startsWith("a") || numStr.startsWith("b")) {
-                                numStr = numStr.substring(1);
-                            }
-                            int num = Integer.parseInt(numStr) - 1;
-                            if (num >= 0 && num < 4) {
-                                m_sacrifices.add(num);
-                            } else {
-                                System.out.println("Position invalide (doit être entre 1 et 4)");
-                            }
-                        }
-                    else{
-                        System.out.println("Format de nombre invalide pour le sacrifice");
-                    }
-                    break;
-                case PIOCHER:
-                    break;
-                case FIN:
-                    break;
-                default:
-                    System.out.println("Commande inconnue");
-                    break;
-            }
-        } else {
+        m_commande = NomCommande.fromString(morceaux[0]);
+
+        if (m_commande == null) {
             System.out.println("Commande non reconnue");
+            return;
+        }
+
+        switch (m_commande) {
+            case PLACER:
+                traiterPlacer(morceaux);
+                break;
+
+            case SACRIFIER:
+                traiterSacrifier(morceaux);
+                break;
+
+            case PIOCHER:
+            case FIN:
+                break;
+
+            default:
+                System.out.println("Commande inconnue");
+                m_commande = null;
+        }
+    }
+
+    private void traiterPlacer(String[] morceaux) {
+        if (morceaux.length != 3) {
+            System.out.println("""
+                    Format invalide :
+                    placer <numeroCarte> <position>
+                    """);
+            m_commande = null;
+            return;
+        }
+
+        Integer numeroCarte = convertirEntier(morceaux[1]);
+        Integer position = convertirPosition(morceaux[2]);
+
+        if (numeroCarte == null || position == null) {
+            m_commande = null;
+            return;
+        }
+
+        m_numeroCarte = numeroCarte;
+        m_position = position;
+    }
+
+    private void traiterSacrifier(String[] morceaux) {
+        if (morceaux.length < 2) {
+            System.out.println("Veuillez préciser au moins une position.");
+            m_commande = null;
+            return;
+        }
+
+        for (int i = 1; i < morceaux.length; i++) {
+            Integer position = convertirPosition(morceaux[i]);
+
+            if (position == null) {
+                continue;
+            }
+
+            if (position >= 0 && position < 4) {
+                m_sacrifices.add(position);
+            } else {
+                System.out.println("Position invalide : " + morceaux[i]);
+            }
+        }
+    }
+
+    private Integer convertirPosition(String texte) {
+        if (texte.startsWith("a") || texte.startsWith("b")) {
+            texte = texte.substring(1);
+        }
+
+        Integer valeur = convertirEntier(texte);
+
+        if (valeur == null) {
+            System.out.println("Position invalide : " + texte);
+            return null;
+        }
+
+        return valeur - 1;
+    }
+
+    private Integer convertirEntier(String texte) {
+        try {
+            return Integer.parseInt(texte);
+        } catch (NumberFormatException e) {
+            System.out.println("'" + texte + "' n'est pas un nombre valide.");
+            return null;
         }
     }
 
     public boolean estValide(int nbCarteMax, boolean aPiochee) {
-        if (m_commande == null) return false;
+        if (m_commande == null) {
+            return false;
+        }
+
         switch (m_commande) {
             case PLACER:
-                boolean positionValide = m_position >= 0 && m_position < 4;
-                boolean carteValide = m_numeroCarte > 0 && m_numeroCarte <= nbCarteMax;
-                if (!positionValide) {
-                    System.out.println("Position invalide. La position doit être entre 1 et 4");
-                }
-                if (!carteValide) {
-                    System.out.println("Numéro de carte invalide. Vous avez " + nbCarteMax + " carte(s) en main");
-                }
-                return positionValide && carteValide;
+                return validerPlacer(nbCarteMax);
+
             case PIOCHER:
-                if (!aPiochee) return true;
-                System.out.println("Vous ne pouvez piocher qu'une seule fois par tour");
-                return false;
-            case SACRIFIER:
-                if (m_sacrifices.isEmpty()) {
-                    System.out.println("Veuillez donner au moins une position à sacrifier");
+                if (aPiochee) {
+                    System.out.println("Vous ne pouvez piocher qu'une seule fois par tour.");
+                    pause();
                     return false;
                 }
                 return true;
+
+            case SACRIFIER:
+                if (m_sacrifices.isEmpty()) {
+                    System.out.println("Veuillez donner au moins une position à sacrifier.");
+                    pause();
+                    return false;
+                }
+                return true;
+
             case FIN:
                 return true;
+
             default:
                 return false;
         }
     }
 
+    private boolean validerPlacer(int nbCarteMax) {
+        boolean positionValide = m_position >= 0 && m_position < 4;
+        boolean carteValide = m_numeroCarte > 0 && m_numeroCarte <= nbCarteMax;
+
+        if (!positionValide) {
+            System.out.println("Position invalide. La position doit être entre 1 et 4.");
+            pause();
+        }
+
+        if (!carteValide) {
+            System.out.println("Numéro de carte invalide. Vous avez "
+                    + nbCarteMax + " carte(s) en main.");
+            pause();
+        }
+
+        return positionValide && carteValide;
+    }
+
     public NomCommande getCommande() {
         return m_commande;
     }
+
     public int getPosition() {
         return m_position;
     }
+
     public int getNumeroCarte() {
         return m_numeroCarte;
     }
+
     public List<Integer> getSacrifices() {
         return m_sacrifices;
+    }
+
+    public static void pause() {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    public void errPlacer() {
+        System.out.println("\n------------------------------------------------------------------------");
+        System.out.println("Vous ne pouvez pas placer cette carte, os ou gouttes de sang insuffisants.");
+        System.out.println("------------------------------------------------------------------------");
+        pause();
     }
 }
