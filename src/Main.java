@@ -1,3 +1,6 @@
+import affichage.gestionEntrees.Choix;
+import mecaniques.cartes.Animal;
+import mecaniques.cartes.CarteFactory;
 import mecaniques.jeu.Partie;
 
 public class Main

@@ -29,7 +29,7 @@ public class AffichagePioche {
         res += "\t\tGouttes de sang : " + anim.getGouttesSang() + "\n";
         res += "\t\tOS : " + anim.getOs() + "\n";
         res += anim.estVolant() ? "\t\tVolant" + "\n" : "";
-        res += anim.getNamePouvoir().isEmpty() ? "\t\tPouvoir : " + anim.getPouvoir() + "\n" : "";
+        res += anim.getPouvoir().isPresent() ? "\t\tPouvoir : " + anim.getNamePouvoir() + "\n" : "";
 
         System.out.println(res);
     }

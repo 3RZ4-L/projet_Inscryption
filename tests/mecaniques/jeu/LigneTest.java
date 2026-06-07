@@ -2,80 +2,104 @@ package mecaniques.jeu;
 
 import mecaniques.cartes.Animal;
 import mecaniques.cartes.Carte;
+import mecaniques.joueurs.Ligne;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Optional;
+
+import static mecaniques.cartes.Pouvoirs.*;
 import static org.junit.Assert.*;
 
 public class LigneTest {
-
     private Ligne ligne;
-    private Animal testAnimal;
+    private Animal chat;
+    private Animal louveteau;
+    private Animal grizzly;
 
     @Before
     public void setUp() {
         ligne = new Ligne();
-        testAnimal = new Animal("Test", 5, 3, 2, 1, false);
+        chat = new Animal("Chat", 1, 0, 1, 0, false, NOMBREUSES_VIES);
+        louveteau = new Animal("Louveteau", 1, 1, 1, 0, false, CROISSANCE);
+        grizzly = new Animal("Grizzly", 6, 4, 3, 0, false);
     }
 
     @Test
-    public void test_constructor_ligneVide() {
+    public void testConstructeur() {
+        assertNotNull(ligne);
         for (int i = 0; i < 4; i++) {
             assertTrue(ligne.estCaseVide(i));
         }
     }
 
     @Test
-    public void test_estCaseVide_caseVide() {
-        assertTrue(ligne.estCaseVide(0));
-        assertTrue(ligne.estCaseVide(1));
-        assertTrue(ligne.estCaseVide(2));
-        assertTrue(ligne.estCaseVide(3));
-    }
-
-    @Test
-    public void test_estCaseVide_caseOccupee() {
-        ligne.placerCarte(testAnimal, 0);
+    public void testPlacerCarte() {
+        assertTrue(ligne.placerCarte(chat, 0));
         assertFalse(ligne.estCaseVide(0));
-        assertTrue(ligne.estCaseVide(1));
+        assertFalse(ligne.placerCarte(louveteau, 0));
     }
 
     @Test
-    public void test_placerCarte_remplaceCarteExistante() {
-        ligne.placerCarte(testAnimal, 0);
-        Animal nouvelleCarte = new Animal("Nouveau", 3, 2, 1, 0, false);
-        ligne.placerCarte(nouvelleCarte, 0);
+    public void testEstCaseVide() {
+        assertTrue(ligne.estCaseVide(0));
+        assertTrue(ligne.estCaseVide(-1));
+        assertTrue(ligne.estCaseVide(4));
 
-        Carte[] cartes = ligne.getCartes();
-        assertEquals("Nouveau", cartes[0].getNom());
-    }
-
-    @Test(expected = ArrayIndexOutOfBoundsException.class)
-    public void test_placerCarte_positionInvalide_negative() {
-        ligne.placerCarte(testAnimal, -1);
-    }
-
-    @Test(expected = ArrayIndexOutOfBoundsException.class)
-    public void test_placerCarte_positionInvalide_tropGrande() {
-        ligne.placerCarte(testAnimal, 4);
+        ligne.placerCarte(chat, 0);
+        assertFalse(ligne.estCaseVide(0));
     }
 
     @Test
-    public void test_getCartes_retourneTableau() {
-        Carte[] cartes = ligne.getCartes();
-        assertNotNull(cartes);
-        assertEquals(4, cartes.length);
+    public void testSacrifier() {
+        ligne.placerCarte(chat, 0);
+        assertTrue(ligne.sacrifier(0));
+        assertTrue(ligne.estCaseVide(0));
+
+        assertFalse(ligne.sacrifier(1));
+
+        ligne.placerCarte(chat, 0);
+        assertTrue(ligne.sacrifier(0));
+        assertFalse(ligne.estCaseVide(0));
     }
 
     @Test
-    public void test_getCartes_apresPlacements() {
-        ligne.placerCarte(testAnimal, 0);
-        Animal autre = new Animal("Autre", 3, 2, 1, 0, false);
-        ligne.placerCarte(autre, 2);
+    public void testCroissance() {
+        ligne.placerCarte(louveteau, 0);
+        ligne.placerCarte(chat, 1);
+        ligne.croissance();
 
-        Carte[] cartes = ligne.getCartes();
-        assertEquals(testAnimal, cartes[0]);
-        assertNull(cartes[1]);
-        assertEquals(autre, cartes[2]);
-        assertNull(cartes[3]);
+        Optional<Carte> carte0 = ligne.getCarte(0);
+        assertTrue(carte0.isPresent());
+        assertEquals("Loup", carte0.get().getNom());
+
+        Optional<Carte> carte1 = ligne.getCarte(1);
+        assertTrue(carte1.isPresent());
+        assertEquals("Chat", carte1.get().getNom());
+    }
+
+    @Test
+    public void testGetCarte() {
+        ligne.placerCarte(chat, 0);
+        Optional<Carte> carte = ligne.getCarte(0);
+        assertTrue(carte.isPresent());
+        assertEquals("Chat", carte.get().getNom());
+
+        Optional<Carte> carteVide = ligne.getCarte(1);
+        assertTrue(carteVide.isEmpty());
+
+        Optional<Carte> carteInvalide = ligne.getCarte(5);
+        assertTrue(carteInvalide.isEmpty());
+    }
+
+    @Test
+    public void testRemoveCart() {
+        ligne.placerCarte(chat, 0);
+        assertFalse(ligne.estCaseVide(0));
+
+        ligne.removeCart(0);
+        assertTrue(ligne.estCaseVide(0));
+
+        ligne.removeCart(5);
     }
 }

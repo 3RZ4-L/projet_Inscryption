@@ -2,9 +2,9 @@ package mecaniques.joueurs;
 
 import mecaniques.cartes.Animal;
 import mecaniques.cartes.Carte;
-import mecaniques.jeu.Ligne;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Adversaire extends Joueur{
     private Ligne m_ligneAnnonce;
@@ -61,11 +61,12 @@ public class Adversaire extends Joueur{
         int cartAttMax = -1;
 
         for(int i = 0; i < 4; i++){
-            Carte playerCart = ligne.getCartes()[i];
-            Carte advBattleCart = getLigne().getCartes()[i];
-            Carte advAnnonceCart = m_ligneAnnonce.getCartes()[i];
+            Optional<Carte> playerCarte = ligne.getLigne()[i];
+            Optional<Carte> advBattleCarte = getLigne().getLigne()[i];
+            Optional<Carte> advAnnonceCarte = m_ligneAnnonce.getLigne()[i];
 
-            if (playerCart != null && advBattleCart == null && advAnnonceCart == null) {
+            if (playerCarte.isPresent() && advBattleCarte.isEmpty() && advAnnonceCarte.isEmpty()) {
+                Carte playerCart = playerCarte.get();
                 if (playerCart.getAttack() > cartAttMax) {
                     cartAttMax = playerCart.getAttack();
                     placeCart = i;
@@ -77,7 +78,7 @@ public class Adversaire extends Joueur{
 
     public int emptyPlaceAnnonce(){
         for(int i = 0; i < 4; i++){
-            if(getLigne().getCartes()[i] == null && m_ligneAnnonce.getCartes()[i] == null){
+            if (getLigne().getCarte(i).isEmpty() && m_ligneAnnonce.getCarte(i).isEmpty()){
                 return i;
             }
         }
@@ -85,8 +86,8 @@ public class Adversaire extends Joueur{
     }
 
     public int cartChois(int position, Ligne ligne){
-        Carte plCart = ligne.getCartes()[position];
-        if(plCart != null){
+        Optional<Carte> plCarte = ligne.getCarte(position);
+        if(plCarte != null){
             return placeDefense();
         }
         return placeAttacker();
@@ -167,9 +168,10 @@ public class Adversaire extends Joueur{
 
     public void annonceToBattle(){
         for (int i = 0; i < 4; i++) {
-            Carte carteAnnoncee = m_ligneAnnonce.getCartes()[i];
-            if (carteAnnoncee != null && getLigne().estCaseVide(i)) {
-                getLigne().placerCarte(carteAnnoncee, i);
+            Optional<Carte> carteAnnoncee = m_ligneAnnonce.getLigne()[i];
+            if (carteAnnoncee.isPresent() && getLigne().estCaseVide(i)) {
+                Carte carte = carteAnnoncee.get();
+                getLigne().placerCarte(carte, i);
                 m_ligneAnnonce.removeCart(i);
             }
         }
