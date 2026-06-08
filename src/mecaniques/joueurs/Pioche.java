@@ -2,6 +2,8 @@ package mecaniques.joueurs;
 
 import mecaniques.cartes.Animal;
 import mecaniques.cartes.CarteFactory;
+
+import java.util.Optional;
 import java.util.Stack;
 
 public class Pioche {
@@ -13,9 +15,12 @@ public class Pioche {
         }
     }
 
-    public Animal piocher(){
-        return m_pioche.pop();
-    }
+    /*public Optional<Animal> piocher(){    ## remplacer is null verification in class Joueur
+        if(m_pioche.isEmpty()){
+            return Optional.empty();
+        }
+        return Optional.of(m_pioche.pop());
+    }*/
     public void ajouter(Animal carte){
         m_pioche.add(carte);
     }
