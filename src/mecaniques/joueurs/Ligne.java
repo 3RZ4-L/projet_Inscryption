@@ -73,17 +73,35 @@ public class Ligne {
             if (m_cartes[i].isEmpty()) continue;
 
             Carte att = m_cartes[i].get();
-            if (defenseur.m_cartes[i].isEmpty()) continue;
+            Optional<Carte> def = defenseur.getCarte(i);
+            //if (defenseur.m_cartes[i].isEmpty()) continue;   ## verification changed
 
-            Carte def = defenseur.m_cartes[i].get();
+            //Carte def = defenseur.m_cartes[i].get();
+            if(att.estVolant() || def.isEmpty()){
+                score += att.attaqueDirect();
+            }
+            else{
+                Carte defCart = def.get();
+                att.doDamage(defCart);
 
-            score += att.doDamage(def);
+                if(defCart.estMort()){
+                    if(defCart.estCreature()){
+                        joueur.tuerAdversaire();
+                    }
+                    defenseur.removeCart(i);
+                }
+            }
+            if(att.aPouvoir(Pouvoirs.COUREUR)){
+                courrir(i);
+            }
+
+            /*score += att.doDamage(def);
             if (def.estMort()) {
                 if(def.estCreature()){ joueur.tuerAdversaire();}
                 defenseur.m_cartes[i] = Optional.empty();
             }
 
-            this.courrir(i);
+            this.courrir(i);*/
         }
         return score;
     }

@@ -87,7 +87,7 @@ public class Adversaire extends Joueur{
 
     public int cartChois(int position, Ligne ligne){
         Optional<Carte> plCarte = ligne.getCarte(position);
-        if(plCarte != null){
+        if(plCarte.isPresent()){
             return placeDefense();
         }
         return placeAttacker();

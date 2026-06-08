@@ -46,7 +46,7 @@ public class Animal extends Carte {
         return m_volant;
     }
 
-    public int doDamage(Carte other) {
+    /*public int doDamage(Carte other) {    ##enlever, car les pouvoirs ne fonctionnent pas
         if (this.estVolant()) {
             return attaqueDirect();
         }
@@ -55,7 +55,7 @@ public class Animal extends Carte {
         }
         other.m_points_de_vie -= this.getAttack();
         return this.getAttack();
-    }
+    }*/
 
     public int attaqueDirect() {
         return this.getAttack();
@@ -66,13 +66,20 @@ public class Animal extends Carte {
     }
 
     public String getNamePouvoir() {
-        if (m_pouvoir == null || m_pouvoir.isEmpty())
+        if (/*m_pouvoir == null || */m_pouvoir.isEmpty())
             return "";
-        if (m_pouvoir.size() == 1)
+        String res = "";
+        /*if (m_pouvoir.size() == 1)
             return m_pouvoir.get(0).getNom();
         if (m_pouvoir.size() == 2)
-            return m_pouvoir.get(0).getNom() + ", " + m_pouvoir.get(1).getNom();
-        return "";
+            return m_pouvoir.get(0).getNom() + ", " + m_pouvoir.get(1).getNom();*/
+        for(int i = 0; i < m_pouvoir.size(); i++){
+            res += m_pouvoir.get(i).getNom();
+            if(i < m_pouvoir.size()){
+                res += " ,";
+            }
+        }
+        return res;
     }
 
     public Optional<Pouvoirs> getPouvoir() {
@@ -89,10 +96,10 @@ public class Animal extends Carte {
         return false;
     }
 
-    public void ajouterPouvoir(Pouvoirs pouvoir) {
-        if (pouvoir != null)
-            m_pouvoir.add(pouvoir);
-    }
+    /*public void ajouterPouvoir(Optional<Pouvoirs> pouvoir) { ##pour Joueur##
+        if (pouvoir.isPresent())
+            m_pouvoir.add(pouvoir.get());
+    }*/
 
     public boolean aPouvoir(Pouvoirs pouvoir) {
         return m_pouvoir.contains(pouvoir);

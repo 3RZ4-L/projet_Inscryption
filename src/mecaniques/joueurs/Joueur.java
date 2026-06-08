@@ -26,9 +26,9 @@ public class Joueur {
     }
 
     public void piocher() {
-        Animal carte = m_pioche.piocher();
-        if (carte != null) {
-            m_main.add(carte);
+        Optional<Animal> carte = m_pioche.piocher();
+        if (carte.isPresent()) {
+            m_main.add(carte.get());
         }
     }
 
