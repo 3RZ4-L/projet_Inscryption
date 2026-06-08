@@ -1,6 +1,7 @@
 package mecaniques.jeu;
 
 import affichage.AffichageJeu;
+import affichage.Messages;
 import affichage.gestionEntrees.*;
 import mecaniques.cartes.*;
 import mecaniques.joueurs.*;
@@ -22,25 +23,29 @@ public class Partie {
         m_partie = 1;
     }
 
-    public int demarrer() {
+    public void demarrer() {
         while (m_score < 5 && m_score > -5) {
+            m_tour = 0;
             for (int i = 0; i < 3; i++){
+                tourAdversaire();
                 if (i == 1) {
                     Animal[] deuxAnimaux = CarteFactory.getDeuxAnimaux();
                     Choix choix = new Choix(m_joueur, deuxAnimaux[0], deuxAnimaux[1]);
                     m_joueur.ajouterDansMain(choix.getChoix());
                     m_joueur.croissanceDuLouveteau();
                 }
-                tourAdversaire();
                 tourJoueur();
+                Messages message = new Messages();
+                message.resultats();
                 m_score += commencerAttaques(m_joueur, m_adversaire);
                 m_score -= commencerAttaques(m_adversaire, m_joueur);
+                message.scoreFinal(m_score);
+                m_tour++;
                 if (m_score > 5) m_score = 5;
                 if (m_score < -5) m_score = -5;
             }
             m_partie ++;
         }
-        return m_score;
     }
 
     public void tourJoueur() {

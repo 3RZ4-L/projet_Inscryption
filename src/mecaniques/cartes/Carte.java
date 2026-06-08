@@ -1,5 +1,6 @@
 package mecaniques.cartes;
 
+import java.util.List;
 import java.util.Optional;
 
 import static mecaniques.cartes.Pouvoirs.*;
@@ -25,33 +26,7 @@ public abstract class Carte {
         return (m_points_de_vie <= 0);
     }
 
-    public int doDamage(Carte other) {
-        int dmg = this.getAttack();
-
-        if (other.aPouvoir(PUANT)) {
-            dmg--;
-        }
-        if (dmg < 0) {
-            dmg = 0;
-        }
-
-        other.m_points_de_vie -= dmg;
-        if (other.m_points_de_vie < 0) {
-            other.m_points_de_vie = 0;
-        }
-
-        if (this.aPouvoir(CONTACT_MORTEL) && dmg > 0 && other.estCreature()) {
-            other.m_points_de_vie = 0;
-        }
-
-        if (other.aPouvoir(PIQUES_POINTUES) && dmg > 0) {
-            m_points_de_vie -= 1;
-            if (m_points_de_vie < 0) {
-                m_points_de_vie = 0;
-            }
-        }
-        return dmg;
-    }
+    public abstract int doDamage(Optional<Carte> other);
 
     public abstract int attaqueDirect();
 
@@ -63,9 +38,9 @@ public abstract class Carte {
 
     public abstract boolean aPouvoir(Pouvoirs pouvoir);
 
-    public abstract Optional<Pouvoirs> getPouvoir();
-
     public abstract boolean estCreature();
 
     public abstract Optional<Carte> croissance();
+
+    public abstract Optional<List<Pouvoirs>> getPouvoir();
 }

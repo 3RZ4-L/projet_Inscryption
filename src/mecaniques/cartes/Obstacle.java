@@ -1,5 +1,6 @@
 package mecaniques.cartes;
 
+import java.util.List;
 import java.util.Optional;
 
 public class Obstacle extends Carte {
@@ -16,6 +17,10 @@ public class Obstacle extends Carte {
         return 0;
     }
 
+    public int doDamage(Optional<Carte> other){
+        return 0;
+    }
+
     public int getAttack() {
         return 0;
     }
@@ -28,7 +33,7 @@ public class Obstacle extends Carte {
         return "";
     }
 
-    public Optional<Pouvoirs> getPouvoir() {
+    public Optional<List<Pouvoirs>> getPouvoir() {
         return Optional.empty();
     }
 
@@ -39,4 +44,5 @@ public class Obstacle extends Carte {
     public Optional<Carte> croissance() {
         return Optional.empty();
     }
+
 }

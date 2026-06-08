@@ -1,8 +1,10 @@
 package mecaniques.joueurs;
 
+import affichage.Messages;
 import mecaniques.cartes.Carte;
 import mecaniques.cartes.Pouvoirs;
 
+import java.util.List;
 import java.util.Optional;
 import static mecaniques.cartes.Pouvoirs.NOMBREUSES_VIES;
 
@@ -47,10 +49,11 @@ public class Ligne {
     }
 
     public Optional<Pouvoirs> PierreDeSacrifice(int position){
-        Optional<Pouvoirs> pouvoirOpt = m_cartes[position].get().getPouvoir();
-        if (pouvoirOpt.isPresent()){
+        Optional<List<Pouvoirs>> lstOpt = m_cartes[position].get().getPouvoir();
+        if (lstOpt.isPresent()){
+            List<Pouvoirs> pouvoirsLst = lstOpt.get();
             sacrifier(position);
-            return pouvoirOpt;
+            return Optional.of(pouvoirsLst.get(0));
         }
         return Optional.empty();
     }
@@ -68,22 +71,42 @@ public class Ligne {
     }
 
     public int attaquer(Joueur joueur, Ligne defenseur){
+        Messages message = new Messages();
         int score = 0;
         for (int i = 0; i < 4; i++) {
             if (m_cartes[i].isEmpty()) continue;
 
             Carte att = m_cartes[i].get();
-            if (defenseur.m_cartes[i].isEmpty()) continue;
+            Optional<Carte> def = defenseur.m_cartes[i];
 
-            Carte def = defenseur.m_cartes[i].get();
-
-            score += att.doDamage(def);
-            if (def.estMort()) {
-                if(def.estCreature()){ joueur.tuerAdversaire();}
-                defenseur.m_cartes[i] = Optional.empty();
+            boolean isDirectAttack = false;
+            if (att.estVolant()) {
+                isDirectAttack = true;
+            } else if (def.isEmpty()) {
+                isDirectAttack = true;
+            } else if (def.get().estMort()) {
+                isDirectAttack = true;
             }
 
-            this.courrir(i);
+            int damageDealt = att.doDamage(def);
+            score += damageDealt;
+
+            if (isDirectAttack) {
+                message.attackDirect(att, damageDealt);
+            } else if (def.isPresent()) {
+                message.attackCart(att, def.get());
+            }
+
+            if (def.isPresent()) {
+                if (def.get().estMort()) {
+                    message.died(def.get());
+                    if (def.get().estCreature()) {
+                        joueur.tuerAdversaire();
+                    }
+                    defenseur.m_cartes[i] = Optional.empty();
+                }
+                this.courrir(i);
+            }
         }
         return score;
     }

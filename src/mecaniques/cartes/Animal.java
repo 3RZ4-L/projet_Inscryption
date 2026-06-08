@@ -1,10 +1,12 @@
 package mecaniques.cartes;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import static mecaniques.cartes.Pouvoirs.CROISSANCE;
-import static mecaniques.cartes.Pouvoirs.NULL;
+import static mecaniques.cartes.Pouvoirs.*;
+import static mecaniques.cartes.Pouvoirs.CONTACT_MORTEL;
+import static mecaniques.cartes.Pouvoirs.PIQUES_POINTUES;
 
 public class Animal extends Carte {
     private int m_attaque;
@@ -46,19 +48,44 @@ public class Animal extends Carte {
         return m_volant;
     }
 
-    public int doDamage(Carte other) {
+    public int doDamage(Optional<Carte> other) {
+        // Volant = attaque directe toujours
         if (this.estVolant()) {
-            return attaqueDirect();
+            return m_attaque;
         }
-        if (other == null || other.estMort()) {
-            return attaqueDirect();
+
+        if (other.isEmpty()) {
+            return m_attaque;
         }
-        other.m_points_de_vie -= this.getAttack();
-        return this.getAttack();
+
+        Carte carte = other.get();
+        if (carte.estMort()){
+            return m_attaque;
+        }
+
+        int dmg = m_attaque;
+        if (carte.aPouvoir(PUANT)) {
+            dmg--;
+        }
+        if (dmg < 0) dmg = 0;
+        carte.m_points_de_vie -= dmg;
+
+        if (carte.m_points_de_vie < 0) carte.m_points_de_vie = 0;
+
+        if (this.aPouvoir(CONTACT_MORTEL) && dmg > 0 && carte.estCreature()) {
+            carte.m_points_de_vie = 0;
+        }
+
+        if (carte.aPouvoir(PIQUES_POINTUES) && dmg > 0) {
+            m_points_de_vie -= 1;
+            if (m_points_de_vie < 0) m_points_de_vie = 0;
+        }
+
+        return dmg;
     }
 
     public int attaqueDirect() {
-        return this.getAttack();
+        return m_attaque;
     }
 
     public boolean estCreature() {
@@ -75,9 +102,9 @@ public class Animal extends Carte {
         return "";
     }
 
-    public Optional<Pouvoirs> getPouvoir() {
+    public Optional<List<Pouvoirs>> getPouvoir() {
         if (m_pouvoir != null && !m_pouvoir.isEmpty()) {
-            return Optional.of(m_pouvoir.get(0));
+            return Optional.of(m_pouvoir);
         }
         return Optional.empty();
     }
