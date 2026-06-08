@@ -54,11 +54,9 @@ public class Commande {
 
     private void traiterPlacer(String[] morceaux) {
         if (morceaux.length != 3) {
-            System.out.println("""
-                    Format invalide :
-                    placer <numeroCarte> <position>
-                    """);
+            System.out.println("Format invalide :\nplacer <numeroCarte> <position>");
             m_commande = null;
+            pause();
             return;
         }
 
@@ -78,6 +76,7 @@ public class Commande {
         if (morceaux.length < 2) {
             System.out.println("Veuillez préciser au moins une position.");
             m_commande = null;
+            pause();
             return;
         }
 
@@ -87,11 +86,11 @@ public class Commande {
             if (position == null) {
                 continue;
             }
-
             if (position >= 0 && position < 4) {
                 m_sacrifices.add(position);
             } else {
                 System.out.println("Position invalide : " + morceaux[i]);
+                pause();
             }
         }
     }
@@ -105,6 +104,7 @@ public class Commande {
 
         if (valeur == null) {
             System.out.println("Position invalide : " + texte);
+            pause();
             return null;
         }
 
@@ -116,6 +116,7 @@ public class Commande {
             return Integer.parseInt(texte);
         } catch (NumberFormatException e) {
             System.out.println("'" + texte + "' n'est pas un nombre valide.");
+            pause();
             return null;
         }
     }
@@ -163,8 +164,7 @@ public class Commande {
         }
 
         if (!carteValide) {
-            System.out.println("Numéro de carte invalide. Vous avez "
-                    + nbCarteMax + " carte(s) en main.");
+            System.out.println("Numéro de carte invalide. Vous avez " + nbCarteMax + " carte(s) en main.");
             pause();
         }
 
@@ -196,9 +196,7 @@ public class Commande {
     }
 
     public void errPlacer() {
-        System.out.println("\n------------------------------------------------------------------------");
-        System.out.println("Vous ne pouvez pas placer cette carte, os ou gouttes de sang insuffisants.");
-        System.out.println("------------------------------------------------------------------------");
+        System.out.println("Vous ne pouvez pas placer cette carte.");
         pause();
     }
 }

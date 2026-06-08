@@ -111,6 +111,26 @@ public class CreateCard {
             res += "|";
             return res;
         }
+        return animMiddle();
+    }
+
+    public String pouvoir(String pouvoir){
+        if(!pouvoir.equals("")){
+            String res = "| " + pouvoir;
+            int espacesNecessaires = m_width - res.length();
+            for(int i = 0; i < espacesNecessaires; i++){
+                res += " ";
+            }
+            res += "|";
+            return res;
+        }
+        return animMiddle();
+    }
+
+    public String volant(boolean estVolant){
+        if(estVolant){
+            return "| Volant         |";
+        }
         return "";
     }
 }

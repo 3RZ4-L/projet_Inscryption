@@ -1,10 +1,12 @@
 package affichage;
 
 import mecaniques.cartes.Animal;
+import mecaniques.cartes.Pouvoirs;
 import mecaniques.joueurs.Joueur;
 import mecaniques.joueurs.Pioche;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AffichagePioche {
     public void afficherMain(Joueur j){
@@ -28,9 +30,14 @@ public class AffichagePioche {
         res += anim.getAttack() > 0 ? "\t\tAtt : " + anim.getAttack() + "\n" : "";
         res += "\t\tGouttes de sang : " + anim.getGouttesSang() + "\n";
         res += "\t\tOS : " + anim.getOs() + "\n";
-        res += anim.estVolant() ? "\t\tVolant" + "\n" : "";
-        res += anim.getPouvoir().isPresent() ? "\t\tPouvoir : " + anim.getNamePouvoir() + "\n" : "";
-
+        if (anim.estVolant()) {
+            res += "\t\tVolant\n";
+        } else {
+            List<Pouvoirs> pouvoirs = anim.getPouvoir().get();
+            for (int i = 0; i < pouvoirs.size() && i < 2; i++) {
+                res += "\t\tPouvoir " + (i+1) + " : " + pouvoirs.get(i).getNom() + "\n";
+            }
+        }
         System.out.println(res);
     }
 

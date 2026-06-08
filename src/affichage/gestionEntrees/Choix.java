@@ -49,7 +49,8 @@ public class Choix {
 
         System.out.println(
                 "\n*----------------------------Pierre de sacrifice :----------------------------*\n" +
-                        "Sacrifiez une carte afin de récupèrer son pouvoir (si la carte en possède).\n"
+                        "Sacrifiez une carte afin de récupèrer son pouvoir (si la carte en possède).\n"+
+                        "[fin] pour ne sacrifier aucune carte.\n"
         );
 
         AffichageJeu aff = new AffichageJeu();
@@ -60,6 +61,7 @@ public class Choix {
 
         while (!choixValide) {
             entree = scanner.nextLine().trim().toLowerCase();
+            if (entree.equals("fin")) return;
             String positionStr = entree;
             if (entree.startsWith("a") || entree.startsWith("b")) {
                 positionStr = entree.substring(1);
@@ -85,12 +87,14 @@ public class Choix {
                     "\n*----------------------------Pierre de sacrifice :----------------------------*\n" +
                             m_choix.getNom() + " a maintenant le pouvoir : " + pouvoirOpt.get().getNom() + "!\n"
             );
+            pause();
         }
         else {
             System.out.println(
                     "\n*----------------------------Pierre de sacrifice :----------------------------*\n" +
                             "La carte sacrifiée n'avait pas de pouvoir spécial.\n"
             );
+            pause();
         }
     }
 
@@ -109,5 +113,13 @@ public class Choix {
     public Animal getChoix(){
         System.out.println();
         return m_choix;
+    }
+
+    public static void pause() {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

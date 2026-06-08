@@ -1,10 +1,16 @@
 package affichage;
 
 import mecaniques.cartes.Carte;
+import mecaniques.joueurs.Joueur;
 
 public class Messages {
+
+    public void resultats(){
+        System.out.println("\n*------------------------- Resultats du tour : -------------------------*");
+    }
+
     public void attackDirect(Carte cart, int dmg){
-        System.out.println(cart.getNom() + " a fait attaque direct et infligé " + dmg + " dégats.\n");
+        System.out.println(cart.getNom() + " a fait attaque direct et infligé " + dmg + " dégats.");
     }
 
     public void attackCart(Carte cart, Carte other){
@@ -17,7 +23,16 @@ public class Messages {
         System.out.println(cart.getNom() + " est mort.");
     }
 
-    public void score(int score){
-        System.out.println("Score : " + score);
+    public void scoreFinal(int score){
+        System.out.println("*--------------------------- Score final : " + score + " ---------------------------*\n");
+        pause();
+    }
+
+    public static void pause() {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

@@ -1,11 +1,15 @@
 package affichage;
+
 import mecaniques.cartes.Animal;
 import mecaniques.cartes.Carte;
+import mecaniques.cartes.Pouvoirs;
 import mecaniques.joueurs.Joueur;
 import mecaniques.joueurs.Ligne;
 import mecaniques.joueurs.Adversaire;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 public class AffichageJeu {
@@ -14,7 +18,7 @@ public class AffichageJeu {
 
     public void afficherPlateau(Joueur joueur, Adversaire adversaire, int numPartie, int numTour, int score){
         System.out.println("\n________________________________________________ Partie " + numPartie + " _________________________________________________\n");
-        System.out.println("\tTour : "+numTour);
+        System.out.println("\tTour : "+(numTour+1));
         afficherLigneCart(adversaire.getLigne(), "");
         afficherLigneArrow(false);
         afficherLigneCart(adversaire.getLigne(), "A");
@@ -160,8 +164,15 @@ public class AffichageJeu {
     public String[] animCard(Carte carte){
         boolean volant = carte.estVolant();
         int dmg = carte.getAttack();
-        String nomPouv = carte.getNamePouvoir();
-        boolean have = !nomPouv.isEmpty();
+
+        Optional<List<Pouvoirs>> optPouvoirs = carte.getPouvoir();
+        List<Pouvoirs> pouvoirs = optPouvoirs.orElse(Collections.emptyList());
+
+        String nomPouv1 = !pouvoirs.isEmpty() ? String.valueOf(pouvoirs.get(0).getNom()) : "";
+        boolean have1 = !nomPouv1.isEmpty();
+
+        String nomPouv2 = pouvoirs.size() > 1 ? String.valueOf(pouvoirs.get(1).getNom()) : "";
+        boolean have2 = !nomPouv2.isEmpty();
 
         return new String[]{
                 m_createCard.animTopBottom(),
@@ -169,8 +180,8 @@ public class AffichageJeu {
                 m_createCard.separate(),
                 "| HP : " + m_createCard.animHP(carte),
                 dmg > 0 ? "| DMG : " + m_createCard.animDMG(carte) : m_createCard.animMiddle(),
-                volant ? "| Volant          |" : m_createCard.animMiddle(),
-                have ? m_createCard.pouvoir(carte) : m_createCard.animMiddle(),
+                (m_createCard.volant(volant).equals("") && have2) ? m_createCard.pouvoir(nomPouv2) : m_createCard.animMiddle(),
+                have1 ? m_createCard.pouvoir(nomPouv1) : m_createCard.animMiddle(),
                 m_createCard.animTopBottom()
         };
     }
