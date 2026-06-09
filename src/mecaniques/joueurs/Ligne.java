@@ -108,6 +108,7 @@ public class Ligne {
     }
 
     public int attaquer(Joueur joueur, Ligne defenseur) {
+        Messages messages = new Messages();
         int score = 0;
         boolean[] aDejaAttaque = new boolean[4];
 
@@ -125,17 +126,23 @@ public class Ligne {
             Optional<Carte> defenseurOpt = defenseur.getCarte(i);
 
             if (attaquant.estVolant() || defenseurOpt.isEmpty()) {
-                score += attaquant.doDamage(Optional.empty());
-            } else {
+                int dmg = attaquant.doDamage(Optional.empty());
+                if (dmg > 0){
+                    score += dmg;
+                    messages.attaqueDirect(attaquant);
+                }
+            }
+            else {
                 Carte carteDefenseur = defenseurOpt.get();
 
-                attaquant.doDamage(defenseurOpt);
+                int dmg = attaquant.doDamage(defenseurOpt);
+                if (dmg > 0) messages.attaquerCarte(attaquant, carteDefenseur);
 
                 if (carteDefenseur.estMort()) {
+                    messages.died(carteDefenseur);
                     if (carteDefenseur.estCreature()) {
                         joueur.tuerAdversaire();
                     }
-
                     defenseur.removeCart(i);
                 }
             }

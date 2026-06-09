@@ -1,7 +1,6 @@
 package mecaniques.joueurs;
 
 import mecaniques.cartes.Animal;
-import mecaniques.cartes.Pouvoirs;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -20,13 +19,13 @@ public class Joueur {
 
     private static int choisirNbObstaclesAleatoire() {
         Random random = new Random();
-        int valeur = random.nextInt(100); // 0 à 99
+        int valeur = random.nextInt(100);
 
-        if (valeur < 20) {     // 20% pour 2 obstacles
+        if (valeur < 20) {
             return 2;
-        } else if (valeur < 70) { // 50% pour 1 obstacle
+        } else if (valeur < 70) {
             return 1;
-        } else {                 // 30% pour 0 obstacle
+        } else {
             return 0;
         }
     }
@@ -81,14 +80,8 @@ public class Joueur {
     }
 
     public void nouvellePartie() {
-        m_ligne = new Ligne();
-        m_main.clear();
         m_os = 0;
         m_goutteSang = 0;
-
-        for (int i = 0; i < 4; i++) {
-            piocher();
-        }
     }
 
     public void ajouterDansPioche(Animal carte) {

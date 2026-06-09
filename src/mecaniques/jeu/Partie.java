@@ -38,9 +38,8 @@ public class Partie {
                 message.defaiteJeu();
                 return;
             }
-
-            // A la fin de la deuxième partie, le joueur choisit une carte
-            if (m_partie == 2) {
+            // A la fin du 2e tour, le joueur choisit une carte
+            if (m_tour == 2) {
                 choisirCarteFinDeuxiemePartie();
             }
             m_partie++;
@@ -53,7 +52,6 @@ public class Partie {
 
     public void jouerUnTour() {
         Messages message = new Messages();
-
         // Début du tour : les cartes avec Croissance peuvent évoluer
         m_joueur.getLigne().croissance();
         m_adversaire.getLigne().croissance();
@@ -64,6 +62,7 @@ public class Partie {
         // Tour du joueur
         tourJoueur();
 
+        message.resultats();
         // Attaque du joueur
         m_score += commencerAttaques(m_joueur, m_adversaire);
         limiterScore();
@@ -71,11 +70,8 @@ public class Partie {
             message.scoreFinal(m_score);
             return;
         }
-
-        // Tour automatique de l'adversaire
         m_adversaire.jouerTour();
-
-        // Attaque de l'adversaire
+        message.ligneDivision();
         m_score -= commencerAttaques(m_adversaire, m_joueur);
         limiterScore();
         message.scoreFinal(m_score);

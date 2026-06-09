@@ -100,20 +100,6 @@ public class CreateCard {
         return res;
     }
 
-    public String pouvoir(Carte cart){
-        String pouvoirName = cart.getNamePouvoir();
-        if(!pouvoirName.isEmpty()){
-            String res = "| " + pouvoirName;
-            int espacesNecessaires = m_width - res.length();
-            for(int i = 0; i < espacesNecessaires; i++){
-                res += " ";
-            }
-            res += "|";
-            return res;
-        }
-        return animMiddle();
-    }
-
     public String pouvoir(String pouvoir){
         if(!pouvoir.equals("")){
             String res = "| " + pouvoir;
@@ -129,7 +115,7 @@ public class CreateCard {
 
     public String volant(boolean estVolant){
         if(estVolant){
-            return "| Volant         |";
+            return "| Volant          |";
         }
         return "";
     }

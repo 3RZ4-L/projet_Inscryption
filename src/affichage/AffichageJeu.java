@@ -165,7 +165,7 @@ public class AffichageJeu {
     }
 
     public String[] animCard(Carte carte){
-        boolean volant = carte.estVolant();
+        boolean estVolant = carte.estVolant();
         int dmg = carte.getAttack();
 
         Optional<List<Pouvoirs>> optPouvoirs = carte.getPouvoir();
@@ -183,7 +183,7 @@ public class AffichageJeu {
                 m_createCard.separate(),
                 "| HP : " + m_createCard.animHP(carte),
                 dmg > 0 ? "| DMG : " + m_createCard.animDMG(carte) : m_createCard.animMiddle(),
-                (m_createCard.volant(volant).equals("") && have2) ? m_createCard.pouvoir(nomPouv2) : m_createCard.animMiddle(),
+                (estVolant) ? m_createCard.volant(estVolant) : have2 ? m_createCard.pouvoir(nomPouv2) : m_createCard.animMiddle(),
                 have1 ? m_createCard.pouvoir(nomPouv1) : m_createCard.animMiddle(),
                 m_createCard.animTopBottom()
         };

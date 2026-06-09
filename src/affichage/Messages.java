@@ -1,7 +1,6 @@
 package affichage;
 
 import mecaniques.cartes.Carte;
-import mecaniques.joueurs.Joueur;
 
 public class Messages {
 
@@ -9,14 +8,16 @@ public class Messages {
         System.out.println("\n*------------------------- Resultats du tour : -------------------------*");
     }
 
-    public void attackDirect(Carte cart, int dmg){
-        System.out.println(cart.getNom() + " a fait attaque direct et infligé " + dmg + " dégats.");
+    public void ligneDivision(){
+        System.out.println("\n*-----------------------------------------------------------------------*\n");
     }
 
-    public void attackCart(Carte cart, Carte other){
-        System.out.println(cart.getNom() + " a attaqué  " + other.getNom() + " et infligé " + cart.getAttack()
-        + " dégats.");
-        System.out.println("Resultat : \n" + "PV " + other.getNom() + " est : " + other.getPv());
+    public void attaqueDirect(Carte carte){
+        System.out.println(carte.getNom() + " a fait attaque direct et infligé " + carte.getAttack() + " dégats.");
+    }
+
+    public void attaquerCarte(Carte cart, Carte other){
+        System.out.println(cart.getNom() + " a attaqué  " + other.getNom() + " et a infligé " + cart.getAttack() + " dégats.");
     }
 
     public void died(Carte cart){
@@ -26,15 +27,6 @@ public class Messages {
     public void scoreFinal(int score){
         System.out.println("*--------------------------- Score final : " + score + " ---------------------------*\n");
         pause();
-    }
-
-    public void Messagefinal(int score){
-        if (score < 0){
-            System.out.println("*--------------------------- Vous avez perdu... ---------------------------*\n");
-        }
-        else{
-            System.out.println("*--------------------------- Vous avez gagnez! ---------------------------*\n");
-        }
     }
 
     public static void pause() {
