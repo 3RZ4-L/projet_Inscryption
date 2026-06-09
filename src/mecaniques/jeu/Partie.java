@@ -21,14 +21,15 @@ public class Partie {
         m_adversaire = new Adversaire();
         m_score = 0;
         m_partie = 1;
+        m_tour = 1;
     }
 
-    public void demarrer() {
+    /*public void demarrer() {
         while (m_score < 5 && m_score > -5) {
-            m_tour = 0;
+            m_tour = 1;
             for (int i = 0; i < 3; i++){
                 tourAdversaire();
-                if (i == 1) {
+                if (i == 2) {
                     Animal[] deuxAnimaux = CarteFactory.getDeuxAnimaux();
                     Choix choix = new Choix(m_joueur, deuxAnimaux[0], deuxAnimaux[1]);
                     m_joueur.ajouterDansMain(choix.getChoix());
@@ -46,6 +47,65 @@ public class Partie {
             }
             m_partie ++;
         }
+    }*/
+
+    public void demarrer() {
+        Messages message = new Messages();
+        while (m_partie <= 3) {
+            while (!partieTermine()) {
+                jouerUnTour();
+            }
+            if (m_score >= 5) {
+                message.victoirePartie(m_partie);
+            }
+            else {
+                message.defaitePartie(m_partie);
+                message.defaiteJeu();
+                return;
+            }
+
+            // A la fin de la deuxième partie, le joueur choisit une carte
+            if (m_partie == 2) {
+                choisirCarteFinDeuxiemePartie();
+            }
+            m_partie++;
+            if (m_partie <= 3) {
+                nouvellePartie();
+            }
+        }
+        message.victoireJeu();
+    }
+
+    public void jouerUnTour() {
+        Messages message = new Messages();
+
+        // Début du tour : les cartes avec Croissance peuvent évoluer
+        m_joueur.getLigne().croissance();
+        m_adversaire.getLigne().croissance();
+
+        // L'adversaire annonce les cartes qu'il jouera au prochain tour
+        m_adversaire.showNextCarts(m_joueur.getLigne());
+
+        // Tour du joueur
+        tourJoueur();
+
+        // Attaque du joueur
+        m_score += commencerAttaques(m_joueur, m_adversaire);
+        limiterScore();
+        if (partieTermine()) {
+            message.scoreFinal(m_score);
+            return;
+        }
+
+        // Tour automatique de l'adversaire
+        m_adversaire.jouerTour();
+
+        // Attaque de l'adversaire
+        m_score -= commencerAttaques(m_adversaire, m_joueur);
+        limiterScore();
+        message.scoreFinal(m_score);
+
+        m_tour++;
     }
 
     public void tourJoueur() {
@@ -89,7 +149,39 @@ public class Partie {
         }
     }
 
-    public void tourAdversaire() {
+    private void choisirCarteFinDeuxiemePartie() {
+        Animal[] deuxAnimaux = CarteFactory.getDeuxAnimaux();
+
+        Choix choix = new Choix(m_joueur, deuxAnimaux[0], deuxAnimaux[1]);
+        m_joueur.ajouterDansPioche(choix.getChoix());
+    }
+
+    private void nouvellePartie() {
+        m_score = 0;
+        m_tour = 1;
+        m_joueur.nouvellePartie();
+        m_adversaire = new Adversaire();
+    }
+
+    public int commencerAttaques(Joueur joueur1, Joueur joueur2) {
+        return joueur1.getLigne().attaquer(joueur1, joueur2.getLigne());
+    }
+
+    public boolean partieTermine(){
+        return m_score >= 5 || m_score <= -5;
+    }
+
+    public void limiterScore(){
+        if(m_score > 5){
+            m_score = 5;
+        }
+
+        if(m_score < -5){
+            m_score = -5;
+        }
+    }
+
+    /*public void tourAdversaire() {
         boolean jouer = true;
         boolean piocher = false;
         while (jouer) {
@@ -125,17 +217,10 @@ public class Partie {
                     break;
             }
         }
-    }
+    }*/
     public int getScore() {return m_score;}
     public int getNumParte(){return m_partie;}
     public int getNumTour(){return m_tour;}
 
-    public int commencerAttaques(Joueur joueur1, Joueur joueur2) {
-        int score_tour = joueur1.getLigne().attaquer(joueur1, joueur2.getLigne());
-        if (score_tour > 5)
-            score_tour = 5;
-        if (score_tour < 0)
-            score_tour = 0;
-        return score_tour;
-    }
+
 }
