@@ -28,7 +28,6 @@ public class Adversaire extends Joueur{
 
     public void jouerTour() {
         annonceToBattle();
-        getLigne().croissance();
     }
 
     public void peutPiocher(){

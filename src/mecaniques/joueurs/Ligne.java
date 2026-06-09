@@ -58,6 +58,7 @@ public class Ligne {
             return Optional.empty();
         }
         Pouvoirs pouvoir = lstOpt.get().get(0);
+        sacrifier(position);
 
         return Optional.of(pouvoir);
     }
@@ -66,6 +67,7 @@ public class Ligne {
         for (int i = 0; i < 4; i++) {
             if (m_cartes[i].isPresent()) {
                 Carte carte = m_cartes[i].get();
+                carte.ajouterTour();
                 Optional<Carte> nouvelleCarte = carte.croissance();
                 if (nouvelleCarte.isPresent()) {
                     m_cartes[i] = nouvelleCarte;
@@ -109,7 +111,9 @@ public class Ligne {
                     }
                     defenseur.m_cartes[i] = Optional.empty();
                 }
-                this.courrir(i);
+            }
+            if (att.aPouvoir(Pouvoirs.COUREUR) && !att.estMort()) {
+                courrir(i);
             }
         }
         return score;
