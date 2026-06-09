@@ -1,7 +1,6 @@
 package mecaniques.cartes;
 
 public enum Pouvoirs {
-    NULL(""),
     NOMBREUSES_VIES("Nombreuses Vies"),
     CROISSANCE("Croissance"),
     PUANT("Puant"),
