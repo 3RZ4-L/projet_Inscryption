@@ -3,6 +3,7 @@ package affichage.gestionEntrees;
 import affichage.AffichageJeu;
 import mecaniques.cartes.Animal;
 import mecaniques.cartes.Pouvoirs;
+import mecaniques.joueurs.Humain;
 import mecaniques.joueurs.Joueur;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.Scanner;
 public class Choix {
     private Animal m_choix;
 
-    public Choix(Joueur joueur, Animal carte1, Animal carte2) {
+    public Choix(Humain joueur, Animal carte1, Animal carte2) {
         choisirAnimal(carte1, carte2);
 
         if (!joueur.getLigne().estVide() || joueur.getNbMain() > 0) {
@@ -46,7 +47,7 @@ public class Choix {
         m_choix = entree.equals("1") ? carte1 : carte2;
     }
 
-    private void gererPierreDeSacrifice(Joueur joueur) {
+    private void gererPierreDeSacrifice(Humain joueur) {
         Scanner scanner = new Scanner(System.in);
         System.out.println(
                 "\n*----------------------------Pierre de sacrifice :----------------------------*\n" +

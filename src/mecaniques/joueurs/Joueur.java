@@ -64,21 +64,6 @@ public class Joueur {
         }
     }
 
-    public Optional<Pouvoirs> pierreDeSacrifice(int position){
-        if (peutSacrifier(position)) {
-            return m_ligne.pierreDeSacrifice(position);
-        }
-        m_goutteSang++;
-        m_os++;
-        return Optional.empty();
-    }
-
-    public boolean peutSacrifier(int position){
-        if (position > 4 || position < 0)
-            return false;
-        return m_ligne.estSacrifiable(position);
-    }
-
     public void nouvellePartie() {
         m_ligne = new Ligne();
         m_main.clear();
