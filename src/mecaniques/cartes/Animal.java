@@ -93,32 +93,33 @@ public class Animal extends Carte {
     }
 
     public String getNamePouvoir() {
-        if (m_pouvoir == null || m_pouvoir.isEmpty())
+        if (m_pouvoir.isEmpty())
             return "";
-        if (m_pouvoir.size() == 1)
-            return m_pouvoir.get(0).getNom();
-        if (m_pouvoir.size() == 2)
-            return m_pouvoir.get(0).getNom() + ", " + m_pouvoir.get(1).getNom();
-        return "";
+        String res = "";
+
+        for(int i = 0; i < m_pouvoir.size(); i++){
+            res += m_pouvoir.get(i).getNom();
+
+            if(i < m_pouvoir.size()-1){
+                res+= ", ";
+            }
+        }
+        return res;
     }
 
     public Optional<List<Pouvoirs>> getPouvoir() {
-        if (m_pouvoir != null && !m_pouvoir.isEmpty()) {
-            return Optional.of(m_pouvoir);
+        if (m_pouvoir.isEmpty()) {
+            return Optional.empty();
         }
-        return Optional.empty();
+        return Optional.of(m_pouvoir);
     }
 
     public boolean aPouvoir(){
-        if (m_pouvoir != null && !m_pouvoir.isEmpty()) {
-            return true;
-        }
-        return false;
+        return !m_pouvoir.isEmpty();
     }
 
     public void ajouterPouvoir(Pouvoirs pouvoir) {
-        if (pouvoir != null)
-            m_pouvoir.add(pouvoir);
+        m_pouvoir.add(pouvoir);
     }
 
     public boolean aPouvoir(Pouvoirs pouvoir) {
