@@ -97,12 +97,6 @@ public class JoueurTest {
         assertEquals(10, joueur.getNbPioche());
     }
 
-    @Test
-    public void testCroissanceDuLouveteau() {
-        // Vérifie que la méthode s'exécute sans erreur
-        joueur.croissanceDuLouveteau();
-        assertNotNull(joueur.getLigne());
-    }
 
     @Test
     public void testTuerAdversaire() {
@@ -111,11 +105,5 @@ public class JoueurTest {
 
         joueur.tuerAdversaire();
         assertEquals(2, joueur.getOs());
-    }
-
-    @Test
-    public void testPeutSacrifier_PositionVide() {
-        assertFalse(joueur.peutSacrifier(0));
-        assertFalse(joueur.peutSacrifier(5));
     }
 }

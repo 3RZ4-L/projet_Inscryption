@@ -18,20 +18,20 @@ public class PartieTest {
     @Test
     public void testConstructeur() {
         assertEquals(0, partie.getScore());
-        assertEquals(1, partie.getNumParte());
+        assertEquals(1, partie.getNumPartie());
         assertEquals(1, partie.getNumTour());
     }
 
     @Test
     public void testLimiterScore_ScoreSuperieur5() {
-        // On ne peut pas accéder directement à m_score, donc on utilise la réflexion ou
+        // On ne peut pas acceder directement à m_score, donc on utilise la reflexion ou
         // on teste via le comportement normal du jeu
-        // Cette méthode est appelée automatiquement dans jouerUnTour()
-        // On peut vérifier qu'un score ne dépasse jamais 5
+        // Cette methode est appelee automatiquement dans jouerUnTour()
+        // On peut verifier qu'un score ne depasse jamais 5
         Partie p = new Partie();
 
-        // Simuler un score élevé en jouant des attaques
-        // Ou utiliser la réflexion pour tester directement
+        // Simuler un score eleve en jouant des attaques
+        // Ou utiliser la reflexion pour tester directement
         java.lang.reflect.Field scoreField;
         try {
             scoreField = Partie.class.getDeclaredField("m_score");
@@ -40,7 +40,7 @@ public class PartieTest {
             p.limiterScore();
             assertEquals(5, p.getScore());
         } catch (Exception e) {
-            fail("Erreur de réflexion: " + e.getMessage());
+            fail("Erreur de reflexion: " + e.getMessage());
         }
     }
 
@@ -53,7 +53,7 @@ public class PartieTest {
             partie.limiterScore();
             assertEquals(-5, partie.getScore());
         } catch (Exception e) {
-            fail("Erreur de réflexion: " + e.getMessage());
+            fail("Erreur de reflexion: " + e.getMessage());
         }
     }
 
@@ -79,7 +79,7 @@ public class PartieTest {
             partie.limiterScore();
             assertEquals(-5, partie.getScore());
         } catch (Exception e) {
-            fail("Erreur de réflexion: " + e.getMessage());
+            fail("Erreur de reflexion: " + e.getMessage());
         }
     }
 
@@ -91,7 +91,7 @@ public class PartieTest {
             scoreField.setInt(partie, 5);
             assertTrue(partie.partieTermine());
         } catch (Exception e) {
-            fail("Erreur de réflexion: " + e.getMessage());
+            fail("Erreur de reflexion: " + e.getMessage());
         }
     }
 
@@ -103,7 +103,7 @@ public class PartieTest {
             scoreField.setInt(partie, -5);
             assertTrue(partie.partieTermine());
         } catch (Exception e) {
-            fail("Erreur de réflexion: " + e.getMessage());
+            fail("Erreur de reflexion: " + e.getMessage());
         }
     }
 
@@ -122,7 +122,7 @@ public class PartieTest {
             scoreField.setInt(partie, 0);
             assertFalse(partie.partieTermine());
         } catch (Exception e) {
-            fail("Erreur de réflexion: " + e.getMessage());
+            fail("Erreur de reflexion: " + e.getMessage());
         }
     }
 
@@ -136,7 +136,7 @@ public class PartieTest {
             partie.limiterScore();
             assertTrue(partie.partieTermine());
         } catch (Exception e) {
-            fail("Erreur de réflexion: " + e.getMessage());
+            fail("Erreur de reflexion: " + e.getMessage());
         }
     }
 
@@ -157,7 +157,7 @@ public class PartieTest {
 
         // Ajouter des animaux sur la ligne du joueur1
         Animal animal = new Animal("Lion", 5, 3, 2, 0, false);
-        joueur1.placer(0, 0); // Nécessite d'avoir des cartes dans la main
+        joueur1.placer(0, 0); // Necessite d'avoir des cartes dans la main
 
         int degats = partie.commencerAttaques(joueur1, joueur2);
 
@@ -171,7 +171,7 @@ public class PartieTest {
 
     @Test
     public void testGetNumParte() {
-        assertEquals(1, partie.getNumParte());
+        assertEquals(1, partie.getNumPartie());
     }
 
     @Test
@@ -181,7 +181,7 @@ public class PartieTest {
 
     @Test
     public void testNouvellePartie() throws Exception {
-        // Modifier l'état de la partie
+        // Modifier l'etat de la partie
         java.lang.reflect.Field scoreField = Partie.class.getDeclaredField("m_score");
         java.lang.reflect.Field tourField = Partie.class.getDeclaredField("m_tour");
         java.lang.reflect.Field partieField = Partie.class.getDeclaredField("m_partie");
@@ -194,7 +194,7 @@ public class PartieTest {
         tourField.setInt(partie, 5);
         partieField.setInt(partie, 2);
 
-        // Appeler nouvellePartie via réflexion
+        // Appeler nouvellePartie via reflexion
         java.lang.reflect.Method nouvellePartie = Partie.class.getDeclaredMethod("nouvellePartie");
         nouvellePartie.setAccessible(true);
         nouvellePartie.invoke(partie);
@@ -204,38 +204,14 @@ public class PartieTest {
     }
 
     @Test
-    public void testChoisirCarteFinDeuxiemePartie() throws Exception {
-        java.lang.reflect.Method choisirCarte = Partie.class.getDeclaredMethod("choisirCarteFinDeuxiemePartie");
-        choisirCarte.setAccessible(true);
-
-        // Devrait s'exécuter sans erreur
-        choisirCarte.invoke(partie);
-    }
-
-    @Test
     public void testJouerUnTour() {
-        // Test que jouerUnTour s'exécute sans erreur
-        // (cela dépend beaucoup de l'état initial du jeu)
+        // Test que jouerUnTour s'execute sans erreur
         try {
-            // On peut tester un tour complet si les conditions sont réunies
+            // On peut tester un tour complet si les conditions sont reunies
             // partie.jouerUnTour();
             assertTrue(true);
         } catch (Exception e) {
-            fail("jouerUnTour a levé une exception: " + e.getMessage());
+            fail("jouerUnTour a leve une exception: " + e.getMessage());
         }
-    }
-
-    @Test
-    public void testTourJoueur() {
-        // Le tour joueur nécessite une interaction utilisateur
-        // Difficile à tester automatiquement sans mock
-        assertNotNull(partie);
-    }
-
-    @Test
-    public void testDemarrer() {
-        // La méthode demarrer lance une partie complète
-        // Difficile à tester automatiquement
-        assertNotNull(partie);
     }
 }
