@@ -34,27 +34,25 @@ public class Joueur {
         return false;
     }
 
-    public void ajouterDansMain(Animal carte) {
-        m_main.add(carte);
-    }
-
     public boolean placer(int numCarte, int position) {
         if (numCarte - 1 < 0 || numCarte - 1 >= m_main.size()) {
             return false;
         }
+
         Animal carte = m_main.get(numCarte - 1);
-        if (carte.getGouttesSang() <= m_goutteSang && carte.getOs() <= m_os) {
-            if (m_ligne.getCarte(position).isEmpty()) {
-                m_main.remove(numCarte - 1);
-                boolean placementReussi = m_ligne.placerCarte(carte, position);
-                if (placementReussi) {
-                    m_goutteSang -= carte.getGouttesSang();
-                    m_os -= carte.getOs();
-                }
-                return placementReussi;
-            }
+
+        if (carte.getGouttesSang() > m_goutteSang || carte.getOs() > m_os) {
+            return false;
         }
-        return false;
+
+        boolean placementReussi = m_ligne.placerCarte(carte, position);
+
+        if (placementReussi) {
+            m_main.remove(numCarte - 1);
+            m_goutteSang -= carte.getGouttesSang();
+            m_os -= carte.getOs();
+        }
+        return placementReussi;
     }
 
     public void sacrifier(int position) {

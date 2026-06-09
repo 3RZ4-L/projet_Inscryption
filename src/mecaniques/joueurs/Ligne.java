@@ -42,10 +42,11 @@ public class Ligne {
         return false;
     }
 
-    public boolean estSacrifiable(int position){
-        if(!estCaseVide(position) && m_cartes[position].get().estCreature())
-            return true;
-        return false;
+    public boolean estSacrifiable(int position) {
+        if (position < 0 || position >= m_cartes.length) {
+            return false;
+        }
+        return m_cartes[position].isPresent() && m_cartes[position].get().estCreature();
     }
 
     public Optional<Pouvoirs> pierreDeSacrifice(int position){
@@ -76,60 +77,75 @@ public class Ligne {
         }
     }
 
-    public int attaquer(Joueur joueur, Ligne defenseur){
-        Messages message = new Messages();
+    public int attaquer(Joueur joueur, Ligne defenseur) {
         int score = 0;
+        boolean[] aDejaAttaque = new boolean[4];
+
         for (int i = 0; i < 4; i++) {
-            if (m_cartes[i].isEmpty()) continue;
-
-            Carte att = m_cartes[i].get();
-            Optional<Carte> def = defenseur.m_cartes[i];
-
-            boolean isDirectAttack = false;
-            if (att.estVolant()) {
-                isDirectAttack = true;
-            } else if (def.isEmpty()) {
-                isDirectAttack = true;
-            } else if (def.get().estMort()) {
-                isDirectAttack = true;
+            if (aDejaAttaque[i]) {
+                continue;
             }
 
-            int dmg = att.doDamage(def);
-
-            if (isDirectAttack) {
-                score += dmg;
-                message.attackDirect(att, dmg);
-            } else if (def.isPresent()) {
-                message.attackCart(att, def.get());
+            if (m_cartes[i].isEmpty()) {
+                continue;
             }
 
-            if (def.isPresent()) {
-                if (def.get().estMort()) {
-                    message.died(def.get());
-                    if (def.get().estCreature()) {
+            Carte attaquant = m_cartes[i].get();
+
+            Optional<Carte> defenseurOpt = defenseur.getCarte(i);
+
+            if (attaquant.estVolant() || defenseurOpt.isEmpty()) {
+                score += attaquant.doDamage(Optional.empty());
+            } else {
+                Carte carteDefenseur = defenseurOpt.get();
+
+                attaquant.doDamage(defenseurOpt);
+
+                if (carteDefenseur.estMort()) {
+                    if (carteDefenseur.estCreature()) {
                         joueur.tuerAdversaire();
                     }
-                    defenseur.m_cartes[i] = Optional.empty();
+
+                    defenseur.removeCart(i);
                 }
             }
-            if (att.aPouvoir(Pouvoirs.COUREUR) && !att.estMort()) {
-                courrir(i);
+
+            aDejaAttaque[i] = true;
+
+            if (attaquant.aPouvoir(Pouvoirs.COUREUR) && !attaquant.estMort()) {
+                int nouvellePosition = courrir(i);
+
+                if (nouvellePosition != i) {
+                    aDejaAttaque[nouvellePosition] = true;
+                }
             }
         }
+
         return score;
     }
 
-    public boolean courrir(int position){
-        if (position + 1 < 4 && estCaseVide(position+1)){
-            placerCarte(m_cartes[position].get(), position+1);
-            m_cartes[position] = Optional.empty();
-            return true;
-        } else if (position - 1 >= 0 && estCaseVide(position-1)) {
-            placerCarte(m_cartes[position].get(), position-1);
-            m_cartes[position] = Optional.empty();
-            return true;
+
+
+    public int courrir(int position) {
+        Optional<Carte> carteOpt = getCarte(position);
+
+        if (carteOpt.isEmpty()) {
+            return position;
         }
-        return false;
+
+        if (position + 1 < 4 && estCaseVide(position + 1)) {
+            m_cartes[position + 1] = carteOpt;
+            m_cartes[position] = Optional.empty();
+            return position + 1;
+        }
+
+        if (position - 1 >= 0 && estCaseVide(position - 1)) {
+            m_cartes[position - 1] = carteOpt;
+            m_cartes[position] = Optional.empty();
+            return position - 1;
+        }
+
+        return position;
     }
 
     public Optional<Carte>[] getLigne(){
