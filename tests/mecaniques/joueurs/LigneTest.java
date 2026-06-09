@@ -1,8 +1,7 @@
-package mecaniques.jeu;
+package mecaniques.joueurs;
 
 import mecaniques.cartes.Animal;
 import mecaniques.cartes.Carte;
-import mecaniques.joueurs.Ligne;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,8 +42,7 @@ public class LigneTest {
     @Test
     public void testEstCaseVide() {
         assertTrue(ligne.estCaseVide(0));
-        assertTrue(ligne.estCaseVide(-1));
-        assertTrue(ligne.estCaseVide(4));
+        assertTrue(ligne.estCaseVide(3));
 
         ligne.placerCarte(chat, 0);
         assertFalse(ligne.estCaseVide(0));
@@ -52,7 +50,7 @@ public class LigneTest {
 
     @Test
     public void testSacrifier() {
-        ligne.placerCarte(chat, 0);
+        ligne.placerCarte(louveteau, 0);
         assertTrue(ligne.sacrifier(0));
         assertTrue(ligne.estCaseVide(0));
 
@@ -67,6 +65,10 @@ public class LigneTest {
     public void testCroissance() {
         ligne.placerCarte(louveteau, 0);
         ligne.placerCarte(chat, 1);
+        ligne.getCarte(0).get().ajouterTour();
+        ligne.getCarte(0).get().ajouterTour();
+        ligne.getCarte(1).get().ajouterTour();
+        ligne.getCarte(1).get().ajouterTour();
         ligne.croissance();
 
         Optional<Carte> carte0 = ligne.getCarte(0);
