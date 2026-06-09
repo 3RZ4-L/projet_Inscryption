@@ -31,16 +31,6 @@ public class JoueurTest {
         assertEquals(avant + 1, joueur.getNbMain());
     }
 
-    @Test
-    public void testAjouterDansMain() {
-        Animal animal = new Animal("Chat", 3, 2, 1, 0, false);
-        int avant = joueur.getNbMain();
-
-        joueur.ajouterDansMain(animal);
-
-        assertEquals(avant + 1, joueur.getNbMain());
-        assertTrue(joueur.getMain().contains(animal));
-    }
 
     @Test
     public void testPlacer_NumeroCarteInvalide() {

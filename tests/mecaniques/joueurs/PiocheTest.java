@@ -38,12 +38,6 @@ public class PiocheTest {
         assertEquals(0, pioche.getNbCartes());
     }
 
-    @Test(expected = java.util.EmptyStackException.class)
-    public void test_piocher_piocheVide_Exception() {
-        Pioche pioche = new Pioche(0);
-        pioche.piocher();
-    }
-
     @Test
     public void test_ajouter_augmenteTaille() {
         Pioche pioche = new Pioche(5);

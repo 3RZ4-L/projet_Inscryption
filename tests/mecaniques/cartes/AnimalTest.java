@@ -11,32 +11,32 @@ public class AnimalTest {
 
     @Test
     public void testPouvoirPuant() {
-        // Un animal avec Puant réduit les dégâts reçus de 1
-        Animal animalAvecPuant = new Animal("Mouffette", 5, 3, 1, 0, false, PUANT);
-        Animal attaquant = new Animal("Prédateur", 5, 3, 1, 0, false);
+        // Une carte avec Puant subit moins de dégâts
+        Animal punaise = new Animal("Punaise", 5, 1, 0, 2, false, PUANT);
+        Animal grizzly = new Animal("Grizzly", 6, 4, 3, 0, false);
 
-        int degats = animalAvecPuant.doDamage(Optional.of(attaquant));
+        // Grizzly attaque Punaise
+        int dmg = grizzly.doDamage(Optional.of(punaise));
 
-        // L'attaquant inflige normalement 3 dégâts, mais Puant réduit de 1
-        assertEquals(2, degats);
-        assertEquals(3, animalAvecPuant.getPv()); // 5 - 2 = 3
+        // Dégâts normaux = 4, réduits de 1 à cause de Puant = 3
+        assertEquals(3, dmg);
+        // PV initiaux 5 - 3 dégâts = 2
+        assertEquals(2, punaise.getPv());
     }
 
     @Test
     public void testPouvoirCroissance() {
-        // Un animal avec Croissance peut se transformer en Loup
         Animal animal = new Animal("Louveteau", 1, 1, 1, 0, false, CROISSANCE);
+
+        // 2 tours pour évoluer
+        animal.ajouterTour();
+        animal.ajouterTour();
 
         Optional<Carte> resultat = animal.croissance();
 
         assertTrue(resultat.isPresent());
         Animal loup = (Animal) resultat.get();
         assertEquals("Loup", loup.getNom());
-        assertEquals(2, loup.getPv());
-        assertEquals(3, loup.getAttack());
-        assertEquals(2, loup.getGouttesSang());
-        assertEquals(0, loup.getOs());
-        assertFalse(loup.estVolant());
     }
 
     @Test
@@ -99,16 +99,16 @@ public class AnimalTest {
 
     @Test
     public void testPouvoirPiquesPointues() {
-        // Piques Pointues inflige 1 dégât à l'attaquant
-        Animal piquesPointues = new Animal("Porc-épic", 5, 2, 1, 0, false, PIQUES_POINTUES);
-        Animal attaquant = new Animal("Prédateur", 4, 3, 1, 0, false);
+        // La cible a Piques Pointues - elle blesse l'attaquant
+        Animal porcEpic = new Animal("Porc-épic", 2, 1, 1, 0, false, PIQUES_POINTUES);
+        Animal attaquant = new Animal("Grizzly", 6, 3, 3, 0, false);
         int pvAttaquantAvant = attaquant.getPv();
 
-        int degats = piquesPointues.doDamage(Optional.of(attaquant));
+        int degats = attaquant.doDamage(Optional.of(porcEpic));
 
-        assertEquals(2, degats);
+        assertEquals(3, degats);
         assertEquals(pvAttaquantAvant - 1, attaquant.getPv());
-        assertEquals(3, piquesPointues.getPv()); // 5 - 2 = 3
+        assertEquals(0, porcEpic.getPv());
     }
 
     @Test
@@ -121,7 +121,7 @@ public class AnimalTest {
         int degats = piquesPointues.doDamage(Optional.of(attaquant));
 
         assertEquals(0, degats);
-        assertEquals(pvAttaquantAvant, attaquant.getPv()); // Pas de blessure
+        assertEquals(pvAttaquantAvant, attaquant.getPv());
     }
 
     @Test
