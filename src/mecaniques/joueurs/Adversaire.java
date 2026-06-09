@@ -32,11 +32,7 @@ public class Adversaire extends Joueur{
     }
 
     public void peutPiocher(){
-        try{
-            piocher();
-        }
-        catch(Exception err){
-        }
+        piocher();
     }
 
     public boolean enoughRessources(Animal anim){
@@ -175,5 +171,9 @@ public class Adversaire extends Joueur{
                 m_ligneAnnonce.removeCart(i);
             }
         }
+    }
+
+    public Ligne getLigneAnnonce(){
+        return m_ligneAnnonce;
     }
 }
