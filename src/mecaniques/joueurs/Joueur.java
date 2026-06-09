@@ -5,6 +5,7 @@ import mecaniques.cartes.Pouvoirs;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Random;
 
 public class Joueur {
     protected Pioche m_pioche;
@@ -14,13 +15,30 @@ public class Joueur {
     protected int m_goutteSang;
 
     public Joueur() {
+        this(choisirNbObstaclesAleatoire());
+    }
+
+    private static int choisirNbObstaclesAleatoire() {
+        Random random = new Random();
+        int valeur = random.nextInt(100); // 0 à 99
+
+        if (valeur < 20) {     // 20% pour 2 obstacles
+            return 2;
+        } else if (valeur < 70) { // 50% pour 1 obstacle
+            return 1;
+        } else {                 // 30% pour 0 obstacle
+            return 0;
+        }
+    }
+
+    public Joueur(int nbObstacles) {
         m_pioche = new Pioche(15);
         int i = 0;
         while (i < 4) {
             piocher();
             i++;
         }
-        m_ligne = new Ligne();
+        m_ligne = new Ligne(nbObstacles);
         m_os = 0;
         m_goutteSang = 0;
     }
@@ -32,10 +50,6 @@ public class Joueur {
             return true;
         }
         return false;
-    }
-
-    public void ajouterDansMain(Animal carte) {
-        m_main.add(carte);
     }
 
     public boolean placer(int numCarte, int position) {

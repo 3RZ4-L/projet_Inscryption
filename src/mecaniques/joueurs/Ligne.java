@@ -2,20 +2,50 @@ package mecaniques.joueurs;
 
 import affichage.Messages;
 import mecaniques.cartes.Carte;
+import mecaniques.cartes.Obstacle;
 import mecaniques.cartes.Pouvoirs;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+
 import static mecaniques.cartes.Pouvoirs.NOMBREUSES_VIES;
 
 public class Ligne {
     private Optional<Carte>[] m_cartes;
+    private static final Random random = new Random();
 
+    public Ligne() {
+        this(0); // Sans obstacle par défaut
+    }
 
-    public Ligne(){
+    public Ligne(int nbObstacles) {
         m_cartes = (Optional<Carte>[]) new Optional[4];
         for (int i = 0; i < 4; i++) {
             m_cartes[i] = Optional.empty();
+        }
+
+        for (int i = 0; i < nbObstacles && i < 4; i++) {
+            placerObstacle();
+        }
+    }
+
+    private void placerObstacle() {
+        int i;
+        do {
+            i = random.nextInt(m_cartes.length);
+        } while (m_cartes[i] != null && m_cartes[i].isPresent());
+
+        m_cartes[i] = Optional.of(creerObstacleAleatoire());
+    }
+
+    private Obstacle creerObstacleAleatoire() {
+        int choix = random.nextInt(100);
+
+        if (choix < 50) {
+            return new Obstacle("Rocher", 5);
+        } else {
+            return new Obstacle("Sapin", 3);
         }
     }
 

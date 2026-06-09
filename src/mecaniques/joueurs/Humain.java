@@ -11,7 +11,7 @@ public class Humain extends Joueur{
 
 
     public boolean peutSacrifier(int position){
-        if (position > 4 || position < 0)
+        if (position >= 4 || position < 0)
             return false;
         return m_ligne.estSacrifiable(position);
     }
