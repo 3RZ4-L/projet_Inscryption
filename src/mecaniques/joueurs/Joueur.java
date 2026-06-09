@@ -68,13 +68,11 @@ public class Joueur {
         if (peutSacrifier(position)) {
             return m_ligne.pierreDeSacrifice(position);
         }
-        m_goutteSang++;
-        m_os++;
         return Optional.empty();
     }
 
     public boolean peutSacrifier(int position){
-        if (position > 4 || position < 0)
+        if (position >= 4 || position < 0)
             return false;
         return m_ligne.estSacrifiable(position);
     }
