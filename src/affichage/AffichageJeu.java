@@ -19,7 +19,7 @@ public class AffichageJeu {
     public void afficherPlateau(Joueur joueur, Adversaire adversaire, int numPartie, int numTour, int score){
         System.out.println("\n________________________________________________ Partie " + numPartie + " _________________________________________________\n");
         System.out.println("\tTour : "+(numTour+1));
-        afficherLigneCart(adversaire.getLigne(), "");
+        //afficherLigneCart(adversaire.getLigneAnnonce(), "");
         afficherLigneArrow(false);
         afficherLigneCart(adversaire.getLigne(), "A");
         afficherLigneArrow(true);
@@ -79,7 +79,7 @@ public class AffichageJeu {
 
         int nbLignes = Math.min(main.length, pioche.length);
         for (int i = 0; i < nbLignes; i++) {
-            String ligne = String.format("%-84s %s", main[i], pioche[i]);
+            String ligne = String.format("%-94s %s", main[i], pioche[i]);
             System.out.println(ligne);
         }
 
@@ -89,7 +89,7 @@ public class AffichageJeu {
             }
         }
         if (nbLignes < pioche.length) {
-            String espaces = " ".repeat(85);
+            String espaces = " ".repeat(95);
             for (int i = nbLignes; i < pioche.length; i++) {
                 System.out.println(espaces + pioche[i]);
             }
@@ -118,6 +118,9 @@ public class AffichageJeu {
             tab[num] = num + ". " + main.get(i).getNom() + " PV: " + main.get(i).getPv() +
                     " Att: " + main.get(i).getAttack() + " Gouttes de sang: " +
                     main.get(i).getGouttesSang() + " Os: " + main.get(i).getOs();
+            if (main.get(i).aPouvoir()){
+                tab[num] += " Pouvoir(s): " + main.get(i).getNamePouvoir();
+            }
         }
         return tab;
     }

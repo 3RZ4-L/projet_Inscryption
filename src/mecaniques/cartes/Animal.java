@@ -118,12 +118,17 @@ public class Animal extends Carte {
         return !m_pouvoir.isEmpty();
     }
 
-    public void ajouterPouvoir(Pouvoirs pouvoir) {
-        m_pouvoir.add(pouvoir);
+    public boolean ajouterPouvoir(Pouvoirs pouvoir) {
+        if (this.aPouvoir(pouvoir))
+            return false;
+        if (pouvoir == CROISSANCE && this.getNom().equals("Loup"))
+            return false;
+        this.m_pouvoir.add(pouvoir);
+        return true;
     }
 
     public boolean aPouvoir(Pouvoirs pouvoir) {
-        return m_pouvoir.contains(pouvoir);
+        return this.m_pouvoir.contains(pouvoir);
     }
 
     public Optional<Carte> croissance() {

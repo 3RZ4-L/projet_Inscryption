@@ -20,16 +20,16 @@ public class Partie {
         m_joueur = new Humain();
         m_adversaire = new Adversaire();
         m_score = 0;
-        m_tour = 1;
         m_partie = 1;
+        m_tour = 1;
     }
 
     /*public void demarrer() {
         while (m_score < 5 && m_score > -5) {
-            m_tour = 0;
+            m_tour = 1;
             for (int i = 0; i < 3; i++){
                 tourAdversaire();
-                if (i == 1) {
+                if (i == 2) {
                     Animal[] deuxAnimaux = CarteFactory.getDeuxAnimaux();
                     Choix choix = new Choix(m_joueur, deuxAnimaux[0], deuxAnimaux[1]);
                     m_joueur.ajouterDansMain(choix.getChoix());
@@ -49,39 +49,60 @@ public class Partie {
         }
     }*/
 
-    public void demarrer(){
-        while(!partieTermine){
-            jouerUnTour();
+    public void demarrer() {
+        Messages message = new Messages();
+        while (m_partie <= 3) {
+            while (!partieTermine()) {
+                jouerUnTour();
+            }
+            if (m_score >= 5) {
+                message.victoirePartie(m_partie);
+            }
+            else {
+                message.defaitePartie(m_partie);
+                message.defaiteJeu();
+                return;
+            }
+
+            // A la fin de la deuxième partie, le joueur choisit une carte
+            if (m_partie == 2) {
+                choisirCarteFinDeuxiemePartie();
+            }
+            m_partie++;
+            if (m_partie <= 3) {
+                nouvellePartie();
+            }
         }
-        afficherResultatPartie();
+        message.victoireJeu();
     }
 
-    public void jouerUnTour(){
-        // 1. L'adversaire annonce la carte qu'il jouera à son prochain tour
+    public void jouerUnTour() {
+        Messages message = new Messages();
+
+        // Début du tour : les cartes avec Croissance peuvent évoluer
+        m_joueur.getLigne().croissance();
+        m_adversaire.getLigne().croissance();
+
+        // L'adversaire annonce les cartes qu'il jouera au prochain tour
         m_adversaire.showNextCarts(m_joueur.getLigne());
 
-        // 2. Le joueur joue
+        // Tour du joueur
         tourJoueur();
 
-        // 3. Les cartes du joueur attaquent
-        int scoreJouer = commencerAttaques(m_joueur, m_adversaire);
-        m_score += scoreJouer;
+        // Attaque du joueur
+        m_score += commencerAttaques(m_joueur, m_adversaire);
         limiterScore();
-
-        if(partieTermine){
+        if (partieTermine()) {
+            message.scoreFinal(m_score);
             return;
         }
 
-        // 4. L'adversaire joue automatiquement les cartes annoncées
+        // Tour automatique de l'adversaire
         m_adversaire.jouerTour();
 
-        // 5. Les cartes de l'adversaire attaquent
-        int scoreAdversaire = commencerAttaques(m_adversaire, m_joueur);
-        m_score -= scoreAdversaire;
+        // Attaque de l'adversaire
+        m_score -= commencerAttaques(m_adversaire, m_joueur);
         limiterScore();
-
-        // 6. Fin du tour
-        Messages message = new Messages();
         message.scoreFinal(m_score);
 
         m_tour++;
@@ -89,15 +110,14 @@ public class Partie {
 
     public void tourJoueur() {
         boolean jouer = true;
-        boolean aPioche = false;
-
+        boolean aPiocher = false;
         while (jouer) {
             AffichageJeu aff = new AffichageJeu();
             aff.afficherPlateau(m_joueur,m_adversaire,m_partie,m_tour,m_score);
             aff.Consignes();
 
             Commande commande = new Commande();
-            while (!commande.estValide(m_joueur.getNbMain(), piocher)) {
+            while (!commande.estValide(m_joueur.getNbMain(), aPiocher)) {
                 commande = new Commande();
             }
             switch (commande.getCommande()) {
@@ -105,8 +125,11 @@ public class Partie {
                     jouer = false;
                     break;
                 case PIOCHER:
-                    m_joueur.piocher();
-                    piocher = true;
+                    boolean peut_piocher = m_joueur.piocher();
+                    if (!peut_piocher)
+                        commande.affPiocheVide();
+                    else
+                        aPiocher = true;
                     break;
                 case PLACER:
                     boolean p = m_joueur.placer(commande.getNumeroCarte(), commande.getPosition());
@@ -126,7 +149,39 @@ public class Partie {
         }
     }
 
-    public void tourAdversaire() {
+    private void choisirCarteFinDeuxiemePartie() {
+        Animal[] deuxAnimaux = CarteFactory.getDeuxAnimaux();
+
+        Choix choix = new Choix(m_joueur, deuxAnimaux[0], deuxAnimaux[1]);
+        m_joueur.ajouterDansPioche(choix.getChoix());
+    }
+
+    private void nouvellePartie() {
+        m_score = 0;
+        m_tour = 1;
+        m_joueur.nouvellePartie();
+        m_adversaire = new Adversaire();
+    }
+
+    public int commencerAttaques(Joueur joueur1, Joueur joueur2) {
+        return joueur1.getLigne().attaquer(joueur1, joueur2.getLigne());
+    }
+
+    public boolean partieTermine(){
+        return m_score >= 5 || m_score <= -5;
+    }
+
+    public void limiterScore(){
+        if(m_score > 5){
+            m_score = 5;
+        }
+
+        if(m_score < -5){
+            m_score = -5;
+        }
+    }
+
+    /*public void tourAdversaire() {
         boolean jouer = true;
         boolean piocher = false;
         while (jouer) {
@@ -162,17 +217,10 @@ public class Partie {
                     break;
             }
         }
-    }
+    }*/
     public int getScore() {return m_score;}
     public int getNumParte(){return m_partie;}
     public int getNumTour(){return m_tour;}
 
-    public int commencerAttaques(Joueur joueur1, Joueur joueur2) {
-        int score_tour = joueur1.getLigne().attaquer(joueur1, joueur2.getLigne());
-        if (score_tour > 5)
-            score_tour = 5;
-        if (score_tour < 0)
-            score_tour = 0;
-        return score_tour;
-    }
+
 }

@@ -28,6 +28,15 @@ public class Messages {
         pause();
     }
 
+    public void Messagefinal(int score){
+        if (score < 0){
+            System.out.println("*--------------------------- Vous avez perdu... ---------------------------*\n");
+        }
+        else{
+            System.out.println("*--------------------------- Vous avez gagnez! ---------------------------*\n");
+        }
+    }
+
     public static void pause() {
         try {
             Thread.sleep(5000);
