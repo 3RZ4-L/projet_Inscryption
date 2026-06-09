@@ -64,7 +64,7 @@ public class Joueur {
         }
     }
 
-    public Optional<Pouvoirs> PierreDeSacrifice(int position){
+    public Optional<Pouvoirs> pierreDeSacrifice(int position){
         if (peutSacrifier(position)) {
             m_goutteSang++;
             m_os++;

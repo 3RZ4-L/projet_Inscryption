@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 public class Choix {
     private Animal m_choix;
-    private int sacrifice;
 
     public Choix(Joueur joueur, Animal carte1, Animal carte2){
 
@@ -80,7 +79,7 @@ public class Choix {
             }
         }
 
-        Optional<Pouvoirs> pouvoirOpt = joueur.PierreDeSacrifice(position);
+        Optional<Pouvoirs> pouvoirOpt = joueur.pierreDeSacrifice(position);
         if (pouvoirOpt.isPresent()) {
             m_choix.ajouterPouvoir(pouvoirOpt.get());
             System.out.println(
@@ -92,7 +91,7 @@ public class Choix {
         else {
             System.out.println(
                     "\n*----------------------------Pierre de sacrifice :----------------------------*\n" +
-                            "La carte sacrifiée n'avait pas de pouvoir spécial.\n"
+                            "La carte sacrifiée n'avait pas de pouvoir spécial à ajouter.\n"
             );
             pause();
         }
@@ -102,16 +101,7 @@ public class Choix {
         return (entree.equals("1") ||  entree.equals("2"));
     }
 
-    public boolean estValide2(String num) {
-        if (num.length() > 2) return false;
-            if (num.startsWith("a") || num.startsWith("b")) {
-                num = num.substring(1);
-            }
-        return (num.equals("1") || num.equals("2") || num.equals("3") || num.equals("4"));
-    }
-
     public Animal getChoix(){
-        System.out.println();
         return m_choix;
     }
 
