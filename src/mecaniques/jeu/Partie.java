@@ -50,17 +50,17 @@ public class Partie {
     }*/
 
     public void demarrer() {
-        Messages message = new Messages();
+        //Messages message = new Messages();
         while (m_partie <= 3) {
             while (!partieTermine()) {
                 jouerUnTour();
             }
             if (m_score >= 5) {
-                message.victoirePartie(m_partie);
+                //message.victoirePartie(m_partie);
             }
             else {
-                message.defaitePartie(m_partie);
-                message.defaiteJeu();
+                //message.defaitePartie(m_partie);
+                //message.defaiteJeu();
                 return;
             }
 
@@ -73,7 +73,7 @@ public class Partie {
                 nouvellePartie();
             }
         }
-        message.victoireJeu();
+        //message.victoireJeu();
     }
 
     public void jouerUnTour() {
@@ -153,13 +153,13 @@ public class Partie {
         Animal[] deuxAnimaux = CarteFactory.getDeuxAnimaux();
 
         Choix choix = new Choix(m_joueur, deuxAnimaux[0], deuxAnimaux[1]);
-        m_joueur.ajouterDansPioche(choix.getChoix());
+        //m_joueur.ajouterDansPioche(choix.getChoix());
     }
 
     private void nouvellePartie() {
         m_score = 0;
         m_tour = 1;
-        m_joueur.nouvellePartie();
+        //m_joueur.nouvellePartie();
         m_adversaire = new Adversaire();
     }
 
@@ -181,43 +181,6 @@ public class Partie {
         }
     }
 
-    /*public void tourAdversaire() {
-        boolean jouer = true;
-        boolean piocher = false;
-        while (jouer) {
-            AffichageJeu aff = new AffichageJeu();
-            aff.afficherPlateau(m_joueur,m_adversaire,m_partie,m_tour,m_score);
-            aff.Consignes();
-
-            Commande commande = new Commande();
-            while (!commande.estValide(m_adversaire.getNbMain(), piocher)) {
-                commande = new Commande();
-            }
-            switch (commande.getCommande()) {
-                case FIN:
-                    jouer = false;
-                    break;
-                case PIOCHER:
-                    m_adversaire.piocher();
-                    piocher = true;
-                    break;
-                case PLACER:
-                    boolean p = m_adversaire.placer(commande.getNumeroCarte(), commande.getPosition());
-                    if (!p){
-                        commande.errPlacer();
-                    }
-                    break;
-                case SACRIFIER:
-                    List<Integer> lst = commande.getSacrifices();
-                    for (int i = 0; i < lst.size(); i++){
-                        m_adversaire.sacrifier(lst.get(i));
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-    }*/
     public int getScore() {return m_score;}
     public int getNumParte(){return m_partie;}
     public int getNumTour(){return m_tour;}

@@ -51,8 +51,12 @@ public class Animal extends Carte {
         return m_volant;
     }
 
-    public int doDamage(Optional<Carte> other) {
+    public void ajouterTour(){
         m_nbTour++;
+    }
+
+    public int doDamage(Optional<Carte> other) {
+        ajouterTour();
         // Volant = attaque directe toujours
         if (this.estVolant()) {
             return m_attaque;
@@ -136,7 +140,7 @@ public class Animal extends Carte {
     }
 
     public Optional<Carte> croissance() {
-        if (this.aPouvoir(CROISSANCE)) {
+        if (this.aPouvoir(CROISSANCE) && m_nbTour == 2) {
             return Optional.of(new Animal("Loup", 2, 3, 2, 0, false));
         }
         return Optional.empty();

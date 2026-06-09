@@ -28,6 +28,9 @@ public class Obstacle extends Carte {
     public boolean estVolant() {
         return false;
     }
+    public void ajouterTour(){
+        return;
+    }
 
     public String getNamePouvoir() {
         return "";
