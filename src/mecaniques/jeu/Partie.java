@@ -134,6 +134,7 @@ public class Partie {
     private void nouvellePartie() {
         m_score = 0;
         m_tour = 1;
+
         m_joueur.nouvellePartie();
         m_adversaire = new Adversaire();
     }

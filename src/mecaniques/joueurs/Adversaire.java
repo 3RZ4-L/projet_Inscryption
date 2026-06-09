@@ -98,7 +98,7 @@ public class Adversaire extends Joueur{
         for(int i = 0; i < main.size(); i++){
             Animal cart = main.get(i);
 
-            if(!enoughRessources(cart)){
+            if (!peutJouerAvecSacrifice(cart)) {
                 continue;
             }
 
@@ -125,7 +125,7 @@ public class Adversaire extends Joueur{
         for(int i = 0; i < main.size(); i++){
             Animal cart = main.get(i);
 
-            if(!enoughRessources(cart)){
+            if (!peutJouerAvecSacrifice(cart)) {
                 continue;
             }
 
@@ -142,18 +142,22 @@ public class Adversaire extends Joueur{
         return placement;
     }
 
-    public boolean placeCartAnnonce(int idCart, int position){
-        if(idCart < 0 || idCart >= getMain().size()){
+    public boolean placeCartAnnonce(int idCart, int position) {
+        if (idCart < 0 || idCart >= getMain().size()) {
             return false;
         }
 
         Animal cart = getMain().get(idCart);
 
-        if(!enoughRessources(cart)){
-            return false;
+        if (!enoughRessources(cart)) {
+            boolean sacrificeReussi = sacrifierPour(cart);
+
+            if (!sacrificeReussi) {
+                return false;
+            }
         }
 
-        if(m_ligneAnnonce.placerCarte(cart, position)){
+        if (m_ligneAnnonce.placerCarte(cart, position)) {
             spendRessources(cart);
             getMain().remove(idCart);
             return true;
@@ -170,6 +174,47 @@ public class Adversaire extends Joueur{
                 m_ligneAnnonce.removeCart(i);
             }
         }
+    }
+
+    private boolean sacrifierPour(Animal animal) {
+        while (m_goutteSang < animal.getGouttesSang()) {
+            int position = trouverCarteSacrifiable();
+
+            if (position == -1) {
+                return false;
+            }
+
+            sacrifier(position);
+        }
+        return m_os >= animal.getOs();
+    }
+
+    private int trouverCarteSacrifiable() {
+        for (int i = 0; i < 4; i++) {
+            if (getLigne().estSacrifiable(i)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private boolean peutJouerAvecSacrifice(Animal animal) {
+        if (animal.getOs() > m_os) {
+            return false;
+        }
+
+        if (animal.getGouttesSang() <= m_goutteSang) {
+            return true;
+        }
+
+        int sangPossible = m_goutteSang;
+
+        for (int i = 0; i < 4; i++) {
+            if (getLigne().estSacrifiable(i)) {
+                sangPossible++;
+            }
+        }
+        return sangPossible >= animal.getGouttesSang();
     }
 
     public Ligne getLigneAnnonce(){
