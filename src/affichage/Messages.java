@@ -38,10 +38,7 @@ public class Messages {
     }
 
     public static void pause() {
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        System.out.println("Appuyez sur Entrée pour continuer...");
+        new java.util.Scanner(System.in).nextLine();
     }
 }
