@@ -50,14 +50,14 @@ public class Partie {
 
     public void tourJoueur() {
         boolean jouer = true;
-        boolean piocher = false;
+        boolean aPiocher = false;
         while (jouer) {
             AffichageJeu aff = new AffichageJeu();
             aff.afficherPlateau(m_joueur,m_adversaire,m_partie,m_tour,m_score);
             aff.Consignes();
 
             Commande commande = new Commande();
-            while (!commande.estValide(m_joueur.getNbMain(), piocher)) {
+            while (!commande.estValide(m_joueur.getNbMain(), aPiocher)) {
                 commande = new Commande();
             }
             switch (commande.getCommande()) {
@@ -65,8 +65,11 @@ public class Partie {
                     jouer = false;
                     break;
                 case PIOCHER:
-                    m_joueur.piocher();
-                    piocher = true;
+                    boolean peut_piocher = m_joueur.piocher();
+                    if (!peut_piocher)
+                        commande.affPiocheVide();
+                    else
+                        aPiocher = true;
                     break;
                 case PLACER:
                     boolean p = m_joueur.placer(commande.getNumeroCarte(), commande.getPosition());

@@ -118,6 +118,9 @@ public class AffichageJeu {
             tab[num] = num + ". " + main.get(i).getNom() + " PV: " + main.get(i).getPv() +
                     " Att: " + main.get(i).getAttack() + " Gouttes de sang: " +
                     main.get(i).getGouttesSang() + " Os: " + main.get(i).getOs();
+            if (main.get(i).aPouvoir()){
+                tab[num] += " Pouvoir(s): " + main.get(i).getNamePouvoir();
+            }
         }
         return tab;
     }

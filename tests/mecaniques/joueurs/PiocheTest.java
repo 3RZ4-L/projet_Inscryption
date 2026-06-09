@@ -2,6 +2,9 @@ package mecaniques.joueurs;
 
 import mecaniques.cartes.Animal;
 import org.junit.Test;
+
+import java.util.Optional;
+
 import static org.junit.Assert.*;
 
 public class PiocheTest {
@@ -21,7 +24,7 @@ public class PiocheTest {
     @Test
     public void test_piocher_reduitTaille() {
         Pioche pioche = new Pioche(5);
-        Animal carte = pioche.piocher();
+        Optional<Animal> carte = pioche.piocher();
         assertNotNull(carte);
         assertEquals(4, pioche.getNbCartes());
     }
@@ -55,8 +58,8 @@ public class PiocheTest {
         Animal nouvelleCarte = new Animal("Special", 10, 5, 3, 2, true);
         pioche.ajouter(nouvelleCarte);
 
-        Animal piochee = pioche.piocher();
-        assertEquals("Special", piochee.getNom());
+        Optional<Animal> piochee = pioche.piocher();
+        assertEquals("Special", piochee.get().getNom());
     }
 
     @Test
@@ -78,7 +81,7 @@ public class PiocheTest {
         boolean aDesCartes = true;
         try {
             for (int i = 0; i < 50; i++) {
-                Animal carte = pioche.piocher();
+                Optional<Animal> carte = pioche.piocher();
                 if (carte == null) {
                     aDesCartes = false;
                 }

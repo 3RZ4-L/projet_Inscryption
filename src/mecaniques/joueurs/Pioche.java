@@ -15,12 +15,12 @@ public class Pioche {
         }
     }
 
-    /*public Optional<Animal> piocher(){    ## remplacer is null verification in class Joueur
+    public Optional<Animal> piocher(){
         if(m_pioche.isEmpty()){
             return Optional.empty();
         }
         return Optional.of(m_pioche.pop());
-    }*/
+    }
     public void ajouter(Animal carte){
         m_pioche.add(carte);
     }

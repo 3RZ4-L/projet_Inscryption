@@ -48,14 +48,18 @@ public class Ligne {
         return false;
     }
 
-    public Optional<Pouvoirs> PierreDeSacrifice(int position){
-        Optional<List<Pouvoirs>> lstOpt = m_cartes[position].get().getPouvoir();
-        if (lstOpt.isPresent()){
-            List<Pouvoirs> pouvoirsLst = lstOpt.get();
-            sacrifier(position);
-            return Optional.of(pouvoirsLst.get(0));
+    public Optional<Pouvoirs> pierreDeSacrifice(int position){
+        Optional<Carte> carteOpt = getCarte(position);
+        if (carteOpt.isEmpty())
+            return Optional.empty();
+        Optional<List<Pouvoirs>> lstOpt = carteOpt.get().getPouvoir();
+        if (lstOpt.isEmpty() || lstOpt.get().isEmpty()){
+            return Optional.empty();
         }
-        return Optional.empty();
+        Pouvoirs pouvoir = lstOpt.get().get(0);
+        sacrifier(position);
+
+        return Optional.of(pouvoir);
     }
 
     public void croissance(){
@@ -88,11 +92,11 @@ public class Ligne {
                 isDirectAttack = true;
             }
 
-            int damageDealt = att.doDamage(def);
-            score += damageDealt;
+            int dmg = att.doDamage(def);
 
             if (isDirectAttack) {
-                message.attackDirect(att, damageDealt);
+                score += dmg;
+                message.attackDirect(att, dmg);
             } else if (def.isPresent()) {
                 message.attackCart(att, def.get());
             }

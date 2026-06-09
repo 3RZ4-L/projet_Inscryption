@@ -195,6 +195,11 @@ public class Commande {
         }
     }
 
+    public void affPiocheVide(){
+        System.out.println("Vous ne pouvez plus piocher, votre pioche est vide.");
+        pause();
+    }
+
     public void errPlacer() {
         System.out.println("Vous ne pouvez pas placer cette carte.");
         pause();

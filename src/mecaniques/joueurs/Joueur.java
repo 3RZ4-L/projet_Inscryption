@@ -25,11 +25,13 @@ public class Joueur {
         m_goutteSang = 0;
     }
 
-    public void piocher() {
+    public boolean piocher() {
         Optional<Animal> carte = m_pioche.piocher();
         if (carte.isPresent()) {
             m_main.add(carte.get());
+            return true;
         }
+        return false;
     }
 
     public void ajouterDansMain(Animal carte) {
@@ -66,7 +68,7 @@ public class Joueur {
         if (peutSacrifier(position)) {
             m_goutteSang++;
             m_os++;
-            return m_ligne.PierreDeSacrifice(position);
+            return m_ligne.pierreDeSacrifice(position);
         }
         return Optional.empty();
     }
