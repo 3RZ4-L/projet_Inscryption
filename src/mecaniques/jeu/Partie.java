@@ -24,31 +24,6 @@ public class Partie {
         m_tour = 1;
     }
 
-    /*public void demarrer() {
-        while (m_score < 5 && m_score > -5) {
-            m_tour = 1;
-            for (int i = 0; i < 3; i++){
-                tourAdversaire();
-                if (i == 2) {
-                    Animal[] deuxAnimaux = CarteFactory.getDeuxAnimaux();
-                    Choix choix = new Choix(m_joueur, deuxAnimaux[0], deuxAnimaux[1]);
-                    m_joueur.ajouterDansMain(choix.getChoix());
-                    m_joueur.croissanceDuLouveteau();
-                }
-                tourJoueur();
-                Messages message = new Messages();
-                message.resultats();
-                m_score += commencerAttaques(m_joueur, m_adversaire);
-                m_score -= commencerAttaques(m_adversaire, m_joueur);
-                message.scoreFinal(m_score);
-                m_tour++;
-                if (m_score > 5) m_score = 5;
-                if (m_score < -5) m_score = -5;
-            }
-            m_partie ++;
-        }
-    }*/
-
     public void demarrer() {
         Messages message = new Messages();
         while (m_partie <= 3) {
@@ -180,47 +155,7 @@ public class Partie {
             m_score = -5;
         }
     }
-
-    /*public void tourAdversaire() {
-        boolean jouer = true;
-        boolean piocher = false;
-        while (jouer) {
-            AffichageJeu aff = new AffichageJeu();
-            aff.afficherPlateau(m_joueur,m_adversaire,m_partie,m_tour,m_score);
-            aff.Consignes();
-
-            Commande commande = new Commande();
-            while (!commande.estValide(m_adversaire.getNbMain(), piocher)) {
-                commande = new Commande();
-            }
-            switch (commande.getCommande()) {
-                case FIN:
-                    jouer = false;
-                    break;
-                case PIOCHER:
-                    m_adversaire.piocher();
-                    piocher = true;
-                    break;
-                case PLACER:
-                    boolean p = m_adversaire.placer(commande.getNumeroCarte(), commande.getPosition());
-                    if (!p){
-                        commande.errPlacer();
-                    }
-                    break;
-                case SACRIFIER:
-                    List<Integer> lst = commande.getSacrifices();
-                    for (int i = 0; i < lst.size(); i++){
-                        m_adversaire.sacrifier(lst.get(i));
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-    }*/
     public int getScore() {return m_score;}
-    public int getNumParte(){return m_partie;}
+    public int getNumPartie(){return m_partie;}
     public int getNumTour(){return m_tour;}
-
-
 }

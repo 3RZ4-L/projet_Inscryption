@@ -44,4 +44,24 @@ public class Messages {
             Thread.currentThread().interrupt();
         }
     }
+
+    public void victoirePartie(int numPart){
+        System.out.println("Vous avez gagnée la partie :" + numPart +"\n");
+        pause();
+    }
+
+    public void defaitePartie(int numPart){
+        System.out.println("Vous avez perdu dans la partie :" + numPart +"\n");
+        pause();
+    }
+
+    public void defaiteJeu(){
+        System.out.println("L'Adversaire a gagnée\n");
+        pause();
+    }
+
+    public void victoireJeu(){
+        System.out.println("Vous avez gagnée, felicitations !!!\n");
+        pause();
+    }
 }
