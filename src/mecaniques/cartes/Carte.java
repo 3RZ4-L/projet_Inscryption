@@ -43,4 +43,6 @@ public abstract class Carte {
     public abstract Optional<Carte> croissance();
 
     public abstract Optional<List<Pouvoirs>> getPouvoir();
+
+    public abstract void ajouterTour();
 }

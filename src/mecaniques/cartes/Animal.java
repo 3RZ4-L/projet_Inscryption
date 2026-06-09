@@ -14,6 +14,7 @@ public class Animal extends Carte {
     private int m_os;
     private boolean m_volant;
     private ArrayList<Pouvoirs> m_pouvoir = new ArrayList<>();
+    private int m_nbTour;
 
     public Animal(String nom, int pdv, int att, int gds, int os, boolean volant, Pouvoirs power) {
         super(nom, pdv);
@@ -22,6 +23,7 @@ public class Animal extends Carte {
         m_os = os;
         m_volant = volant;
         m_pouvoir.add(power);
+        m_nbTour = 0;
     }
 
     public Animal(String nom, int pdv, int att, int gds, int os, boolean volant) {
@@ -30,6 +32,7 @@ public class Animal extends Carte {
         m_gouttes_sang = gds;
         m_os = os;
         m_volant = volant;
+        m_nbTour = 0;
     }
 
     public int getAttack() {
@@ -48,7 +51,12 @@ public class Animal extends Carte {
         return m_volant;
     }
 
+    public void ajouterTour(){
+        m_nbTour++;
+    }
+
     public int doDamage(Optional<Carte> other) {
+        ajouterTour();
         // Volant = attaque directe toujours
         if (this.estVolant()) {
             return m_attaque;
@@ -132,7 +140,7 @@ public class Animal extends Carte {
     }
 
     public Optional<Carte> croissance() {
-        if (this.aPouvoir(CROISSANCE)) {
+        if (this.aPouvoir(CROISSANCE) && m_nbTour == 2) {
             return Optional.of(new Animal("Loup", 2, 3, 2, 0, false));
         }
         return Optional.empty();

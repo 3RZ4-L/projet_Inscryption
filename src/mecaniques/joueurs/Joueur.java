@@ -74,6 +74,8 @@ public class Joueur {
     }
 
     public boolean peutSacrifier(int position){
+        if (position > 4 || position < 0)
+            return false;
         return m_ligne.estSacrifiable(position);
     }
 

@@ -188,11 +188,8 @@ public class Commande {
     }
 
     public static void pause() {
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        System.out.println("Appuyez sur Entrée pour continuer...");
+        new java.util.Scanner(System.in).nextLine();
     }
 
     public void affPiocheVide(){
