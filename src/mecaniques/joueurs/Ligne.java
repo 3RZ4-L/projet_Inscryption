@@ -54,10 +54,10 @@ public class Ligne {
             return Optional.empty();
         Optional<List<Pouvoirs>> lstOpt = carteOpt.get().getPouvoir();
         if (lstOpt.isEmpty() || lstOpt.get().isEmpty()){
+            sacrifier(position);
             return Optional.empty();
         }
         Pouvoirs pouvoir = lstOpt.get().get(0);
-        sacrifier(position);
 
         return Optional.of(pouvoir);
     }

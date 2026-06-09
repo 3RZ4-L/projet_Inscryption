@@ -66,10 +66,10 @@ public class Joueur {
 
     public Optional<Pouvoirs> pierreDeSacrifice(int position){
         if (peutSacrifier(position)) {
-            m_goutteSang++;
-            m_os++;
             return m_ligne.pierreDeSacrifice(position);
         }
+        m_goutteSang++;
+        m_os++;
         return Optional.empty();
     }
 
@@ -79,7 +79,21 @@ public class Joueur {
         return m_ligne.estSacrifiable(position);
     }
 
-    public void croissanceDuLouveteau() { m_ligne.croissance(); }
+    public void nouvellePartie() {
+        m_ligne = new Ligne();
+        m_main.clear();
+        m_os = 0;
+        m_goutteSang = 0;
+
+        for (int i = 0; i < 4; i++) {
+            piocher();
+        }
+    }
+
+    public void ajouterDansPioche(Animal carte) {
+        m_pioche.ajouter(carte);
+    }
+
     public void tuerAdversaire() { m_os++; }
     public int getNbMain() { return m_main.size(); }
     public int getNbPioche() { return m_pioche.getNbCartes(); }

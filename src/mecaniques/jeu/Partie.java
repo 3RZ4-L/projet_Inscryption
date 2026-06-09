@@ -24,43 +24,18 @@ public class Partie {
         m_tour = 1;
     }
 
-    /*public void demarrer() {
-        while (m_score < 5 && m_score > -5) {
-            m_tour = 1;
-            for (int i = 0; i < 3; i++){
-                tourAdversaire();
-                if (i == 2) {
-                    Animal[] deuxAnimaux = CarteFactory.getDeuxAnimaux();
-                    Choix choix = new Choix(m_joueur, deuxAnimaux[0], deuxAnimaux[1]);
-                    m_joueur.ajouterDansMain(choix.getChoix());
-                    m_joueur.croissanceDuLouveteau();
-                }
-                tourJoueur();
-                Messages message = new Messages();
-                message.resultats();
-                m_score += commencerAttaques(m_joueur, m_adversaire);
-                m_score -= commencerAttaques(m_adversaire, m_joueur);
-                message.scoreFinal(m_score);
-                m_tour++;
-                if (m_score > 5) m_score = 5;
-                if (m_score < -5) m_score = -5;
-            }
-            m_partie ++;
-        }
-    }*/
-
     public void demarrer() {
-        //Messages message = new Messages();
+        Messages message = new Messages();
         while (m_partie <= 3) {
             while (!partieTermine()) {
                 jouerUnTour();
             }
             if (m_score >= 5) {
-                //message.victoirePartie(m_partie);
+                message.victoirePartie(m_partie);
             }
             else {
-                //message.defaitePartie(m_partie);
-                //message.defaiteJeu();
+                message.defaitePartie(m_partie);
+                message.defaiteJeu();
                 return;
             }
 
@@ -73,7 +48,7 @@ public class Partie {
                 nouvellePartie();
             }
         }
-        //message.victoireJeu();
+        message.victoireJeu();
     }
 
     public void jouerUnTour() {
@@ -153,13 +128,13 @@ public class Partie {
         Animal[] deuxAnimaux = CarteFactory.getDeuxAnimaux();
 
         Choix choix = new Choix(m_joueur, deuxAnimaux[0], deuxAnimaux[1]);
-        //m_joueur.ajouterDansPioche(choix.getChoix());
+        m_joueur.ajouterDansPioche(choix.getChoix());
     }
 
     private void nouvellePartie() {
         m_score = 0;
         m_tour = 1;
-        //m_joueur.nouvellePartie();
+        m_joueur.nouvellePartie();
         m_adversaire = new Adversaire();
     }
 
@@ -180,10 +155,7 @@ public class Partie {
             m_score = -5;
         }
     }
-
     public int getScore() {return m_score;}
-    public int getNumParte(){return m_partie;}
+    public int getNumPartie(){return m_partie;}
     public int getNumTour(){return m_tour;}
-
-
 }
