@@ -16,7 +16,7 @@ public class Choix {
     public Choix(Humain joueur, Animal carte1, Animal carte2) {
         choisirAnimal(carte1, carte2);
 
-        if (!joueur.getLigne().estVide() || joueur.getNbMain() > 0) {
+        if (!joueur.getLigne().estVide() && joueur.getNbMain() > 0) {
             gererPierreDeSacrifice(joueur);
         }
     }
