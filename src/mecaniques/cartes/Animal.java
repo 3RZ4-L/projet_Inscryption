@@ -139,9 +139,22 @@ public class Animal extends Carte {
     }
 
     public Optional<Carte> croissance() {
-        if (this.aPouvoir(CROISSANCE) && m_nbTour >= 2) {
-            return Optional.of(new Animal("Loup", 2, 3, 2, 0, false));
+        if (!aPouvoir(CROISSANCE) || m_nbTour < 2) {
+            return Optional.empty();
         }
-        return Optional.empty();
+
+        Optional<List<Pouvoirs>> pouvoirsOpt = getPouvoir();
+
+        if (pouvoirsOpt.isPresent()) {
+            List<Pouvoirs> pouvoirs = pouvoirsOpt.get();
+            if (pouvoirs.size() == 2) {
+                for (Pouvoirs pouvoir : pouvoirs) {
+                    if (pouvoir != CROISSANCE) {
+                        return Optional.of( new Animal("Loup", 2, 3, 2, 0, false, pouvoir));
+                    }
+                }
+            }
+        }
+        return Optional.of(new Animal("Loup", 2, 3, 2, 0, false));
     }
 }
