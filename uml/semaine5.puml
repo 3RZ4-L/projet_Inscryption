@@ -1,15 +1,332 @@
 @startuml
-'https://plantuml.com/sequence-diagram
 
-autonumber
+skinparam classAttributeIconSize 0
+skinparam classFontStyle Bold
+skinparam style strictuml
+hide empty members
 
-== Initialization ==
+package "affichage.gestionEntrees" {
 
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
+    class Choix {
+        - m_choix : Animal
+        + <<create>> Choix(joueur : Humain, carte1 : Animal, carte2 : Animal)
+        - choisirAnimal(carte1 : Animal, carte2 : Animal) : void
+        - gererPierreDeSacrifice(joueur : Humain) : void
+        - choisirAnimalMain(joueur : Joueur) : Animal
+        - estValide(entree : String) : boolean
+        + getChoix() : Animal
+        + {static} pause() : void
+    }
 
-== Repetition ==
+    class Commande {
+        - m_commande : NomCommande
+        - m_position : int
+        - m_numeroCarte : int
+        - m_sacrifices : List<Integer>
+        + <<create>> Commande()
+        - analyserCommande(entree : String) : void
+        - traiterPlacer(morceaux : String[]) : void
+        - traiterSacrifier(morceaux : String[]) : void
+        - convertirPosition(texte : String) : Integer
+        - convertirEntier(texte : String) : Integer
+        + estValide(nbCarteMax : int, aPiochee : boolean) : boolean
+        + getCommande() : NomCommande
+        + getPosition() : int
+        + getNumeroCarte() : int
+        + getSacrifices() : List<Integer>
+        + {static} pause() : void
+        + affPiocheVide() : void
+        + errPlacer() : void
+    }
 
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+    enum NomCommande <<enumeration>> {
+        FIN
+        PIOCHER
+        PLACER
+        SACRIFIER
+        + {static} fromString(texte : String) : NomCommande
+    }
+}
+
+package "mecaniques.cartes" {
+
+    abstract class Carte <<abstract>> {
+        # m_nom : String
+        # m_points_de_vie : int
+        + <<create>> Carte(nom : String, pdv : int)
+        + getPv() : int
+        + getNom() : String
+        + estMort() : boolean
+        + {abstract} doDamage(other : Optional<Carte>) : int
+        + {abstract} attaqueDirect() : int
+        + {abstract} getAttack() : int
+        + {abstract} estVolant() : boolean
+        + {abstract} getNamePouvoir() : String
+        + {abstract} aPouvoir(pouvoir : Pouvoirs) : boolean
+        + {abstract} estCreature() : boolean
+        + {abstract} croissance() : Optional<Carte>
+        + {abstract} getPouvoir() : Optional<List<Pouvoirs>>
+        + {abstract} ajouterTour() : void
+    }
+
+    class Animal extends Carte {
+        - m_attaque : int
+        - m_gouttes_sang : int
+        - m_os : int
+        - m_volant : boolean
+        - m_pouvoir : ArrayList<Pouvoirs>
+        - m_nbTour : int
+        + <<create>> Animal(nom : String, pdv : int, att : int, gds : int, os : int, volant : boolean, power : Pouvoirs)
+        + <<create>> Animal(nom : String, pdv : int, att : int, gds : int, os : int, volant : boolean)
+        + getAttack() : int
+        + getGouttesSang() : int
+        + getOs() : int
+        + estVolant() : boolean
+        + ajouterTour() : void
+        + doDamage(other : Optional<Carte>) : int
+        + attaqueDirect() : int
+        + estCreature() : boolean
+        + getNamePouvoir() : String
+        + getPouvoir() : Optional<List<Pouvoirs>>
+        + aPouvoir() : boolean
+        + aPouvoir(pouvoir : Pouvoirs) : boolean
+        + ajouterPouvoir(pouvoir : Pouvoirs) : boolean
+        + croissance() : Optional<Carte>
+    }
+
+    class Obstacle extends Carte {
+        + <<create>> Obstacle(nom : String, pdv : Integer)
+        + estCreature() : boolean
+        + attaqueDirect() : int
+        + doDamage(other : Optional<Carte>) : int
+        + getAttack() : int
+        + estVolant() : boolean
+        + ajouterTour() : void
+        + getNamePouvoir() : String
+        + getPouvoir() : Optional<List<Pouvoirs>>
+        + aPouvoir(pouvoir : Pouvoirs) : boolean
+        + croissance() : Optional<Carte>
+    }
+
+    class CarteFactory {
+        - RAND : Random
+        + {static} getDeuxAnimaux() : Animal[]
+        + {static} getCarteAleatoire() : Animal
+        - {static} creerAnimalAvecPouvoir(indice : int) : Animal
+        - {static} creerAnimalSansPouvoir(indice : int) : Animal
+    }
+
+    enum Pouvoirs <<enumeration>> {
+        NOMBREUSES_VIES
+        CROISSANCE
+        PUANT
+        COUREUR
+        CONTACT_MORTEL
+        PIQUES_POINTUES
+        - m_nom : String
+        + <<create>> Pouvoirs(nm : String)
+        + getNom() : String
+    }
+}
+
+package "affichage" {
+
+    class AffichageJeu {
+        - m_createArrow : CreateArrow
+        - m_createCard : CreateCard
+        + afficherPlateau(joueur : Joueur, adversaire : Adversaire, numPartie : int, numTour : int, score : int) : void
+        + afficherLigneCart(ligne : Ligne, lettre : String) : void
+        + afficherLigneArrow(up : boolean) : void
+        + afficherMainEtPioche(joueur : Joueur) : void
+        + Consignes() : void
+        - LaMain(joueur : Joueur) : String[]
+        - LaPioche(nbCartes : int) : String[]
+        + emptyCard() : String[]
+        + coordCard(coord : String) : String[]
+        + animCard(carte : Carte) : String[]
+        + arrowsUp() : String[][]
+        + arrowsDown() : String[][]
+    }
+
+    class CreateArrow {
+        - m_width : int
+        + arrowUp() : String
+        + arrowDown() : String
+        + arrowBody() : String
+    }
+
+    class CreateCard {
+        - m_width : int
+        + emptyTopBottom() : String
+        + emptyMiddle() : String
+        + coordinate(coord : String) : String
+        + animTopBottom() : String
+        + separate() : String
+        + animMiddle() : String
+        + animName(cart : Carte) : String
+        + animHP(cart : Carte) : String
+        + animDMG(cart : Carte) : String
+        + pouvoir(pouvoir : String) : String
+        + volant(estVolant : boolean) : String
+    }
+
+    class Messages {
+        + resultats() : void
+        + ligneDivision() : void
+        + attaqueDirect(carte : Carte) : void
+        + attaquerCarte(cart : Carte, other : Carte) : void
+        + died(cart : Carte) : void
+        + scoreFinal(score : int) : void
+        + {static} pause() : void
+        + victoirePartie(numPart : int) : void
+        + defaitePartie(numPart : int) : void
+        + defaiteJeu() : void
+        + victoireJeu() : void
+    }
+}
+
+package "mecaniques.joueurs" {
+
+    class Pioche {
+        - m_pioche : Stack<Animal>
+        + <<create>> Pioche(n : int)
+        + piocher() : Optional<Animal>
+        + ajouter(carte : Animal) : void
+        + getNbCartes() : int
+    }
+
+    class Joueur {
+        # m_pioche : Pioche
+        # m_main : ArrayList<Animal>
+        # m_ligne : Ligne
+        # m_os : int
+        # m_goutteSang : int
+        + <<create>> Joueur()
+        + <<create>> Joueur(nbObstacles : int)
+        - {static} choisirNbObstaclesAleatoire() : int
+        + piocher() : boolean
+        + placer(numCarte : int, position : int) : boolean
+        + sacrifier(position : int) : void
+        + nouvellePartie() : void
+        + ajouterDansPioche(carte : Animal) : void
+        + tuerAdversaire() : void
+        + getNbMain() : int
+        + getNbPioche() : int
+        + getOs() : int
+        + getGoutteSang() : int
+        + getMain() : ArrayList<Animal>
+        + getLigne() : Ligne
+    }
+
+    class Adversaire extends Joueur {
+        - m_ligneAnnonce : Ligne
+        + <<create>> Adversaire()
+        + showNextCarts(ligne : Ligne) : void
+        + jouerTour() : void
+        + peutPiocher() : void
+        + enoughRessources(anim : Animal) : boolean
+        + spendRessources(anim : Animal) : void
+        + choisirPositionAnnonce(ligne : Ligne) : int
+        + searchEnemyCard(ligne : Ligne) : int
+        + emptyPlaceAnnonce() : int
+        + cartChois(position : int, ligne : Ligne) : int
+        + placeDefense() : int
+        + placeAttacker() : int
+        + placeCartAnnonce(idCart : int, position : int) : boolean
+        + annonceToBattle() : void
+        - sacrifierPour(animal : Animal) : boolean
+        - trouverCarteSacrifiable() : int
+        - peutJouerAvecSacrifice(animal : Animal) : boolean
+        + getLigneAnnonce() : Ligne
+    }
+
+    class Humain extends Joueur {
+        + <<create>> Humain()
+        + peutSacrifier(position : int) : boolean
+        + pierreDeSacrifice(position : int) : Optional<Pouvoirs>
+    }
+
+    class Ligne {
+        - m_cartes : Optional<Carte>[4]
+        - {static} random : Random
+        + <<create>> Ligne()
+        + <<create>> Ligne(nbObstacles : int)
+        - placerObstacle() : void
+        - creerObstacleAleatoire() : Obstacle
+        + estCaseVide(numCarte : int) : boolean
+        + placerCarte(carte : Carte, position : int) : boolean
+        + sacrifier(position : int) : boolean
+        + estSacrifiable(position : int) : boolean
+        + pierreDeSacrifice(position : int) : Optional<Pouvoirs>
+        + croissance() : void
+        + attaquer(joueur : Joueur, defenseur : Ligne) : int
+        + courrir(position : int) : int
+        + getLigne() : Optional<Carte>[4]
+        + removeCart(place : int) : void
+        + estVide() : boolean
+        + getCarte(position : int) : Optional<Carte>
+    }
+}
+
+package "mecaniques.jeu" {
+
+    class Partie {
+        - m_joueur : Humain
+        - m_adversaire : Adversaire
+        - m_score : int
+        - m_tour : int
+        - m_partie : int
+        + <<create>> Partie()
+        + demarrer() : void
+        + jouerUnTour() : void
+        + tourJoueur() : void
+        - choisirCarteFinDeuxiemePartie() : void
+        - nouvellePartie() : void
+        + commencerAttaques(joueur1 : Joueur, joueur2 : Joueur) : int
+        + partieTermine() : boolean
+        + limiterScore() : void
+        + getScore() : int
+        + getNumPartie() : int
+        + getNumTour() : int
+    }
+}
+
+class Main {
+    + {static} main(args : String[*]) : void
+}
+
+Main ..> Partie : <<use>>
+Partie ..> Commande : <<use>>
+Partie ..> Choix : <<use>>
+Partie ..> AffichageJeu : <<use>>
+Partie ..> Messages : <<use>>
+
+Partie "1" *--> "1\n -m_joueur" Humain : belongs to >
+Partie "1" *--> "1\n -m_adversaire" Adversaire : belongs to >
+
+AffichageJeu "1" *--> "1\n -m_createArrow" CreateArrow : belongs to >
+AffichageJeu "1" *--> "1\n -m_createCard" CreateCard : belongs to >
+
+Joueur "1" *--> "1\n -m_pioche" Pioche : belongs to >
+Joueur "1" *--> "1\n -m_ligne" Ligne : belongs to >
+Joueur "1" *--> "0..*\n -m_main" Animal : holds >
+
+Adversaire "1" *--> "1\n -m_ligneAnnonce" Ligne : belongs to >
+
+Pioche "1" *--> "0..*\n -m_pioche" Animal : contains >
+
+Ligne "1" *--> "0..4\n -m_cartes" Carte : contains >
+
+Choix ..> Animal : <<use>>
+Choix ..> Joueur : <<use>>
+Choix ..> Humain : <<use>>
+Commande ..> NomCommande : <<use>>
+CarteFactory ..> Animal : <<Instantiate>>
+Messages ..> Carte : <<use>>
+AffichageJeu ..> Ligne : <<use>>
+AffichageJeu ..> Joueur : <<use>>
+AffichageJeu ..> Adversaire : <<use>>
+
+Partie ..> Joueur : <<Call>>
+
 @enduml

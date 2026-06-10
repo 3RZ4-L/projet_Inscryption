@@ -205,7 +205,7 @@ package "mecaniques.joueurs" {
         + <<create>> Adversaire()
         + showNextCarts(ligne : Ligne) : void
         + jouerTour() : void
-        - peutPiocher() : void
+        + peutPiocher() : void
         + choisirPositionAnnonce(ligne : Ligne) : Integer
         + searchEnemyCard(ligne : Ligne) : Integer
         + emptyPlaceAnnonce() : Integer
@@ -260,7 +260,6 @@ class Main {
     + {static} main(args : String[*]) : void
 }
 
-' Relations
 Main ..> Partie : <<use>>
 Partie ..> Commande : <<use>>
 Partie ..> Choix : <<use>>
