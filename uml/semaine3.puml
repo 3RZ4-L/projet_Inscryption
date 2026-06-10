@@ -5,162 +5,242 @@ skinparam classFontStyle Bold
 skinparam style strictuml
 hide empty members
 
-package gestionEntrees {
-    class Choix{
-        - <<create>>Choix(pioche : Pioche)
-        - estValide(entree : String) : Boolean
-        - getChoix() : Animal
-    }
-    class Commande{
-        - m_commande : String
-        - m_position : String
-        - m_numeroCarte : String
-        + <<create>> Commande()
-        + estValide(nbCarteMax : Integer, nbpioche : Integer) : Boolean
-        + getCommande() : String
-        + getPosition() : Integer
-        + getNumeroCarte() : Integer
-    }
+enum mecaniques.cartes.Pouvoirs <<enumerate>> {
+    NULL
+    NOMBREUSES_VIES
+    CROISSANCE
+    PUANT
+    COUREUR
+    CONTACT_MORTEL
+    PIQUES_POINTUES
+    - m_nom : String
+    + getNom() : String
 }
 
 package mecaniques.cartes {
-    class Carte {
+    abstract class Carte <<abstract>> {
         - m_nom : String
-        - m_pv : Integer
-        + <<create>> Carte(nom : String, pdv : Integer)
-        + getPv() : Integer
-        + toString() : String
-    }
-
-    class Animal extends Carte{
-        - m_attaque : Integer
-        - m_gouttes_sang : Integer
-        - m_os Integer
-        - m_volant : Boolean
-        + <<create>> Animal(nom : String, pdv : Integer, att : Integer, gds : Integer, os : Integer)
-        + attaque(adversaire : Animal) : Boolean
-        + attaque(obstacle : Obstacle) : Boolean
-    }
-
-    class Obstacle extends Carte{
-        + Obstacle(nom : String, pdv : Integer)
-    }
-
-    enum Pouvoirs <<enumerate>>{
-        - NULL
-        - NOMBREUSES_VIES
-        - CROISSANCE
-        - PUANT
-        - COUREUR
-        - CONTACT_MORTEL
-        - PIQUES_POINTUES
-        - m_nom : String
-        + <<create>>Pouvoirs(nm : String)
+        - m_points_de_vie : int
+        + <<create>> Carte(nom : String, pdv : int)
+        + getPv() : int
         + getNom() : String
+        + estMort() : boolean
+        + doDamage(other : Carte) : int
+        + attaqueDirect() : int
+        + getAttack() : int
+        + estVolant() : boolean
+        + getNamePouvoir() : String
+        + getPouvoir() : Pouvoirs
+        + estCreature() : boolean
+    }
+
+    class Animal extends Carte {
+        - m_attaque : int
+        - m_gouttes_sang : int
+        - m_os : int
+        - m_volant : boolean
+        - m_pouvoir : Pouvoirs
+        + <<create>> Animal(nom : String, pdv : int, att : int, gds : int, os : int, volant : boolean)
+        + <<create>> Animal(nom : String, pdv : int, att : int, gds : int, os : int, volant : boolean, power : Pouvoirs)
+        + getAttack() : int
+        + getGouttesSang() : int
+        + getOs() : int
+        + estVolant() : boolean
+        + doDamage(other : Carte) : int
+        + attaqueDirect() : int
+        + getNamePouvoir() : String
+        + getPouvoir() : Pouvoirs
+        + estCreature() : boolean
+    }
+
+    class Obstacle extends Carte {
+        + <<create>> Obstacle(nom : String, pdv : int)
+        + estCreature() : boolean
+    }
+}
+
+package mecaniques.joueurs {
+    class Pioche {
+        - m_pioche : Stack<Animal>
+        + <<create>> Pioche(n : int)
+        + melanger(n : int) : void
+        + piocher() : Animal
+        + ajouter(carte : Animal) : void
+        + getNbCartes() : int
+    }
+
+    class Joueur {
+        - m_pioche : Pioche
+        - m_main : ArrayList<Animal>
+        - m_ligne : Ligne
+        - m_os : int
+        - m_goutteSang : int
+        + <<create>> Joueur()
+        + croissance() : void
+        + piocher() : void
+        + ajouterDansPioche(carte : Animal) : void
+        + placer(numCarte : int, position : int) : void
+        + sacrifier(numCarte : int, position : int) : void
+        + getNbMain() : int
+        + getNbPioche() : int
+        + getOs() : int
+        + getGoutteSang() : int
+        + getMain() : ArrayList<Animal>
+        + getLigne() : Ligne
+    }
+
+    class Adversaire extends Joueur {
+        + <<create>> Adversaire()
+        + jouerTour(ligne : Ligne) : void
+        - peutPiocher() : void
+        + choisirPosition(ligne : Ligne) : int
+        + searchEnemyCard(ligne : Ligne) : int
+        + emptyPlace() : int
+        + cartChois(position : int, ligne : Ligne) : int
+        + placeDefense() : int
+        + placeAttacker() : int
+        + placeCart(idCart : int, position : int) : boolean
+    }
+}
+
+package mecaniques.jeu {
+    class Ligne {
+        - m_cartes : Carte[4]
+        + <<create>> Ligne()
+        + estCaseVide(numCarte : int) : boolean
+        + placerCarte(carte : Carte, position : int) : boolean
+        + sacrifier(position : int) : boolean
+        + croissance() : void
+        + courrir(position : int) : boolean
+        + getCartes() : Carte[*]
+    }
+
+    class Partie {
+        - m_joueur : Joueur
+        - m_adversaire : Joueur
+        - m_score : int
+        + <<create>> Partie()
+        + demarrer() : int
+        + tourJoueur() : void
+        + tourAdversaire() : void
+        + getScore() : int
+        + commencerAttaques(attaquant : Ligne, defenseur : Ligne) : int
     }
 }
 
 package affichage {
-    class AffichageGrid {
-        + afficherLigne(cartes : String[][])
-        + emptyCard() : String[]
-        + coordCard() : String[]
-        + animCard() : String[]
-        + affArrowUp() : String[]
-        + affArrowDown() : String[]
+    class CreateCard {
+        - m_width : int = 18
+        + emptyTopBottom() : String
+        + emptyMiddle() : String
+        + coordinate(coord : String) : String
+        + animTopBottom() : String
+        + separate() : String
+        + animMiddle() : String
+        + animName(cart : Carte) : String
+        + animHP(cart : Carte) : String
+        + animDMG(cart : Carte) : String
+        + pouvoir(cart : Carte) : String
     }
-    class CreateArrow{
-        - m_width Integer
+
+    class CreateArrow {
+        - m_width : int = 19
         + arrowUp() : String
         + arrowDown() : String
         + arrowBody() : String
     }
-    class CreateCard{
-        - m_width Integer
-        + emptyTopBottom() : String
-        + emptyMiddle() : String
-        + corrdinate(coord : String) : String
-        + animTopBottom() : String
-        + separate() : String
-        + animMiddle() : String
-        + animName(nom : String) : String
-        + animHp(hp : String) : String
-        + animDMG(dmg : String) : String
-    }
-    class AffichageBattle{
-        + attackDirect(cart : Carte, dmg : Integer)
-        + attackCart(cart: Carte, other: Carte)
-        + died(cart: Carte)
-        + score(score: Integer)
-    }
-    class AffichagePioche{
-        + afficherMain(j : Joueur)
-        + afficherInfoCart(num : Integer, carte : Carte)
-        + afficherPioche(p : Pioche)
-        + afficherInterfacePioche(p : Pioche, j : Joueur)
-    }
-}
-package mecaniques.joueurs{
-    class Pioche {
-        + <<create>> Pioche()
-        + piocher() : Animal
-        + melanger(n : Integer)
+
+    class AffichageJeu {
+        + afficherPlateau(joueur : Joueur, adversaire : Adversaire, numPartie : int, score : int) : void
+        + afficherLigneCart(ligne : Ligne, lettre : String) : void
+        + afficherLigneArrow(up : boolean) : void
+        + afficherMainEtPioche(joueur : Joueur) : void
+        - LaMain(joueur : Joueur) : String[*]
+        - LaPioche(nbCartes : int) : String[*]
+        + emptyCard() : String[*]
+        + coordCard(coord : String) : String[*]
+        + animCard(carte : Carte) : String[*]
+        + arrowsUp() : String[][]
+        + arrowsDown() : String[][]
     }
 
-    class Joueur{
-        - m_os : Integer
-        - m_goutteSang : Integer
-        + <<create>> Joueur()
-        + piocher()
-        + placer(numCarte : Integer, position : Integer)
-        + sacrifier()
-        + ajouterDansPioche(carte : Animal)
-        + getNbCartes() : Integer
-        + getOs() : Integer
-        + getGoutteSang() : Integer
-        + getMain() : Animal[*]
-        + getLigne() : Ligne
+    class AffichageCommandes {
+        + affActions() : void
+        + affErrPiocher() : void
+        + affErrSacrificer() : void
     }
-    class Adversaire{
-        + <<create>> Adversaire
+
+    class AffichagePioche {
+        + afficherMain(j : Joueur) : void
+        + afficherInfoCart(num : int, anim : Animal) : void
+        + afficherPioche(p : Pioche) : void
+        + afficherInterfacePioche(p : Pioche, j : Joueur) : void
+    }
+
+    class Messages {
+        + attackDirect(cart : Carte, dmg : int) : void
+        + attackCart(cart : Carte, other : Carte) : void
+        + died(cart : Carte) : void
+        + score(score : int) : void
     }
 }
-package mecaniques.jeu{
-    class Ligne{
-        + <<create>>Ligne()
-        + estCaseVide(numCarte : Integer) : Boolean
-        + placerCarte(numCarte : Integer) : Boolean
-        + getCartes() : Carte[4]
+
+package affichage.gestionEntrees {
+    class Commande {
+        - m_commande : String
+        - m_position : String
+        - m_numeroCarte : String
+        - m_sacrifices : List<String>
+        + <<create>> Commande()
+        + estValide(nbCarteMax : int, piocher : boolean) : boolean
+        + getCommande() : String
+        + getPosition() : int
+        + getNumeroCarte() : int
+        + getSacrifices() : List<String>
     }
-    class Partie{
-        - m_score Integer
-        + <<create>> Partie()
-        + demarer()
-        + tourJoueur()
-        + tourAdversaire()
-        + commencerAttaques(attacker : Ligne, defenser : Ligne) : Integer
-        + getScore() : Integer
+
+    class Choix {
+        - m_choix : Animal
+        + <<create>> Choix(pioche : Pioche)
+        - estValide(entree : String) : boolean
+        + getChoix() : Animal
     }
 }
 
 class Main {
-    +static void main(String args)
+    + {static} main(args : String[*]) : void
 }
 
-AffichageGrid ..> CreateArrow : <<uses>>
-AffichageGrid ..> CreateCard : <<uses>>
-AffichageGrid ..> AffichagePioche : <<uses>>
-AffichageGrid ..> AffichageBattle : <<uses>>
-AffichageBattle .up.> Joueur : <<use>>
-AffichagePioche .up.> Joueur : <<use>>
-Pioche *-up> "-m_pioche\n 0..*" Animal
-Pioche *-> "-m_pioche \n 1" Joueur
-Joueur *-> "-m_cartes\n ..4" Ligne
-Joueur *-> "-m_joueur\n 1" Partie
-Choix <-* "-m_choix\n 2" Animal
-Pouvoirs *-> "-m_pouvoir\n1" Carte
+Partie *-- "1" Joueur : m_joueur
+Partie *-- "1" Adversaire : m_adversaire
+Joueur *-- "1" Pioche : m_pioche
+Joueur *-- "1" Ligne : m_ligne
+Joueur *-- "0..*" Animal : m_main
+Pioche *-- "0..*" Animal : m_pioche
+Ligne *-- "0..4" Carte : m_cartes
+AffichageJeu *-- "1" CreateCard : m_createCard
+AffichageJeu *-- "1" CreateArrow : m_createArrow
+Choix o-- "1" Animal : m_choix
+Carte o.. "0..1" Pouvoirs : m_pouvoir
 
-Partie .down.> Commande : <<uses>>
-Partie .down.> Choix : <<uses>>
+Main ..> AffichageCommandes : <<use>>
+Main ..> AffichagePioche : <<use>>
+Main ..> AffichageJeu : <<use>>
+Main ..> Joueur : <<use>>
+Main ..> Adversaire : <<use>>
+Main ..> Pioche : <<use>>
+Partie ..> Commande : <<use>>
+Partie ..> Choix : <<use>>
+Partie ..> Pioche : <<use>>
+Adversaire ..> Ligne : <<use>>
+Joueur ..> Pioche : <<use>>
+AffichageJeu ..> Joueur : <<use>>
+AffichageJeu ..> Adversaire : <<use>>
+AffichageJeu ..> Ligne : <<use>>
+AffichagePioche ..> Joueur : <<use>>
+AffichagePioche ..> Pioche : <<use>>
+AffichagePioche ..> Animal : <<use>>
+Pioche ..> Animal : <<Instantiate>>
+Choix ..> Pioche : <<use>>
 
 @enduml
