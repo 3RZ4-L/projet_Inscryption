@@ -35,20 +35,28 @@ public class Messages {
     }
 
     public void victoirePartie(int numPart){
-        System.out.println("Vous avez gagnée la partie :" + numPart +"\n");
+        System.out.println("\n*-----------------------------*");
+        System.out.println(" Vous avez gagnée la partie " + numPart);
+        System.out.println("*-----------------------------*\n");
         pause();
     }
 
     public void defaitePartie(int numPart){
-        System.out.println("Vous avez perdu dans la partie :" + numPart +"\n");
+        System.out.println("\n*-------------------------------*");
+        System.out.println(" Vous avez perdu dans la partie " + numPart);
+        System.out.println("*-------------------------------*\n");
         pause();
     }
 
     public void defaiteJeu(){
-        System.out.println("L'Adversaire a gagnée\n");
+        System.out.println("\n*---------------------------*");
+        System.out.println("\tL'Adversaire a gagnée");
+        System.out.println("*---------------------------*\n");
     }
 
     public void victoireJeu(){
-        System.out.println("Vous avez gagnée, felicitations !!!\n");
+        System.out.println("\n*-----------------------------------------*");
+        System.out.println("\tVous avez gagnée, felicitations !!!");
+        System.out.println("*-----------------------------------------*\n");
     }
 }

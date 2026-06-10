@@ -35,7 +35,7 @@ public class Choix {
                 "\n*-------------------------Choix entre deux animaux :------------------------*\n" +
                         c1 + "\n" +
                         c2 +
-                "\n*---------------------------------------------------------------------------*\n");
+                "\n*---------------------------------------------------------------------------*");
 
         Scanner scanner = new Scanner(System.in);
         String entree = scanner.nextLine().trim();
@@ -85,7 +85,7 @@ public class Choix {
                     choixValide = true;
                 }
                 else {
-                    System.out.println("Position invalide ou case vide.");
+                    System.out.println("Position invalide. Veuillez reéssayer");
                 }
             }
             catch (NumberFormatException e) {

@@ -8,22 +8,36 @@ import java.util.Optional;
 
 public class Adversaire extends Joueur{
     private Ligne m_ligneAnnonce;
+    private static final int CARTES_PAR_TOUR = 2;
+    private ArrayList<Animal> m_cartesASacrifier;
 
     public Adversaire(){
         super();
         m_ligneAnnonce = new Ligne();
+        m_cartesASacrifier = new ArrayList<>();
     }
 
     public void showNextCarts(Ligne ligne) {
         peutPiocher();
-        int position = choisirPositionAnnonce(ligne);
+        m_cartesASacrifier.clear();
 
-        if (position != -1 && getMain().size() > 0) {
-            int cartChoix = cartChois(position, ligne);
-            if (cartChoix != -1) {
-                placeCartAnnonce(cartChoix, position);
+        int cartesPlacees = 0;
+        int tentativesMax = 8;
+
+        while (cartesPlacees < CARTES_PAR_TOUR && tentativesMax > 0 && getMain().size() > 0) {
+            int position = choisirPositionAnnonce(ligne);
+
+            if (position != -1) {
+                int cartChoix = cartChois(position, ligne);
+                if (cartChoix != -1) {
+                    if (placeCartAnnonceAvecSacrificeDiffere(cartChoix, position)) {
+                        cartesPlacees++;
+                    }
+                }
             }
+            tentativesMax--;
         }
+        appliquerSacrificesDiffers();
     }
 
     public void jouerTour() {
@@ -35,17 +49,40 @@ public class Adversaire extends Joueur{
     }
 
     public boolean enoughRessources(Animal anim){
-        return anim.getGouttesSang() <= m_goutteSang && anim.getOs() <= m_os;
+        return getRessourcesAvecSacrifices() >= anim.getGouttesSang() && anim.getOs() <= m_os;
+    }
+
+    private int getRessourcesAvecSacrifices() {
+        int ressourcesTotales = m_goutteSang;
+
+        for (Animal cart : m_cartesASacrifier) {
+            ressourcesTotales++;
+        }
+
+        for (int i = 0; i < 4; i++) {
+            if (getLigne().estSacrifiable(i)) {
+                ressourcesTotales++;
+            }
+        }
+
+        return ressourcesTotales;
     }
 
     public void spendRessources(Animal anim){
-        m_goutteSang -= anim.getGouttesSang();
+        if (anim.getGouttesSang() <= m_goutteSang) {
+            m_goutteSang -= anim.getGouttesSang();
+        }
+        else {
+            int manque = anim.getGouttesSang() - m_goutteSang;
+            m_goutteSang = 0;
+            for (int i = 0; i < manque && i < m_cartesASacrifier.size(); i++) {
+            }
+        }
         m_os -= anim.getOs();
     }
 
     public int choisirPositionAnnonce(Ligne ligne){
         int defPosition = searchEnemyCard(ligne);
-        // Vérifier que la position trouvée est vide dans m_ligneAnnonce
         if (defPosition != -1 && m_ligneAnnonce.estCaseVide(defPosition)) {
             return defPosition;
         }
@@ -54,7 +91,6 @@ public class Adversaire extends Joueur{
 
     public int emptyPlaceAnnonce() {
         for (int i = 0; i < 4; i++) {
-            // Vérifier que la case est vide DANS LES DEUX lignes
             if (getLigne().getCarte(i).isEmpty() && m_ligneAnnonce.getCarte(i).isEmpty()) {
                 return i;
             }
@@ -100,7 +136,7 @@ public class Adversaire extends Joueur{
         for(int i = 0; i < main.size(); i++){
             Animal cart = main.get(i);
 
-            if (!peutJouerAvecSacrifice(cart)) {
+            if (!peutJouerAvecSacrificeDiffere(cart)) {
                 continue;
             }
 
@@ -127,7 +163,7 @@ public class Adversaire extends Joueur{
         for(int i = 0; i < main.size(); i++){
             Animal cart = main.get(i);
 
-            if (!peutJouerAvecSacrifice(cart)) {
+            if (!peutJouerAvecSacrificeDiffere(cart)) {
                 continue;
             }
 
@@ -144,13 +180,75 @@ public class Adversaire extends Joueur{
         return placement;
     }
 
+    public boolean placeCartAnnonceAvecSacrificeDiffere(int idCart, int position) {
+        if (idCart < 0 || idCart >= getMain().size()) {
+            return false;
+        }
+        Animal cart = getMain().get(idCart);
+
+        if (!peutJouerAvecSacrificeDiffere(cart)) {
+            return false;
+        }
+        if (!planifierSacrifices(cart)) {
+            return false;
+        }
+        if (m_ligneAnnonce.placerCarte(cart, position)) {
+            getMain().remove(idCart);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean planifierSacrifices(Animal animal) {
+        int sangRequis = animal.getGouttesSang();
+        int sangDisponible = m_goutteSang;
+
+        int sacrificesNecessaires = Math.max(0, sangRequis - sangDisponible);
+        ArrayList<Integer> positionsSacrifice = new ArrayList<>();
+
+        for (int i = 0; i < 4 && sacrificesNecessaires > 0; i++) {
+            Optional<Carte> carte = getLigne().getCarte(i);
+            if (carte.isPresent() && getLigne().estSacrifiable(i)) {
+                Carte c = carte.get();
+                if (c.getPv() <= 1 && c.getAttack() == 0) {
+                    positionsSacrifice.add(i);
+                    sacrificesNecessaires--;
+                }
+            }
+        }
+        if (sacrificesNecessaires > 0) {
+            return false;
+        }
+        for (int pos : positionsSacrifice) {
+            Optional<Carte> carte = getLigne().getCarte(pos);
+            if (carte.isPresent() && carte.get() instanceof Animal) {
+                m_cartesASacrifier.add((Animal) carte.get());
+            }
+        }
+        m_goutteSang = Math.max(0, m_goutteSang - animal.getGouttesSang());
+        m_os -= animal.getOs();
+        return true;
+    }
+
+    private void appliquerSacrificesDiffers() {
+        for (Animal carteASacrifier : m_cartesASacrifier) {
+            for (int i = 0; i < 4; i++) {
+                Optional<Carte> carte = getLigne().getCarte(i);
+                if (carte.isPresent() && carte.get().equals(carteASacrifier)) {
+                    sacrifier(i);
+                    break;
+                }
+            }
+        }
+        m_cartesASacrifier.clear();
+        m_goutteSang = Math.max(0, m_goutteSang);
+    }
+
     public boolean placeCartAnnonce(int idCart, int position) {
         if (idCart < 0 || idCart >= getMain().size()) {
             return false;
         }
-
         Animal cart = getMain().get(idCart);
-
         if (!enoughRessources(cart)) {
             boolean sacrificeReussi = sacrifierPour(cart);
 
@@ -158,7 +256,6 @@ public class Adversaire extends Joueur{
                 return false;
             }
         }
-
         if (m_ligneAnnonce.placerCarte(cart, position)) {
             spendRessources(cart);
             getMain().remove(idCart);
@@ -185,7 +282,6 @@ public class Adversaire extends Joueur{
             if (position == -1) {
                 return false;
             }
-
             sacrifier(position);
         }
         return m_os >= animal.getOs();
@@ -196,7 +292,7 @@ public class Adversaire extends Joueur{
             Optional<Carte> carte = getLigne().getCarte(i);
             if (carte.isPresent() && getLigne().estSacrifiable(i)) {
                 Carte c = carte.get();
-                if (c.getPv() <= 1) {
+                if (c.getPv() <= 1 && c.getAttack() == 0) {
                     return i;
                 }
             }
@@ -205,14 +301,10 @@ public class Adversaire extends Joueur{
     }
 
     private boolean peutJouerAvecSacrifice(Animal animal) {
-        if (animal.getOs() > m_os) {
+        if (animal.getOs() > m_os)
             return false;
-        }
-
-        if (animal.getGouttesSang() <= m_goutteSang) {
+        if (animal.getGouttesSang() <= m_goutteSang)
             return true;
-        }
-
         int sangPossible = m_goutteSang;
 
         for (int i = 0; i < 4; i++) {
@@ -221,6 +313,12 @@ public class Adversaire extends Joueur{
             }
         }
         return sangPossible >= animal.getGouttesSang();
+    }
+
+    private boolean peutJouerAvecSacrificeDiffere(Animal animal) {
+        if (animal.getOs() > m_os)
+            return false;
+        return getRessourcesAvecSacrifices() >= animal.getGouttesSang();
     }
 
     public Ligne getLigneAnnonce(){

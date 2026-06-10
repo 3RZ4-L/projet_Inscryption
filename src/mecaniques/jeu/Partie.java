@@ -38,6 +38,13 @@ public class Partie {
                 message.defaiteJeu();
                 return;
             }
+
+            // A la fin de la 2e Partie, le joueur choisit une carte parmis 2 choix
+            // et peut utiliser une pierre de sacrifice
+            if (m_partie == 2) {
+                choisirCarteFinDeuxiemePartie();
+            }
+
             m_partie++;
             if (m_partie <= 3) {
                 nouvellePartie();
@@ -81,7 +88,7 @@ public class Partie {
         boolean aPiocher = false;
         while (jouer) {
             AffichageJeu aff = new AffichageJeu();
-            aff.afficherPlateau(m_joueur,m_adversaire,m_partie,m_tour,m_score);
+            aff.afficherPlateau(m_joueur, m_adversaire, m_partie, m_tour, m_score);
             aff.Consignes();
 
             Commande commande = new Commande();
@@ -101,13 +108,13 @@ public class Partie {
                     break;
                 case PLACER:
                     boolean p = m_joueur.placer(commande.getNumeroCarte(), commande.getPosition());
-                    if (!p){
+                    if (!p) {
                         commande.errPlacer();
                     }
                     break;
                 case SACRIFIER:
                     List<Integer> lst = commande.getSacrifices();
-                    for (int i = 0; i < lst.size(); i++){
+                    for (int i = 0; i < lst.size(); i++) {
                         m_joueur.sacrifier(lst.get(i));
                     }
                     break;
@@ -115,13 +122,9 @@ public class Partie {
                     break;
             }
         }
-        // A la fin du 2e tour, le joueur choisit une carte
-        if (m_tour == 2) {
-            choisirCarteFinDeuxiemeTour();
-        }
     }
 
-    private void choisirCarteFinDeuxiemeTour() {
+    private void choisirCarteFinDeuxiemePartie() {
         Animal[] deuxAnimaux = CarteFactory.getDeuxAnimaux();
         Choix choix = new Choix(m_joueur, deuxAnimaux[0], deuxAnimaux[1]);
         m_joueur.ajouterDansPioche(choix.getChoix());
