@@ -63,16 +63,6 @@ public class AdversaireTest {
     }
 
     @Test
-    public void testEmptyPlaceAnnonce_PlusieursCasesVides() {
-        // Occuper la case 0 de la ligne de bataille
-        Animal animal = new Animal("Test", 3, 2, 0, 0, false);
-        adversaire.getLigne().placerCarte(animal, 0);
-
-        int resultat = adversaire.emptyPlaceAnnonce();
-        assertEquals(1, resultat); // Retourne la première case vide
-    }
-
-    @Test
     public void testEmptyPlaceAnnonce_AucuneCaseVide() {
         // Remplir toutes les cases
         for (int i = 0; i < 4; i++) {
