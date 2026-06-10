@@ -7,78 +7,79 @@ hide empty members
 
 package cartes {
     class Carte {
-        -m_nom : String
-        -m_points_de_vie : Integer
-        +<<create>>Carte(String nom, Integer pdv)
-        +getPv() : Integer
-        +toString() : String
+        - m_nom : String
+        - m_points_de_vie : Integer
+        + <<create>> Carte(nom : String, pdv : Integer)
+        + getPv() : Integer
+        + toString() : String
     }
 
-    class Animal extends Carte{
-        -m_attaque : Integer
-        -m_gouttes_sang : Integer
-        -m_os : Integer
-        +<<create>>Animal(String nom, Integer pdv, Integer att, Integer gds, Integer os)
-        +attaque(Animal adversaire) : Boolean
-        +attaque(Obstacle obstacle) : Boolean
+    class Animal extends Carte {
+        - m_attaque : Integer
+        - m_gouttes_sang : Integer
+        - m_os : Integer
+        + <<create>> Animal(nom : String, pdv : Integer, att : Integer, gds : Integer, os : Integer)
+        + attaque(adversaire : Animal) : Boolean
+        + attaque(obstacle : Obstacle) : Boolean
     }
 
-    class Volant extends Animal{
-        +<<create>> Volant(String nom, Integer pdv, Integer att, Integer gds, Integer os)
+    class Volant extends Animal {
+        + <<create>> Volant(nom : String, pdv : Integer, att : Integer, gds : Integer, os : Integer)
     }
 
     class Obstacle extends Carte{
-        +<<create>>Obstacle(String nom, Integer pdv)
+        + <<create>> Obstacle(nom : String, pdv : Integer)
     }
 
     class Pioche {
-        +create_chat() : Animal
-        +create_grizzly() : Animal
-        +create_coyote() : Animal
-        +create_moineau() :Volant
-        +create_hermine() : Animal
-        +create_louveteau() : Animal
-        +create_loup() : Animal
-        +create_punaise() : Animal
-        +create_corbeau() : Volant
-        +create_ecureil() : Animal
-        +create_richer() : Obstacle
-        +create_sapin() : Obstacle
+        + create_chat() : Animal
+        + create_grizzly() : Animal
+        + create_coyote() : Animal
+        + create_moineau() : Volant
+        + create_hermine() : Animal
+        + create_louveteau() : Animal
+        + create_loup() : Animal
+        + create_punaise() : Animal
+        + create_corbeau() : Volant
+        + create_ecureil() : Animal
+        + create_richer() : Obstacle
+        + create_sapin() : Obstacle
     }
 }
 
 package mecaniques {
     class Affichage {
-        -int m_width = 17
-        +emptyTopBottom() : String
-        +emptyMiddle() : String
-        +coordinate(String coord) : String
-        +animTopBottom() : String
-        +separate() : String
-        +animMiddle() : String
-        +animName(String nom) : String
-        +animHP(String hp) : String
-        +animDMG(String dmg) : String
-        +emptyCard() : String[*]
-        +coordCard(String coord) : String[*]
-        +animCard(String nom, String hp, String dmg, boolean volant) : String[*]
-        +void afficherLigne(String[*] cartes)
-        +arrowUp() : String
-        +arrowDown() : String
-        +arrowBody() : String
-        +affArrowUp() : String[*]
-        +affArrowDown() : String[*]
+        - m_width : int = 17
+        + emptyTopBottom() : String
+        + emptyMiddle() : String
+        + coordinate(coord : String) : String
+        + animTopBottom() : String
+        + separate() : String
+        + animMiddle() : String
+        + animName(nom : String) : String
+        + animHP(hp : String) : String
+        + animDMG(dmg : String) : String
+        + emptyCard() : String[*]
+        + coordCard(coord : String) : String[*]
+        + animCard(nom : String, hp : String, dmg : String, volant : boolean) : String[*]
+        + afficherLigne(cartes : String[][]) : void
+        + arrowUp() : String
+        + arrowDown() : String
+        + arrowBody() : String
+        + affArrowUp() : String[*]
+        + affArrowDown() : String[*]
     }
 }
 
 class Main {
-    +static void main(String[] args)
+    + {static} main(args : String[*]) : void
 }
 
-Main ..> Pioche : <<initiate>>
-Main ..> Affichage : <<uses>>
+Main .> Pioche : <<use>>
+Main .> Affichage : <<use>>
+
 Pioche ..> Animal : <<initiate>>
-Pioche ..> Obstacle : <<initiate>>
 Pioche ..> Volant : <<initiate>>
+Pioche ..> Obstacle : <<initiate>>
 
 @enduml
