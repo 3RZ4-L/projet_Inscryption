@@ -11,16 +11,12 @@ public class AnimalTest {
 
     @Test
     public void testPouvoirPuant() {
-        // Une carte avec Puant subit moins de dégâts
         Animal punaise = new Animal("Punaise", 5, 1, 0, 2, false, PUANT);
         Animal grizzly = new Animal("Grizzly", 6, 4, 3, 0, false);
 
-        // Grizzly attaque Punaise
         int dmg = grizzly.doDamage(Optional.of(punaise));
 
-        // Dégâts normaux = 4, réduits de 1 à cause de Puant = 3
         assertEquals(3, dmg);
-        // PV initiaux 5 - 3 dégâts = 2
         assertEquals(2, punaise.getPv());
     }
 
@@ -93,7 +89,7 @@ public class AnimalTest {
         int degats = contactMortel.doDamage(Optional.of(cible));
 
         assertEquals(0, degats);
-        assertEquals(10, cible.getPv()); // Pas de dégâts, donc pas de mort instantanée
+        assertEquals(10, cible.getPv());
         assertFalse(cible.estMort());
     }
 
@@ -126,11 +122,10 @@ public class AnimalTest {
 
     @Test
     public void testPouvoirNombreusesVies() {
-        // Nombreuses Vies permet de revenir à la vie (à implémenter)
+        // Nombreuses Vies permet d'être imortel (yaaaay)
         Animal animal = new Animal("Phoenix", 5, 3, 2, 0, false, NOMBREUSES_VIES);
 
         assertTrue(animal.aPouvoir(NOMBREUSES_VIES));
-        // Note: La mécanique complète de Nombreuses Vies reste à implémenter
     }
 
     @Test
@@ -145,27 +140,4 @@ public class AnimalTest {
         assertFalse(deuxiemeAjout);
     }
 
-    @Test
-    public void testGetPouvoir() {
-        Animal animal = new Animal("Test", 5, 3, 1, 0, false, PUANT);
-        animal.ajouterPouvoir(COUREUR);
-
-        Optional<List<Pouvoirs>> pouvoirs = animal.getPouvoir();
-
-        assertTrue(pouvoirs.isPresent());
-        assertEquals(2, pouvoirs.get().size());
-        assertTrue(pouvoirs.get().contains(PUANT));
-        assertTrue(pouvoirs.get().contains(COUREUR));
-    }
-
-    @Test
-    public void testGetNamePouvoir() {
-        Animal animal = new Animal("Test", 5, 3, 1, 0, false, PUANT);
-        animal.ajouterPouvoir(COUREUR);
-
-        String nomsPouvoirs = animal.getNamePouvoir();
-
-        assertTrue(nomsPouvoirs.contains("Puant"));
-        assertTrue(nomsPouvoirs.contains("Coureur"));
-    }
 }

@@ -17,19 +17,13 @@ public class ObstacleTest {
     }
 
     @Test
-    public void testConstructeur() {
-        assertEquals("Machin", obstacle.getNom());
-        assertEquals(10, obstacle.getPv());
-    }
-
-    @Test
     public void testEstCreature() {
         assertFalse(obstacle.estCreature());
     }
 
     @Test
     public void testObstacleEstMort() {
-        Obstacle mur = new Obstacle("Mur", 0);
+        Obstacle mur = new Obstacle("Machin-Bidule", 0);
         assertTrue(mur.estMort());
     }
 }

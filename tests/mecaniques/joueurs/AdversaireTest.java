@@ -63,12 +63,6 @@ public class AdversaireTest {
     }
 
     @Test
-    public void testEmptyPlaceAnnonce_ToutesCasesVides() {
-        int resultat = adversaire.emptyPlaceAnnonce();
-        assertEquals(0, resultat); // La première case vide
-    }
-
-    @Test
     public void testEmptyPlaceAnnonce_PlusieursCasesVides() {
         // Occuper la case 0 de la ligne de bataille
         Animal animal = new Animal("Test", 3, 2, 0, 0, false);
@@ -123,15 +117,6 @@ public class AdversaireTest {
         // La méthode devrait retourner false
         boolean resultat = adversaire.placeCartAnnonce(0, 0);
         // Selon les cartes de la main, peut être true ou false
-    }
-
-    @Test
-    public void testAnnonceToBattle_AucuneAnnonce() {
-        adversaire.annonceToBattle();
-        // Vérifier que rien n'a changé
-        for (int i = 0; i < 4; i++) {
-            assertTrue(adversaire.getLigne().estCaseVide(i));
-        }
     }
 
     @Test

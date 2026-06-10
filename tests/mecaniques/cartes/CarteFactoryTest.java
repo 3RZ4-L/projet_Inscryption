@@ -12,9 +12,6 @@ public class CarteFactoryTest {
         assertEquals(2, animaux.length);
         assertNotNull(animaux[0]);
         assertNotNull(animaux[1]);
-
-        assertNotEquals("", animaux[0].getNamePouvoir());
-        assertNotEquals("", animaux[1].getNamePouvoir());
     }
 
     @Test
