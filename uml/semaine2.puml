@@ -5,138 +5,183 @@ skinparam classFontStyle Bold
 skinparam style strictuml
 hide empty members
 
-package mecaniques.cartes {
+package "mecaniques.cartes" {
+
     class Carte {
         - m_nom : String
-        - m_pv : Integer
-        + <<create>> Carte(nom : String, pdv : Integer)
-        + getPv() : Integer
-        + toString() : String
+        - m_points_de_vie : int
+        + <<create>> Carte(nom : String, pdv : int)
+        + getPv() : int
+        + getNom() : String
+        + estMort() : boolean
+        + takeDamage(dmg : int) : void
+        + doDamage(other : Carte) : void
+        + getAttack() : int
+        + estVolant() : boolean
     }
 
     class Animal extends Carte{
-        - m_attaque : Integer
-        - m_gouttes_sang : Integer
-        - m_os : Integer
-        - m_volant : Boolean
-        + <<create>> Animal(nom : String, pdv : Integer, att : Integer, gds : Integer, os : Integer)
-        + attaque(adversaire : Animal) : Boolean
-        + attaque(obstacle : Obstacle) : Boolean
+        - m_attaque : int
+        - m_gouttes_sang : int
+        - m_os : int
+        - m_volant : boolean
+        + <<create>> Animal(nom : String, pdv : int, att : int, gds : int, os : int, volant : boolean)
+        + getAttack() : int
+        + getGouttesSang() : int
+        + getOs() : int
+        + estVolant() : boolean
+        + doDamage(other : Carte) : void
     }
 
     class Obstacle extends Carte{
-        + Obstacle(nom : String, pdv : Integer)
+        + <<create>> Obstacle(nom : String, pdv : Integer)
     }
 }
 
 package affichage {
+
     class AffichageGrid {
-        + afficherLigne(cartes : String[*])
-        + emptyCard() : String[*]
-        + coordCard() : String[*]
-        + animCard() : String[*]
-        + affArrowUp() : String[*]
-        + affArrowDown() : String[*]
+        + afficherLigne(cartes : String[][]) : void
+        + emptyCard() : String[]
+        + coordCard(coord : String) : String[]
+        + animCard(cart : Carte) : String[]
+        + affArrowUp() : String[]
+        + affArrowDown() : String[]
     }
-    class CreateArrow{
-        - m_width : Integer
+
+    class CreateArrow {
+        - m_width : int = 17
         + arrowUp() : String
         + arrowDown() : String
         + arrowBody() : String
     }
-    class CreateCard{
-        - m_width : Integer
+
+    class CreateCard {
+        - m_width : int = 17
         + emptyTopBottom() : String
         + emptyMiddle() : String
-        + corrdinate(coord : String) : String
+        + coordinate(coord : String) : String
         + animTopBottom() : String
         + separate() : String
         + animMiddle() : String
-        + animName(nom : String) : String
-        + animHp(hp : String) : String
-        + animDMG(dmg : String) : String
-    }
-    class AffichageBattle{
-        + attackDirect(cart : Carte, dmg : Integer)
-        + attackCart(cart: Carte, other: Carte)
-        + died(cart: Carte)
-        + score(score: Integer)
-    }
-    class AffichagePioche{
-        + afficherMain(j : Joueur)
-        + afficherInfoCart(num : Integer, carte : Carte)
-        + afficherPioche(p : Pioche)
-        + afficherInterfacePioche(p : Pioche, j : Joueur)
-    }
-}
-package mecaniques.joueurs{
-    class Pioche {
-        + <<create>> Pioche()
-        + piocher() : Animal
-        + melanger(n : Integer)
+        + animName(cart : Carte) : String
+        + animHP(cart : Carte) : String
+        + animDMG(cart : Carte) : String
     }
 
-    class Joueur{
-        - m_os : Integer
-        - m_goutteSang : Integer
+    class AffichageBattle {
+        + attackDirect(cart : Carte, dmg : int) : void
+        + attackCart(cart : Carte, other : Carte) : void
+        + died(cart : Carte) : void
+        + score(score : int) : void
+    }
+
+    class AffichagePioche {
+        + afficherMain(j : Joueur) : void
+        + afficherInfoCart(num : int, carte : Carte) : void
+        + afficherPioche(p : Pioche) : void
+        + afficherInterfacePioche(p : Pioche, j : Joueur) : void
+    }
+}
+
+package "mecaniques.joueurs" {
+
+    class Pioche {
+        - m_pioche : Stack
+        + <<create>> Pioche(n : int)
+        + melanger(n : int) : void
+        + piocher() : Animal
+    }
+
+    class Joueur {
+        - m_pioche : Pioche
+        - m_main : ArrayList<Animal>
+        - m_os : int
+        - m_goutteSang : int
         + <<create>> Joueur()
-        + piocher()
-        + poser()
-        + sacrifier()
+        + piocher() : void
+        + placer(numCarte : int) : Animal
+        + reprendre(carte : Animal) : void
+        + sacrifier() : void
+        + getNbCartes() : int
+        + getOs() : int
+        + getGoutteSang() : int
+        + getMain() : Optional<ArrayList<Animal>>
     }
+
     class Adversaire extends Joueur{
-        -<<create>> Adversaire()
+        + <<create>> Adversaire()
     }
 }
-package mecaniques.battle{
-    class Battle{
-        - m_score : Integer
-        + <<create>> : Battle()
-        + getCartesJoueur() : Carte[*]
-        + getCartesAdversaire() : Carte[*]
-        + getScore() : Integer
-        + joueurGagne() : Boolean
-        + adversaireGagne() : Boolean
-        + validPlacementAdversaire() : Boolean
-        + validPlacementJoueur() : Boolean
+
+package "mecaniques.battle" {
+
+    class Battle {
+        - m_cartesJoueur : Optional<Carte>[]
+        - m_cartesAdversaire : Optional<Carte>[]
+        - m_score : int
+        + <<create>> Battle()
+        + getCartesJoueur() : Optional<Carte>[]
+        + getCartesAdversaire() : Optional<Carte>[]
+        + getScore() : int
+        + validPlacement(place : int) : boolean
+        + placerCart(personnage : Optional<Carte>[], carte : Carte, place : int) : boolean
+        + validPlacementJoueur(carte : Carte, place : int) : boolean
+        + validPlacementAdversaire(carte : Carte, place : int) : boolean
+        + joueurGagne() : boolean
+        + adversaireGagne() : boolean
     }
 }
-package mecaniques.jeu{
-    class Ligne{
-        + estCaseVide(numCarte : Integer) : Boolean
-        + retirerCarte(numCarte : Integer) : Boolean
-        + ajouterCarte(numCarte : Integer, carte : Animal) : Boolean
-        + supprimerCarte(numCarte : Integer) : Boolean
-        + sacrifierCare(numCarte : Integer) : Boolean
+
+package "mecaniques.jeu" {
+
+    class Ligne {
+        - m_joueur : Joueur
+        - m_cartes : Animal[]
+        + <<create>> Ligne(joueur : Joueur)
+        + estCaseVide(numCarte : int) : boolean
+        + placerCarte(numCarte : int, carte : Animal) : boolean
+        + retirerCarte(numCarte : int) : boolean
+        + supprimerCarte(numCarte : int) : boolean
+        + sacrifierCarte(numCarte : int) : boolean
     }
-    class Partie{
-        + m_score : Integer
-        + m_numeroPartie : Integer
-        - <<create>> Partie()
-        - demarrer()
-        - tourJoueur()
-        - tourAdversaire()
-        - verfierFinPartie() : Boolean
-        - getScore() : Integer
+
+    class Partie {
+        - m_joueur : Joueur
+        - m_adversaire : Adversaire
+        - m_score : int
+        - m_numeroPartie : int
+        + <<create>> Partie()
+        + demarrer() : void
+        + tourJoueur() : void
+        + tourAdversaire() : void
+        + verifierFinPartie() : boolean
+        + getScore() : int
     }
 }
 
 class Main {
-    +static void main(String[] args)
+    + {static} main(args : String[]) : void
 }
 
-AffichageGrid ..> CreateArrow : <<uses>>
-AffichageGrid ..> CreateCard : <<uses>>
-AffichageBattle .> Carte : <<use>>
-AffichagePioche .> Joueur : <<use>>
-AffichagePioche .> Carte : <<use>>
-AffichagePioche .> Pioche : <<use>>
-Pioche <-* "-m_pioche\n 0..*" Animal
-Pioche <-* "-m_pioche \n 1" Joueur
-Joueur *-> "-m_cartes\n ..4" Ligne
-Joueur *-> "-m_joueur\n 1" Partie
-Adversaire *-> "-m_adversaire\n 1" Partie
-Battle *-> "- m_cartesJoueur\n*" Carte
-Battle *-> "- m_cartesAdversaire\n*" Carte
+Pioche "1" *-- "0..*" Animal : contient
+Joueur "1" *-- "1" Pioche : possède
+Joueur "1" *-- "0..*" Animal : main
+Ligne "1" *-- "0..4" Animal : cartes
+Partie "1" *-- "1" Joueur
+Partie "1" *-- "1" Adversaire
+Battle "1" *-- "0..4" Carte : cartesJoueur
+Battle "1" *-- "0..4" Carte : cartesAdversaire
+
+Main ..> AffichageGrid : <<use>>
+AffichageGrid ..> CreateArrow : <<use>>
+AffichageGrid ..> CreateCard : <<use>>
+AffichageBattle ..> Carte : <<use>>
+AffichagePioche ..> Joueur : <<use>>
+AffichagePioche ..> Carte : <<use>>
+AffichagePioche ..> Pioche : <<use>>
+Battle ..> AffichageBattle : <<use>>
+Partie ..> Battle : <<use>>
+Joueur ..> Pioche : <<use>>
 
 @enduml
