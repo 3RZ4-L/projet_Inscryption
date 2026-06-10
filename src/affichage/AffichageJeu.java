@@ -18,7 +18,7 @@ public class AffichageJeu {
 
     public void afficherPlateau(Joueur joueur, Adversaire adversaire, int numPartie, int numTour, int score){
         System.out.println("\n________________________________________________ Partie " + numPartie + " _________________________________________________\n");
-        System.out.println("\tTour : "+(numTour+1));
+        System.out.println("\tTour : "+numTour);
         afficherLigneCart(adversaire.getLigneAnnonce(), "");
         afficherLigneArrow(false);
         afficherLigneCart(adversaire.getLigne(), "A");

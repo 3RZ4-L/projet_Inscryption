@@ -3,8 +3,6 @@ package mecaniques.cartes;
 import java.util.List;
 import java.util.Optional;
 
-import static mecaniques.cartes.Pouvoirs.*;
-
 public abstract class Carte {
     protected String m_nom;
     protected int m_points_de_vie;

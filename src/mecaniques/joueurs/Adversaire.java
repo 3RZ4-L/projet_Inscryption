@@ -45,10 +45,21 @@ public class Adversaire extends Joueur{
 
     public int choisirPositionAnnonce(Ligne ligne){
         int defPosition = searchEnemyCard(ligne);
+        // Vérifier que la position trouvée est vide dans m_ligneAnnonce
         if (defPosition != -1 && m_ligneAnnonce.estCaseVide(defPosition)) {
             return defPosition;
         }
         return emptyPlaceAnnonce();
+    }
+
+    public int emptyPlaceAnnonce() {
+        for (int i = 0; i < 4; i++) {
+            // Vérifier que la case est vide DANS LES DEUX lignes
+            if (getLigne().getCarte(i).isEmpty() && m_ligneAnnonce.getCarte(i).isEmpty()) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public int searchEnemyCard(Ligne ligne){
@@ -69,15 +80,6 @@ public class Adversaire extends Joueur{
             }
         }
         return placeCart;
-    }
-
-    public int emptyPlaceAnnonce(){
-        for(int i = 0; i < 4; i++){
-            if (getLigne().getCarte(i).isEmpty() && m_ligneAnnonce.getCarte(i).isEmpty()){
-                return i;
-            }
-        }
-        return -1;
     }
 
     public int cartChois(int position, Ligne ligne){
@@ -191,8 +193,12 @@ public class Adversaire extends Joueur{
 
     private int trouverCarteSacrifiable() {
         for (int i = 0; i < 4; i++) {
-            if (getLigne().estSacrifiable(i)) {
-                return i;
+            Optional<Carte> carte = getLigne().getCarte(i);
+            if (carte.isPresent() && getLigne().estSacrifiable(i)) {
+                Carte c = carte.get();
+                if (c.getPv() <= 1) {
+                    return i;
+                }
             }
         }
         return -1;

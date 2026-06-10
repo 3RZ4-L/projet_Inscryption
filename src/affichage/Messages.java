@@ -46,11 +46,9 @@ public class Messages {
 
     public void defaiteJeu(){
         System.out.println("L'Adversaire a gagnée\n");
-        pause();
     }
 
     public void victoireJeu(){
         System.out.println("Vous avez gagnée, felicitations !!!\n");
-        pause();
     }
 }

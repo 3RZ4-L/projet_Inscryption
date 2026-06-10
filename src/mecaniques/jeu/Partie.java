@@ -38,10 +38,6 @@ public class Partie {
                 message.defaiteJeu();
                 return;
             }
-            // A la fin du 2e tour, le joueur choisit une carte
-            if (m_tour == 2) {
-                choisirCarteFinDeuxiemePartie();
-            }
             m_partie++;
             if (m_partie <= 3) {
                 nouvellePartie();
@@ -53,6 +49,7 @@ public class Partie {
     public void jouerUnTour() {
         Messages message = new Messages();
         // Début du tour : les cartes avec Croissance peuvent évoluer
+        // (on teste si c'est le 2e tour dans la class Animal)
         m_joueur.getLigne().croissance();
         m_adversaire.getLigne().croissance();
 
@@ -118,11 +115,14 @@ public class Partie {
                     break;
             }
         }
+        // A la fin du 2e tour, le joueur choisit une carte
+        if (m_tour == 2) {
+            choisirCarteFinDeuxiemeTour();
+        }
     }
 
-    private void choisirCarteFinDeuxiemePartie() {
+    private void choisirCarteFinDeuxiemeTour() {
         Animal[] deuxAnimaux = CarteFactory.getDeuxAnimaux();
-
         Choix choix = new Choix(m_joueur, deuxAnimaux[0], deuxAnimaux[1]);
         m_joueur.ajouterDansPioche(choix.getChoix());
     }
