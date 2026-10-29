@@ -1,210 +1,94 @@
-# Inscryption
+# Inscryption — Jeu de cartes tactique
 
-On souhaite développer une application imitant **le jeu Inscryption**.
+## Présentation
 
-_Vous vous retrouvez dans une cabane, perdu en pleine forêt. Dans l'obscurité, attablé face à vous se dresse un adversaire aux yeux inquiétants qui vous défie à un étrange jeu de cartes..._ 
+Application inspirée du jeu *Inscryption* : un jeu de cartes tactique en trois manches où le joueur affronte une IA dans une cabane isolée en pleine forêt. Le premier à obtenir un écart de 5 points en sa faveur remporte la manche.
 
-## Le jeu de cartes (Phase 1)
-- A votre gauche, se trouve une balance symbolisant l'écart de score avec votre adversaire. Le premier joueur qui atteint un écart de 5 points en sa faveur remporte la partie. 
-- Face à vous, se trouve un plateau constitué de deux lignes de quatre emplacements de cartes. Vous ne pouvez placer des cartes que sur la ligne du bas, votre adversaire uniquement sur la ligne du haut.
-- A votre droite, vous disposez d'une pioche. Vous commencez avec 4 cartes en mains et vous pouvez piocher une carte par tour.
+Le projet est développé en Java dans un cadre pédagogique et suit une architecture orientée objet testée et documentée.
 
-### Les cartes animaux
-- Chaque carte dispose
-  - d'un nombre de points d'attaque
-  - d'un nombre de points de vie,
-  - d'un nombre de vos cartes à sacrifier pour pouvoir être placée sur le plateau (nombre de gouttes de sang)
-  - d'un nombre de vos cartes déjà mortes (tuées ou sacrifiées) pour pouvoir être placée sur le plateau (nombre d'os)
+---
 
-Chacune des cartes peut apparaitre en plusieurs exemplaires dans la pioche, dans la main et sur le plateau.
+## Fonctionnalités
 
-### Déroulement d'un tour
-- Au début de votre tour, votre adversaire indique quelles cartes il jouera au tour prochain (représentés par une ligne supplémentaire de 4 emplacements de cartes  au-dessus du plateau)
-- A chaque tour, vous pouvez piocher une seule carte que vous placez dans votre main,
-- Vous pouvez placer autant de cartes de votre par tour sur le plateau, dans la limite du nombre d'emplacements de cartes disponibles sur votre côté du plateau (au maximum 4) et en respectant les sacrifices à réaliser
-- A la fin de votre tour, chacune de vos cartes "animal" attaque. Si une carte de votre adversaire fait face à la carte attaquante, la carte de votre adversaire perd en nombre de points de vie le nombre de points d'attaque de votre carte. 
-Si au contraire, aucune carte de votre adversaire ne se trouve face à une de vos cartes, le score est augmenté en votre faveur du nombre de points d'attaque de votre carte.
-Les cartes "animal" volantes attaquent directement le score même si une carte adverse se trouve en face d'elle.
+### Plateau et déroulement
+- Plateau composé de deux lignes de 4 emplacements : le joueur place ses cartes sur la ligne inférieure, l'adversaire sur la ligne supérieure.
+- Balance de score visible à tout moment ; la manche se termine dès qu'un écart de 5 points est atteint.
+- L'adversaire annonce ses cartes du tour suivant sur une ligne dédiée au-dessus du plateau.
+- Le joueur commence avec 4 cartes en main et peut piocher une carte par tour.
+- Des cartes obstacles (Rocher, Sapin) peuvent occuper des emplacements et doivent être détruites avant tout placement.
 
-Un message devra indiquer les dégâts infligés par les attaques à la fin du tour. 
+### Cartes animaux
+Chaque carte possède des points d'attaque, des points de vie, un coût en gouttes de sang (sacrifices de cartes alliées), un coût en os (cartes alliées déjà mortes) et un attribut « volant ».
 
-Après votre tour, votre adversaire joue de la même façon que vous (à la seule différence que vous n'avez pas à indiquer les cartes que vous jouerez au prochain tour).
+| Nom | Attaque | PV | Sang | Os | Volant |
+|---|---|---|---|---|---|
+| Chat | 0 | 1 | 1 | 0 | non |
+| Grizzly | 4 | 6 | 3 | 0 | non |
+| Coyote | 2 | 1 | 0 | 4 | non |
+| Moineau | 1 | 2 | 1 | 0 | oui |
+| Corbeau | 2 | 3 | 2 | 0 | oui |
+| Écureuil | 0 | 1 | 0 | 0 | non |
+| Hermine | 1 | 3 | 1 | 0 | non |
+| Louveteau | 1 | 1 | 1 | 0 | non |
+| Loup | 3 | 2 | 2 | 0 | non |
+| Punaise | 1 | 2 | 0 | 2 | non |
 
+### Combat
+- À la fin de chaque tour, toutes les cartes animales attaquent.
+- Une carte attaquée perd en PV le nombre de points d'attaque de l'attaquant.
+- Sans adversaire en face, les points d'attaque s'ajoutent directement au score.
+- Les cartes volantes attaquent directement le score, indépendamment de la carte en face.
+- Un récapitulatif des dégâts infligés est affiché à la fin de chaque tour.
 
-### Déroulement de la partie
-- Au début de la partie le joueur, prend en main les 4 premières cartes de la pioche.
-- Des cartes obstacles peuvent être présentes sur le plateau au début de la partie. Elles occupent chacune un emplacement de carte, possèdent un certain nombre de points de vie et doivent être éliminées par vous ou votre adversaire avant de placer une carte à leur emplacement.
-- La partie se termine lorsqu'un déséquilibre de 5 points apparaît dans le score.
+### Progression
+- Pioche initiale de 15 cartes composée majoritairement d'écureuils.
+- Trois manches à remporter pour gagner la partie.
+- À l'issue de la deuxième manche, le joueur choisit une carte supplémentaire parmi deux propositions.
 
+### Adversaire
+L'IA est entièrement déterministe : ses actions sont planifiées à l'avance afin de garantir la reproductibilité des tests et faciliter le débogage. Aucune stratégie aléatoire n'est utilisée.
 
-### Déroulement du jeu
-- Au début de la partie le joueur commence avec une pioche de 15 cartes constituée majoritairement d'écureuils.
-- Le jeu est constitué de trois parties. Vous gagnez si vous remportez les trois parties.
-- A la fin de la deuxième partie, vous pouvez ajouter à votre pioche une nouvelle carte parmi deux cartes proposées.
+---
 
-### Gestion de l'adversaire
-C'est votre application qui jouera pour l'adversaire du joueur. Ses actions peuvent être déterminées entièrement à l'avance.
-En revanche, évitez les stratégies aléatoires, cela risque de complexifier le debuggage et les tests de votre application.
+## Utilisation
 
-### Liste des cartes animaux
+L'interface en ligne de commande affiche en permanence :
+- le plateau (ligne adverse, ligne joueur, obstacles, score) ;
+- la main du joueur avec les caractéristiques de chaque carte ;
+- le nombre de cartes restantes dans la pioche ;
+- les actions disponibles.
 
-Nom | Attaque      | Points de vie  | Gouttes de sang  | Os | Volant ? |
--------- |---------|---------|---------|----------------|-----|
-Chat |0  |1  | 1  | 0         | non |    
-Grizzly | 4| 6 | 3| 0 | non |
-Coyote | 2 | 1 | 0 |4 | non |
-Moineau | 1 | 2 | 1 | 0 | oui |
-Corbeau |2 | 3| 2 | 0 | oui |
-Ecureuil | 0 | 1 | 0 | 0 | non |
-Hermine | 1 | 3 | 1 |0 | non |
-Louveteau | 1| 1 | 1 |0  | non |
-Loup |3 | 2 | 2 |0  | non |
-Punaise | 1 | 2 | 0 | 2 | non |
+### Commandes
+| Commande | Description |
+|---|---|
+| `fin` | Terminer le tour |
+| `piocher` | Piocher une carte |
+| `placer <numéro_carte> <position>` | Placer une carte sur un emplacement (ex. `placer 2 B1`) |
 
-### Liste des cartes obstacles
-Nom | Points de vie      |
--------- |---------|
-Rocher | 5         |     
-Sapin | 3  |
+Les saisies invalides sont refusées avec un message explicite et redemandées à l'utilisateur.
 
-## Proposition d'affichage
-```
-    Partie 1
+---
 
-    1er Tour:
+## Structure du dépôt
 
-         *-----------*   *************   *-----------*   *************
-         | Louveteau |   *           *   | Moineau   |   *           *
-         |-----------|   *           *   |-----------|   *           *
-         | PV: 1     |   *           *   | PV: 1     |   *           *
-         | Att: 1    |   *           *   | Att : 1   |   *           *
-         |           |   *           *   | Volant    |   *           *
-         *-----------*   *************   *-----------*   *************
-               ||              ||              ||              ||
-               \/              \/              \/              \/
-         *************   *************   *************   *************     
-         *           *   *           *   *           *   *           *
-         *           *   *           *   *           *   *           *
-         *     A1    *   *     A2    *   *     A3    *   *     A4    *
-         *           *   *           *   *           *   *           *
-         *           *   *           *   *           *   *           *
- Score   *************   *************   *************   *************
-   0
-         *************   *-----------*   *************   *************     
-         *           *   | Rocher    |   *           *   *           *
-         *           *   |-----------|   *           *   *           *
-         *     B1    *   | PV: 5     |   *    B3     *   *     B4    *
-         *           *   |           |   *           *   *           *
-         *           *   |           |   *           *   *           *
-         *************   *-----------*   *************   *************
-                                                                              Pioche
-  Votre main :                                                             *-----------* 
-    1. Ecureuil   PV: 1     Att: 0    Gouttes de sang: 0  Os : 0           |           |
-    2. Ecureuil   PV: 1     Att: 0    Gouttes de sang: 0  Os : 0           |           |
-    3. Hermine    PV: 3     Att: 1    Gouttes de sang: 1  Os : 0           |     11    |
-    4. Ecureuil   PV: 1     Att: 0    Gouttes de sang: 0  Os : 0           |   cartes  |
-                                                                           |           |
-                                                                           *-----------*
-    
-Actions possibles: 
-  [fin] Terminer votre tour
-  [piocher] Piocher une carte
-  [placer <numero carte> <position>] Placer une carte sur le plateau
-
-$ placer 2 B1
-```
-Il n'est pas nécessaire de reproduire le visuel tel quel mais toutes les informations doivent être présentes.
-
-## Organisation
-
-- Travail en **binôme** au sein d'un même groupe de TP
-- Le travail doit être réalisé sur un fork du projet dans le groupe <nom_etudiant_1>-<nom_etudiant_2> que vous aurez créé
-- Durée : 5 semaines
-- Nombre de séances :
-   - 8h encadrées en groupe de TD
-   - 12h encadrées, en groupe TP
-   - 8h tutorées, en promo complète
-   - travail non-encadré (SAé libre)
-- Sujet dévoilé en deux phases :
-  - Phase 1 dévoilée **Lundi 4 mai** sur les deux premières semaines
-  - Phase 2 dévoilée le **Lundi 25 mai**
-
-## Calendrier
-- Lundi **4 mai** : phase 1 dévoilée
-- Mardi **12 mai** : début des séances de TPs dédiées au projet
-- Lundi **25 mai** : début de la phase 2
-- Mercredi **10 Juin** à 12h30 : rendu final
-- De Jeudi **11 Juin** à Vendredi **12 Juin** : soutenances
-
-De plus, il y aura un rendu hebdomadaire avant chaque **Dimanche, 23h59** (les 17/05, 24/05, 31/05, 7/06 ).
-
-
-
-## Rendus hebdomadaires
-
-Votre projet doit être un fork de ce dépôt dans un groupe ayant pour nom `<nom_etudiant_1>-<nom_etudiant_2>`.
-Votre enseignant en TP et le responsable du module doivent être ajoutés comme Reporter à votre projet.
-
-Vous devez effectuer un rendu par semaine au plus tard le dimanche soir à minuit : la régularité des rendus sera prise en compte dans l'évaluation.
-Un rendu est une branche qui a pour nom `rendu<numéro-rendu>`.
-Le dernier rendu sera évalué en tant que rendu final.
-
-Chaque rendu doit contenir :
-
-- un programme qui compile dont les sources sont dans le répertoire `src/`,
-- un diagramme de classes à jour placé dans le répertoire `uml/` ayant pour nom `semaine<numero>.puml`,
-
-La structure du dépôt git doit être la suivante :
 ```
 ├── README.md
 ├── .gitignore
-├── deps/
-    ├── hamcrest-core-1.3.jar
-    ├── junit-4.13.1.jar
-├── out/
-    ├── .gitkeep
-├── src/
-    ├── Main.java
-    ├── ...
-├── tests/
-    ├── ...
-├── uml/
-    ├── semaine1.puml
-    ├──...
+├── deps/            # Dépendances de test
+├── out/             # Classes compilées
+├── src/             # Code source
+├── tests/           # Tests unitaires
+└── uml/             # Diagrammes de classes (semaine<N>.puml)
 ```
 
+---
 
-## Quelques consignes
+## Organisation du développement
 
-### Les tests
-Afin de démontrer le bon fonctionnement de votre application, vous devrez écrire des tests.
-Vous testerez en particulier : 
-- l'attaque d'une carte,
-- l'attaque des toutes les cartes à la fin d'un tour,
-- la mise à jour du score,
-- le placement des cartes sur le plateau
-- le fait de piocher une carte,
-- la mise en place d'une partie (plateau et pioches)
-- le fait de gagner ou perdre une partie
-- l'ajout de nouvelles cartes dans la pioche à la fin de la deuxième partie
-- le fait de gagner ou perdre le jeu
+- Rendus hebdomadaires sous forme de branches `rendu<numéro>` contenant un programme compilable et un diagramme de classes.
 
-### Gestion des erreurs
-Vous devez prévoir des saisies utilisateurs incorrectes.
-- le format des saisies doit être clairement indiqué dans votre interface
-- si une saisie est incorrecte, elle doit être redemandée à l'utilisateur
-- dans ce dernier cas, il doit être indiqué en quoi la saisie est invalide
+---
 
-### Qualité du code
-Veillez :
-- à respecter les [P21 Guidelines](https://git.unistra.fr/p21/p21/-/blob/main/guidelines.pdf?ref_type=heads)
-- à la bonne conception du code : il doit être lisible et facile à corriger, à réutiliser, à modifier et à étendre.
+## Licence et crédits
 
-
-## Quelques conseils
-
-- N'essayez pas d'implémenter toutes les fonctionnalités en une seule fois. Commencez par un programme simple mais fonctionnel et intégrez progressivement les fonctionnalités.
-- Il s'agit d'une version très simplifiée d'Inscryption. Il peut être tentant d'améliorer le projet et d'intégrer beaucoup de fonctionnalités et d'y cacher des énigmes. Cependant, cela ne vous permettra pas d'augmenter votre note. Ne négligez pas le projet de base ni les projets des autres modules. Vous aurez tout le loisir d'améliorer le projet durant votre été.
-- Faites des commits réguliers sur vos branches de travail.
-- Concevez votre code de façon à ce qu'il soit facile à modifier et à étendre avec de nouvelles fonctionnalités, notamment en prévision de la phase 2.
-- La qualité de la conception et du code produit est plus importante que le nombre de fonctionnalités intégrées.
+Projet pédagogique inspiré de *Inscryption* (Daniel Mullins Games). Le code est produit dans un cadre universitaire et n'est pas affilié à l'éditeur du jeu original.
